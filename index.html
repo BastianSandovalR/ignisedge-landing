@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IgnisEdge — detección ultratemprana de incendios forestales</title>
+<meta name="description" content="IgnisEdge detecta incendios forestales en su fase de pirólisis latente, antes de que aparezca la llama, combinando sensores terrestres con TinyML, LoRa y un dron con visión térmica.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --niebla:#E6EBE7;
+    --papel:#F4F6F3;
+    --pino:#173029;
+    --musgo:#4B6358;
+    --linea:#C5CFC8;
+    --brasa:#D7922A;
+    --llama:#C0441D;
+    --display:"Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    --texto:"IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    --ancho:72rem;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--niebla);color:var(--pino);font-family:var(--texto);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--brasa);outline-offset:3px;border-radius:2px}
+  .contenedor{max-width:var(--ancho);margin:0 auto;padding:0 1.5rem}
+
+  /* Cabecera */
+  .cabecera{display:flex;justify-content:space-between;align-items:center;padding:1.5rem 0}
+  .marca{font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:.55rem}
+  .marca svg{width:1.4rem;height:1.4rem}
+  .nav{display:flex;gap:1.75rem;font-size:.95rem}
+  .nav a{text-decoration:none;color:var(--musgo)}
+  .nav a:hover{color:var(--pino)}
+  @media (max-width:640px){.nav{display:none}}
+
+  /* Hero */
+  .hero{padding:4.5rem 0 3rem}
+  .hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,7vw,5.6rem);line-height:.98;letter-spacing:-.035em;margin:0;max-width:14ch}
+  .hero p.bajada{font-size:1.25rem;max-width:42ch;color:var(--musgo);margin:1.75rem 0 0}
+
+  /* Línea de tiempo del incendio: el elemento protagonista */
+  .curva{margin:4rem 0 1rem}
+  .fases{display:grid;grid-template-columns:5fr 3fr 2fr;gap:0}
+  .fase{padding:0 1rem 1rem 0}
+  .fase h2{font-family:var(--display);font-weight:600;font-size:1.15rem;margin:0}
+  .fase p{margin:.3rem 0 0;font-size:.92rem;color:var(--musgo);max-width:30ch}
+  .barra{display:grid;grid-template-columns:5fr 3fr 2fr;height:14px;border-radius:7px;overflow:hidden}
+  .barra span:nth-child(1){background:linear-gradient(90deg,#B9C6BE,var(--brasa))}
+  .barra span:nth-child(2){background:linear-gradient(90deg,var(--brasa),#C96A22)}
+  .barra span:nth-child(3){background:linear-gradient(90deg,#C96A22,var(--llama))}
+  .marcas{position:relative;height:5.5rem}
+  .marca-t{position:absolute;top:0;display:flex;flex-direction:column;align-items:flex-start;font-size:.88rem;line-height:1.3;max-width:13rem}
+  .marca-t::before{content:"";width:2px;height:1.6rem;background:currentColor;margin:0 0 .45rem 0}
+  .marca-t strong{font-family:var(--display);font-weight:800;font-size:1.05rem}
+  .marca-t.nuestra{left:12%;color:var(--pino)}
+  .marca-t.camaras{left:52%;color:var(--musgo)}
+  .marca-t.aviso{left:82%;color:var(--llama)}
+  .curva figcaption{font-size:.85rem;color:var(--musgo);margin-top:.5rem}
+  @media (max-width:760px){
+    .fases{grid-template-columns:1fr;gap:1rem}
+    .fase{border-left:5px solid;padding:0 0 0 1rem}
+    .fase:nth-child(1){border-color:var(--brasa)}
+    .fase:nth-child(2){border-color:#C96A22}
+    .fase:nth-child(3){border-color:var(--llama)}
+    .barra{display:none}
+    .marcas{height:auto;display:grid;gap:1rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--linea)}
+    .marca-t{position:static;max-width:none}
+    .marca-t::before{display:none}
+  }
+
+  /* Secciones */
+  section{padding:5rem 0;border-top:1px solid var(--linea)}
+  .titulo-seccion{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,4vw,2.8rem);letter-spacing:-.025em;line-height:1.05;margin:0 0 1rem;max-width:20ch}
+  .intro{max-width:60ch;color:var(--musgo);margin:0 0 3rem}
+
+  /* Cómo funciona: es una secuencia real, por eso va numerada */
+  .pasos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;counter-reset:paso}
+  .pasos li{counter-increment:paso;border-top:3px solid var(--pino);padding-top:1rem}
+  .pasos li::before{content:counter(paso);font-family:var(--display);font-weight:800;font-size:2.4rem;line-height:1;display:block;margin-bottom:.75rem;color:var(--brasa)}
+  .pasos h3{font-family:var(--display);font-weight:600;font-size:1.2rem;margin:0 0 .4rem}
+  .pasos p{margin:0;font-size:.97rem;color:var(--musgo)}
+  @media (max-width:900px){.pasos{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.pasos{grid-template-columns:1fr}}
+
+  /* Tecnología */
+  .capas{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem}
+  .capa h3{font-family:var(--display);font-weight:600;font-size:1.35rem;margin:0 0 .5rem}
+  .capa > p{margin:0 0 1.25rem;color:var(--musgo);font-size:.97rem}
+  .capa dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.55rem 1rem;font-size:.93rem}
+  .capa dt{color:var(--musgo)}
+  .capa dd{margin:0;font-weight:500}
+  @media (max-width:900px){.capas{grid-template-columns:1fr;gap:2.5rem}}
+
+  /* Terreno */
+  .terreno{display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:start}
+  .terreno blockquote{margin:0;font-family:var(--display);font-weight:600;font-size:clamp(1.4rem,2.6vw,2rem);line-height:1.2;letter-spacing:-.015em}
+  .terreno ul{margin:0;padding-left:1.1rem}
+  .terreno li{margin-bottom:.6rem}
+  @media (max-width:820px){.terreno{grid-template-columns:1fr;gap:2rem}}
+
+  /* Equipo */
+  .equipo{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:2rem}
+  .persona{background:var(--papel);border-radius:14px;padding:1.5rem}
+  .persona h3{font-family:var(--display);font-weight:600;font-size:1.2rem;margin:0}
+  .persona p{margin:.35rem 0 0;color:var(--musgo);font-size:.95rem}
+
+  /* Pie */
+  footer{background:var(--pino);color:var(--niebla);padding:4rem 0 3rem}
+  footer .fila{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;align-items:end}
+  footer h2{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.025em;margin:0;max-width:18ch;line-height:1.05}
+  .boton{display:inline-block;background:var(--brasa);color:var(--pino);font-weight:600;text-decoration:none;padding:.85rem 1.4rem;border-radius:999px}
+  .boton:hover{background:#E4A43F}
+  .boton.secundario{background:transparent;color:var(--niebla);border:1.5px solid #5F7A6E;margin-left:.5rem}
+  .boton.secundario:hover{border-color:var(--niebla)}
+  .pie-legal{margin-top:3rem;font-size:.85rem;color:#9FB2A8}
+</style>
+</head>
+<body>
+
+<div class="contenedor">
+  <header class="cabecera">
+    <a class="marca" href="#">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.3 1.8 1.2 2.8 2.3 3.2C10.8 8 11.2 5 12 2z" fill="#D7922A"/><path d="M12 13c.6 1.4 2 2 2 3.6a2 2 0 0 1-4 0c0-1 .5-1.7 1-2.1.2.6.6.9 1 1 0-1-.2-1.6 0-2.5z" fill="#173029"/></svg>
+      IgnisEdge
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#tecnologia">Tecnología</a>
+      <a href="#terreno">Terreno</a>
+      <a href="#equipo">Equipo</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Detectar el incendio antes de que exista la llama.</h1>
+      <p class="bajada">IgnisEdge reconoce la firma química de la madera que empieza a arder sin llama y da aviso cuando todavía hay tiempo para apagarla.</p>
+
+      <figure class="curva" aria-label="Fases de un incendio forestal y cuándo se detecta">
+        <div class="fases">
+          <div class="fase">
+            <h2>Pirólisis latente</h2>
+            <p>La madera se descompone por calor y libera gases. No hay llama ni humo visible.</p>
+          </div>
+          <div class="fase">
+            <h2>Humo visible</h2>
+            <p>La combustión crece y empieza a verse desde lejos.</p>
+          </div>
+          <div class="fase">
+            <h2>Llama</h2>
+            <p>El fuego se propaga y cada minuto cuenta.</p>
+          </div>
+        </div>
+        <div class="barra" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="marcas">
+          <div class="marca-t nuestra"><strong>IgnisEdge avisa aquí</strong>Sensores de gases en el bosque</div>
+          <div class="marca-t camaras"><strong>Vigilancia visual</strong>Torres y cámaras detectan el humo</div>
+          <div class="marca-t aviso"><strong>Aviso habitual</strong>Alguien ve el fuego y llama</div>
+        </div>
+      </figure>
+    </div>
+
+    <section id="como-funciona">
+      <h2 class="titulo-seccion">De una lectura de gases a un dron sobre el foco</h2>
+      <p class="intro">El sistema combina nodos en tierra que vigilan el aire de forma continua con un dron que confirma la alerta desde arriba. Una persona siempre autoriza el vuelo.</p>
+      <ol class="pasos">
+        <li>
+          <h3>El nodo huele el bosque</h3>
+          <p>Cada nodo mide gases, temperatura, humedad y presión. Un modelo liviano corre en el propio nodo y detecta cuándo el aire se aleja de lo normal.</p>
+        </li>
+        <li>
+          <h3>La alerta viaja por LoRa</h3>
+          <p>El nodo envía la alerta por radio de largo alcance y bajo consumo, sin necesidad de señal celular en medio del bosque.</p>
+        </li>
+        <li>
+          <h3>El dron confirma con calor</h3>
+          <p>Un dron con cámara térmica revisa la zona y distingue un foco real de una superficie que solo está caliente.</p>
+        </li>
+        <li>
+          <h3>El operador decide</h3>
+          <p>Desde un centro de control con el terreno en 3D, el operador ve la telemetría y la cámara, y autoriza cada vuelo.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="tecnologia">
+      <h2 class="titulo-seccion">Tres capas, procesamiento en el borde</h2>
+      <p class="intro">La detección ocurre donde están los datos: en el nodo y en el dron. A la red solo viaja lo necesario.</p>
+      <div class="capas">
+        <div class="capa">
+          <h3>Nodo terrestre</h3>
+          <p>Vigila el aire las 24 horas con muy poca energía.</p>
+          <dl>
+            <dt>Placa</dt><dd>Heltec WiFi LoRa 32 V4 (ESP32)</dd>
+            <dt>Sensor</dt><dd>Bosch BME688</dd>
+            <dt>Modelo</dt><dd>TinyML: distancia de Mahalanobis y promedios móviles exponenciales</dd>
+            <dt>Firmware</dt><dd>C/C++</dd>
+            <dt>Enlace</dt><dd>LoRa hacia un nodo gateway</dd>
+          </dl>
+        </div>
+        <div class="capa">
+          <h3>Dron de verificación</h3>
+          <p>Confirma o descarta la alerta antes de movilizar recursos.</p>
+          <dl>
+            <dt>Cómputo</dt><dd>NVIDIA Jetson Orin Nano</dd>
+            <dt>Visión</dt><dd>Cámara térmica radiométrica P3</dd>
+            <dt>Modelo</dt><dd>Clasificador entrenado con el dataset FLAME 3, que usa el parpadeo térmico del fuego</dd>
+            <dt>Vuelo</dt><dd>Pixhawk con MAVLink y geocerca dinámica</dd>
+          </dl>
+        </div>
+        <div class="capa">
+          <h3>Centro de control</h3>
+          <p>Reúne todo en un gemelo digital del terreno.</p>
+          <dl>
+            <dt>Panel</dt><dd>React con Mapbox y deck.gl</dd>
+            <dt>Servicios</dt><dd>FastAPI</dd>
+            <dt>Terreno</dt><dd>Topografía 3D desde Google Earth Engine</dd>
+            <dt>Control</dt><dd>El operador autoriza cada vuelo</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="terreno">
+      <div class="terreno">
+        <blockquote>Entrenado con datos medidos en el bosque, no en el laboratorio.</blockquote>
+        <div>
+          <p style="margin-top:0">Los datos del nodo terrestre se recolectaron en Curanilahue, Región del Biobío, con ensayos de pirólisis controlada de las dos especies que dominan las plantaciones de la zona:</p>
+          <ul>
+            <li><strong>Pino radiata</strong> (<em>Pinus radiata</em>)</li>
+            <li><strong>Eucalipto</strong> (<em>Eucalyptus globulus</em>)</li>
+          </ul>
+          <p>IgnisEdge es una prueba de concepto en desarrollo. Las cifras de desempeño se publicarán cuando terminen las validaciones.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="equipo">
+      <h2 class="titulo-seccion">Equipo</h2>
+      <p class="intro">Estudiantes de Ingeniería Informática de la Universidad Técnica Federico Santa María, sede Concepción.</p>
+      <div class="equipo">
+        <div class="persona">
+          <h3>Bastian Sandoval</h3>
+          <p>Nodos terrestres, sensores y TinyML</p>
+        </div>
+        <div class="persona">
+          <h3>[Nombre]</h3>
+          <p>Visión embebida a bordo del dron</p>
+        </div>
+        <div class="persona">
+          <h3>[Nombre]</h3>
+          <p>[Rol en el proyecto]</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="contenedor">
+    <div class="fila">
+      <h2>¿Trabajas en prevención de incendios? Conversemos.</h2>
+      <div>
+        <a class="boton" href="mailto:[correo@ignisedge.pro]">Escribir al equipo</a>
+        <a class="boton secundario" href="https://github.com/cybedith/IgnisEdge">Ver el código</a>
+      </div>
+    </div>
+    <p class="pie-legal">IgnisEdge · Proyecto universitario en desarrollo · Región del Biobío, Chile</p>
+  </div>
+</footer>
+
+</body>
+</html>
