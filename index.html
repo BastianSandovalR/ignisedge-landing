@@ -1211,14 +1211,15 @@ function puntoEnTerreno(cx, cy){
   for (let s = 0; s < 600; s += .5){ p.copy(o).addScaledVector(d, s); if (p.y <= altura(p.x, p.z)){ p.y = altura(p.x, p.z); return p; } }
   return null;
 }
-const valido = p => p && Math.hypot(p.x, p.z) < 88 && dCamino(p.x, p.z) > 4 && Math.hypot(p.x - CENTRAL.x, p.z - CENTRAL.z) > 9;
+const valido = p => p && Math.hypot(p.x, p.z) < 100 && dCamino(p.x, p.z) > 4 && Math.hypot(p.x - CENTRAL.x, p.z - CENTRAL.z) > 9;
+const motivoInvalido = p => !p ? 'Haz clic sobre el bosque.' : Math.hypot(p.x, p.z) >= 100 ? 'Ese punto está fuera de la red de sensores. Elige uno cerca de las balizas verdes.' : 'Elige un punto dentro de la plantación, lejos del camino y de la central.';
 let enSim = false, punteroSim = null, ultimoPuntero = 0;
 addEventListener('click', e => {
   if (!enSim || e.target.closest('.panel, header, .qr-vitrina, a, button, .solida, footer')) return;
   const te = performance.now() / 1000 - sim.t0;
   if (sim.activo && !sim.auto && te < 17){ estadoSim.textContent = 'Espera a que termine esta simulación.'; return; }
   const p = puntoEnTerreno(e.clientX, e.clientY);
-  if (!valido(p)){ estadoSim.textContent = 'Elige un punto dentro de la plantación, lejos del camino.'; return; }
+  if (!valido(p)){ estadoSim.textContent = motivoInvalido(p); return; }
   iniciarSim(p);
 });
 addEventListener('pointermove', e => {
@@ -1315,6 +1316,38 @@ function rutaDron(d, u, destino, out){
 }
 const destinoA = new THREE.Vector3(), destinoB = new THREE.Vector3(), prevDron = drones.map(d => d.position.clone());
 
+
+// cámara directora del simulador: encuadra la acción en cada etapa, esté donde esté el foco
+const DIR_VISTA = new THREE.Vector3(...K[CAP_SIM].c).sub(new THREE.Vector3(...K[CAP_SIM].t)).normalize();
+const encPos = new THREE.Vector3(), encMira = new THREE.Vector3(), encPosS = new THREE.Vector3(), encMiraS = new THREE.Vector3(), encC = new THREE.Vector3();
+let encIniciado = false;
+function encuadrar(puntos){
+  encC.set(0, 0, 0); puntos.forEach(p => encC.add(p)); encC.divideScalar(puntos.length);
+  let r = 10; puntos.forEach(p => { r = Math.max(r, Math.hypot(p.x - encC.x, p.z - encC.z)); }); r += 9;
+  const tv = Math.tan(THREE.MathUtils.degToRad(camara.fov) / 2), asp = camara.aspect;
+  const horizontal = asp > 1;
+  const dist = Math.max(32, r / (tv * .72), horizontal ? r / (tv * asp * .5) : r / (tv * asp * .85));
+  encMira.copy(encC);
+  if (horizontal){ // el panel tapa la izquierda: la acción se corre a la derecha de la pantalla
+    const derecha = tmpV.set(DIR_VISTA.z, 0, -DIR_VISTA.x).normalize();
+    encMira.addScaledVector(derecha, -.3 * dist * tv * asp);
+  } else { // en vertical el panel va abajo: la acción sube en la pantalla
+    encMira.addScaledVector(tmpV.set(DIR_VISTA.x, 0, DIR_VISTA.z).normalize(), r * .9);
+  }
+  encPos.copy(encMira).addScaledVector(DIR_VISTA, dist);
+}
+function dirigirCamara(te, dt){
+  const det = incidente.detectores.map(n => n.p), F = incidente.foco;
+  if (te < 6) encuadrar([F, ...det]);
+  else if (te < 8.8) encuadrar([F, ...det, TOPE_GW, CENTRAL]);
+  else if (te < 17.4) encuadrar([F, CENTRAL, drones[0].position]);
+  else encuadrar([F, ...det, CENTRAL]);
+  if (!encIniciado){ encPosS.copy(posCam); encMiraS.copy(mira); encIniciado = true; }
+  const k = 1 - Math.pow(.22, dt);
+  encPosS.lerp(encPos, k); encMiraS.lerp(encMira, k);
+  const w = suave(ss(te, 0, .8) * (1 - ss(te, 21, 24.5)));
+  posCam.lerp(encPosS, w); mira.lerp(encMiraS, w);
+}
 function cuadro(){
   const dt = Math.min(reloj.getDelta(), .05), t = reloj.elapsedTime;
   vigilar(dt); avanzarRecorrido();
@@ -1348,6 +1381,7 @@ function cuadro(){
   posCam.set(E.c[0] + (reducir ? 0 : mx * 4), E.c[1] - (reducir ? 0 : my * 2), E.c[2]);
   if (!reducir) posCam.x += Math.sin(t * .07) * 2.5;
   mira.set(E.t[0], E.t[1], E.t[2]);
+  if (sim.activo) dirigirCamara(performance.now() / 1000 - sim.t0, dt); else encIniciado = false;
   if (camSim > 0){
     camDron.copy(PF).add(tmpV.set(0, 15, 7)); miraDron.copy(PF);
     posCam.lerp(camDron, suave(camSim)); mira.lerp(miraDron, suave(camSim));
@@ -1391,7 +1425,7 @@ function cuadro(){
   luzBrasa.intensity = (3 + E.calor * 14) * parpadeo * lerp(1, .5, d) * ss(E.calor, 0, .1);
   halo.scale.setScalar((4 + E.calor * 8) * parpadeo); halo.material.opacity = (.2 + E.calor * .3) * lerp(1, .35, d) * ss(E.calor, 0, .1);
   matHumo.uniforms.cHumo.value.copy(C.humoN).lerp(C.humoD, d).multiplyScalar(lerp(.6, 1, 1 - th));
-  matHumo.uniforms.uSensor.value = Math.max(E.det, E.tri) * .55;
+  matHumo.uniforms.uSensor.value = Math.max(E.det, E.tri) * .55 * (1 - th);
   for (let i = 0; i < NG; i++){
     hVida[i] += dt * (reducir ? 0 : .05 + (i % 5) * .008); if (hVida[i] > 1) hVida[i] -= 1;
     const v = hVida[i], sm = hSem[i], giro = sm + v * 4 + t * .2, r = .2 + v * 2.2;
@@ -1417,18 +1451,18 @@ function cuadro(){
   // red de nodos: balizas que pulsan; los que detectan cambian a ámbar
   const detIds = new Set(incidente.detectores.map(n => n.id));
   const nivelDet = (n, i) => i === 0 ? E.det : E.tri;
-  haces.material.opacity = E.malla * .16;
+  haces.material.opacity = E.malla * .16 * (1 - camSim);
   NODOS.forEach((n, i) => {
     const b = balizas[i], k = incidente.detectores.indexOf(n), activo = k >= 0 && nivelDet(n, k) > .25;
     const pulso = .5 + .5 * Math.sin(t * (activo ? 7 : 1.6) + b.userData.fase);
     b.material.color.copy(activo ? (pulso > .5 ? AMARILLO : NARANJA) : VERDE).multiplyScalar(activo ? 2.4 : 1.4);
-    b.material.opacity = E.malla * (activo ? .95 : .45 + .35 * pulso);
+    b.material.opacity = E.malla * (activo ? .95 : .45 + .35 * pulso) * (1 - camSim);
     b.scale.setScalar((activo ? 3.4 : 1.9 + .5 * pulso) * (1 + E.grilla * .6));
   });
   const ciclo = (t * .55) % 1;
   incidente.detectores.forEach((n, i) => {
     const nivel = nivelDet(n, i);
-    ondas[i].material.opacity = nivel * (1 - ciclo) * .8; ondas[i].scale.setScalar(1 + ciclo * 6);
+    ondas[i].material.opacity = nivel * (1 - ciclo) * .8 * (1 - camSim) * (1 - th); ondas[i].scale.setScalar(1 + ciclo * 6);
     const g = circulos[i].geometry, total = g.index ? g.index.count : 0;
     const rev = clamp(E.tri * 1.5 - i * .18, 0, 1);
     g.setDrawRange(0, Math.floor(total * rev / 3) * 3); circulos[i].material.opacity = rev > 0 ? .85 * Math.min(1, E.tri * 1.4) * (1 - camSim) * (1 - th) : 0;
