@@ -1,949 +1,1039 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Tranque - Terreno Premium en Venta</title>
-    <meta name="description" content="Terreno exclusivo en El Tranque. Explora con tour virtual 360° capturado con drone profesional. Documentación al día, excelente ubicación.">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #2c3e50;
-            --secondary: #27ae60;
-            --accent: #3498db;
-            --gold: #f39c12;
-            --dark: #1a1a1a;
-            --light: #ecf0f1;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #fff;
-        }
-
-        /* Header sticky - Optimizado para móvil */
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            z-index: 1000;
-            padding: 0.75rem 0;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .project-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .header-price {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--gold);
-        }
-
-        .cta-header {
-            display: flex;
-            gap: 0.5rem;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            justify-content: center;
-        }
-
-        .btn-primary {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #229954;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(39, 174, 96, 0.3);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Hero con tour 360 - Ajustado para móvil */
-        .hero {
-            margin-top: 120px;
-            height: 50vh;
-            min-height: 300px;
-            position: relative;
-            background: var(--dark);
-        }
-
-        .tour-360-frame {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            color: white;
-            padding: 1.5rem 1rem;
-        }
-
-        .hero-overlay-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .hero-tag {
-            display: inline-block;
-            background: var(--gold);
-            color: var(--dark);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .hero-overlay h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .hero-location {
-            font-size: 1rem;
-            opacity: 0.9;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Quick specs bar - Grid responsivo */
-        .quick-specs {
-            background: white;
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.1);
-            padding: 1.5rem 1rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        .quick-specs-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            text-align: center;
-        }
-
-        .spec-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .spec-icon {
-            font-size: 1.5rem;
-            color: var(--secondary);
-        }
-
-        .spec-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .spec-label {
-            font-size: 0.8rem;
-            color: #777;
-        }
-
-        /* Sección de descripción */
-        section {
-            padding: 2rem 1rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        section h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        section p {
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-
-        /* Highlights grid */
-        .highlights-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .highlight-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: start;
-            gap: 1rem;
-        }
-
-        .highlight-icon {
-            font-size: 2rem;
-            color: var(--secondary);
-            flex-shrink: 0;
-        }
-
-        .highlight-content h3 {
-            font-size: 1.1rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .highlight-content p {
-            font-size: 0.9rem;
-            color: #666;
-            margin: 0;
-        }
-
-        /* Galería de imágenes - Formato carrusel compacto */
-        .gallery-section {
-            background: var(--light);
-            padding: 2rem 0;
-        }
-
-        .gallery-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            aspect-ratio: 16/9;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.02);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .gallery-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: white;
-            padding: 1rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        /* Modal de imagen expandida */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            max-width: 95%;
-            max-height: 90vh;
-            object-fit: contain;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            background: rgba(0,0,0,0.5);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Features grid */
-        .features-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        .feature-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            color: var(--accent);
-        }
-
-        .feature-header h3 {
-            font-size: 1.2rem;
-            color: var(--primary);
-        }
-
-        .feature-list {
-            list-style: none;
-        }
-
-        .feature-list li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: start;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .feature-list li:before {
-            content: "✓";
-            color: var(--secondary);
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        /* Mapa */
-        .map-section {
-            background: var(--light);
-            padding: 2rem 1rem;
-        }
-
-        .map-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .map-placeholder {
-            background: white;
-            border-radius: 12px;
-            padding: 3rem 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .map-icon {
-            font-size: 3rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-
-        .map-placeholder h3 {
-            font-size: 1.3rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .map-placeholder p {
-            color: #666;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        /* Contacto */
-        .contact-section {
-            padding: 2rem 1rem;
-        }
-
-        .contact-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .contact-methods {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .contact-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .contact-icon {
-            font-size: 2rem;
-            color: var(--secondary);
-        }
-
-        .contact-info h4 {
-            font-size: 1rem;
-            color: var(--primary);
-            margin-bottom: 0.3rem;
-        }
-
-        .contact-info p {
-            font-size: 0.9rem;
-            color: #666;
-            margin: 0;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-        }
-
-        footer p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin: 0;
-        }
-
-        /* Media Queries para tablets y desktop */
-        @media (min-width: 768px) {
-            .header {
-                padding: 1rem 0;
-            }
-
-            .header-content {
-                padding: 0 2rem;
-                flex-wrap: nowrap;
-            }
-
-            .project-title {
-                font-size: 1.8rem;
-            }
-
-            .header-price {
-                font-size: 1.5rem;
-            }
-
-            .cta-header {
-                width: auto;
-                gap: 1rem;
-            }
-
-            .btn {
-                padding: 0.8rem 1.5rem;
-                font-size: 1rem;
-            }
-
-            .hero {
-                margin-top: 80px;
-                height: 70vh;
-            }
-
-            .hero-overlay {
-                padding: 3rem 2rem;
-            }
-
-            .hero-overlay h1 {
-                font-size: 3rem;
-            }
-
-            .hero-location {
-                font-size: 1.2rem;
-            }
-
-            .quick-specs {
-                padding: 2rem;
-            }
-
-            .quick-specs-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 2rem;
-            }
-
-            .spec-icon {
-                font-size: 2rem;
-            }
-
-            .spec-value {
-                font-size: 1.5rem;
-            }
-
-            .spec-label {
-                font-size: 0.9rem;
-            }
-
-            section {
-                padding: 4rem 2rem;
-            }
-
-            section h2 {
-                font-size: 2.5rem;
-            }
-
-            section p {
-                font-size: 1.1rem;
-            }
-
-            .highlights-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2rem;
-            }
-
-            .contact-methods {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .hero {
-                height: 80vh;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .highlights-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        /* Mapa responsive - Agregado */
-.responsive-map {
-    position: relative;
-    overflow: hidden;
-    padding-bottom: 56.25%; /* Aspect ratio 16:9 */
-    height: 0;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.responsive-map iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 12px;
-}
-
-/* Ajuste para móviles */
-@media (max-width: 768px) {
-    .responsive-map {
-        padding-bottom: 75%; /* Aspect ratio 4:3 en móviles para reducir altura */
-    }
-}
-
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IgnisEdge — ver el incendio antes de la llama</title>
+<meta name="description" content="IgnisEdge detecta incendios forestales en pirólisis latente, antes de que exista la llama: sensores con TinyML en el bosque, alertas por LoRa y un dron con visión térmica.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function(){ var m; try { m = new URLSearchParams(location.search).get('modo') || localStorage.getItem('ignis-modo'); } catch (e) {}
+  if (m !== 'dia' && m !== 'noche') m = matchMedia('(prefers-color-scheme: light)').matches ? 'dia' : 'noche';
+  document.documentElement.dataset.modo = m; })();
+</script>
+<style>
+  :root{
+    --noche:#0C171B;
+    --bosque:#13262A;
+    --niebla:#D5DED8;
+    --ceniza:#8A9A93;
+    --t1:#2B0B4F; --t2:#8E1F6B; --t3:#E0512A; --t4:#F7C548;
+    --termica:linear-gradient(90deg,var(--t1),var(--t2) 35%,var(--t3) 70%,var(--t4));
+    --display:"Syne","Helvetica Neue",Arial,sans-serif;
+    --texto:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+    --fondo:#0C171B; --tinta:#D5DED8; --sutil:#8A9A93; --linea:#24383c; --linea2:#3a5054; --velo:12,23,27; --dato:var(--t4);
+    color-scheme:dark;
+  }
+  html[data-modo="dia"]:not(.termica){--fondo:#E9EFEB; --tinta:#0F1E21; --sutil:#4F615B; --linea:#C3CFCA; --linea2:#9FB0A9; --velo:236,241,238; --dato:#A3410F; color-scheme:light}
+  *{box-sizing:border-box}
+  html{background:var(--fondo);transition:background-color .9s}
+  body{margin:0;color:var(--tinta);transition:color .9s;font-family:var(--texto);font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  a:focus-visible{outline:2px solid var(--t4);outline-offset:4px;border-radius:2px}
+
+  /* Escena 3D fija detrás de todo */
+  #escena{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:0;
+    background:radial-gradient(120% 80% at 50% 110%, #24131f 0%, var(--fondo) 60%)}
+  .velo{position:fixed;inset:0;z-index:1;pointer-events:none}
+  .velo::before,.velo::after{content:"";position:absolute;inset:0;transition:opacity .9s}
+  .velo::before{background:linear-gradient(90deg, rgba(12,23,27,.88) 0%, rgba(12,23,27,.55) 38%, rgba(12,23,27,0) 62%)}
+  .velo::after{opacity:0;background:linear-gradient(90deg, rgba(236,241,238,.9) 0%, rgba(236,241,238,.62) 36%, rgba(236,241,238,0) 60%)}
+  html[data-modo="dia"]:not(.termica) .velo::before{opacity:0}
+  html[data-modo="dia"]:not(.termica) .velo::after{opacity:1}
+  @media (max-width:760px){
+    .velo::before{background:linear-gradient(0deg, rgba(12,23,27,.92) 0%, rgba(12,23,27,.5) 55%, rgba(12,23,27,.15) 100%)}
+    .velo::after{background:linear-gradient(0deg, rgba(236,241,238,.94) 0%, rgba(236,241,238,.55) 55%, rgba(236,241,238,.1) 100%)}
+  }
+
+  /* Visor térmico (aparece cuando llega el dron) */
+  .visor{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .6s}
+  .visor.on{opacity:1}
+  .visor::before,.visor::after{content:"";position:absolute;left:50%;top:50%;background:rgba(247,197,72,.75)}
+  .visor::before{width:84px;height:1px;transform:translate(-50%,-50%)}
+  .visor::after{width:1px;height:84px;transform:translate(-50%,-50%)}
+  .visor .esquinas{position:absolute;inset:7vh 6vw;border:1px solid transparent;
+    background:
+      linear-gradient(var(--t4),var(--t4)) top left/28px 1px no-repeat,
+      linear-gradient(var(--t4),var(--t4)) top left/1px 28px no-repeat,
+      linear-gradient(var(--t4),var(--t4)) top right/28px 1px no-repeat,
+      linear-gradient(var(--t4),var(--t4)) top right/1px 28px no-repeat,
+      linear-gradient(var(--t4),var(--t4)) bottom left/28px 1px no-repeat,
+      linear-gradient(var(--t4),var(--t4)) bottom left/1px 28px no-repeat,
+      linear-gradient(var(--t4),var(--t4)) bottom right/28px 1px no-repeat,
+      linear-gradient(var(--t4),var(--t4)) bottom right/1px 28px no-repeat;opacity:.8}
+  .visor .rec{position:absolute;right:calc(6vw + 1rem);top:calc(7vh + .8rem);font-size:.85rem;color:var(--t4);display:flex;gap:.5rem;align-items:center}
+  .visor .rec::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--t3);animation:parpadeo 1.2s infinite}
+  @keyframes parpadeo{50%{opacity:.2}}
+
+  /* Barra térmica: indicador de avance */
+  .escala{position:fixed;right:2.2rem;top:50%;transform:translateY(-50%);z-index:5;height:56vh;display:flex;gap:.9rem;align-items:stretch;transition:opacity .4s}
+  .escala.fuera{opacity:0}
+  .escala .barra{width:6px;border-radius:3px;background:linear-gradient(0deg,var(--t1),var(--t2) 35%,var(--t3) 70%,var(--t4));position:relative;opacity:.9}
+  .escala .cursor{position:absolute;left:50%;width:18px;height:18px;border-radius:50%;border:2px solid var(--tinta);background:var(--fondo);transform:translate(-50%,50%);bottom:0;transition:bottom .15s linear}
+  .escala ol{list-style:none;margin:0;padding:.6rem .8rem;border-radius:10px;background:rgba(var(--velo),.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;flex-direction:column;justify-content:space-between;font-size:.78rem;color:var(--sutil);text-align:left}
+  .escala li{line-height:1.2;transition:color .3s;text-shadow:0 0 8px rgba(var(--velo),.95),0 0 2px rgba(var(--velo),.9)}
+  .escala li.activo{color:var(--tinta)}
+  @media (max-width:900px){.escala{display:none}}
+
+  /* Cabecera */
+  header{position:fixed;top:0;left:0;right:0;z-index:6;display:flex;justify-content:space-between;align-items:center;padding:1.4rem 2.2rem;background:linear-gradient(rgba(var(--velo),.9),rgba(var(--velo),0))}
+  header .lado{display:flex;align-items:center;gap:1.8rem}
+  .marca{font-family:var(--display);font-weight:800;font-size:1.25rem;letter-spacing:.01em;text-decoration:none;display:flex;align-items:center;gap:.6rem}
+  .marca i{display:block;width:14px;height:14px;border-radius:50%;background:var(--termica);box-shadow:0 0 18px rgba(224,81,42,.7)}
+  header nav{display:flex;gap:1.8rem;font-size:.92rem}
+  header nav a{text-decoration:none;color:var(--sutil)}
+  header nav a:hover{color:var(--tinta)}
+  @media (max-width:760px){header{padding:1.1rem 1.25rem} header nav{display:none}}
+
+  main{position:relative;z-index:3}
+  .capitulo{min-height:130vh;display:flex;align-items:center;padding:0 2.2rem}
+  .capitulo .texto{max-width:31rem}
+  @media (max-width:760px){.capitulo{align-items:flex-end;padding:0 1.25rem 18vh;min-height:115vh}}
+
+  /* Portada */
+  .portada{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 2.2rem 12vh}
+  .portada h1{font-family:var(--display);font-weight:800;font-size:clamp(3.4rem,11vw,10.5rem);line-height:.86;letter-spacing:-.035em;margin:0;max-width:9ch;
+    background:linear-gradient(90deg,var(--tinta) 0%,var(--tinta) 40%,var(--t2) 55%,var(--t3) 68%,var(--t4) 80%,var(--tinta) 95%);
+    background-size:300% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:calor 3.2s cubic-bezier(.6,.05,.25,1) .4s forwards}
+  @keyframes calor{to{background-position:0% 0}}
+  .portada p{max-width:34ch;font-size:1.2rem;color:var(--tinta);margin:2rem 0 0;opacity:.85}
+  .bajar{margin-top:2.5rem;font-size:.9rem;color:var(--sutil);display:flex;align-items:center;gap:.7rem}
+  .bajar::before{content:"";width:1px;height:42px;background:linear-gradient(var(--sutil),transparent)}
+  @media (max-width:760px){.portada{padding:0 1.25rem 10vh}}
+
+  .capitulo h2{font-family:var(--display);font-weight:700;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1;letter-spacing:-.02em;margin:0 0 1.2rem}
+  .capitulo p{margin:0 0 1rem;color:var(--tinta);opacity:.88}
+  .capitulo .dato{display:inline-block;margin-top:.6rem;font-size:.9rem;color:var(--dato)}
+
+  /* Secciones de contenido sólidas */
+  .solida{position:relative;z-index:3;background:rgba(var(--velo),.94);transition:background-color .9s;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:7rem 2.2rem}
+  .solida .ancho{max-width:72rem;margin:0 auto}
+  .solida h2{font-family:var(--display);font-weight:700;font-size:clamp(2rem,4.4vw,3.2rem);line-height:1.02;letter-spacing:-.02em;margin:0 0 1rem;max-width:18ch}
+  .solida .intro{color:var(--sutil);max-width:56ch;margin:0 0 3.5rem}
+  @media (max-width:760px){.solida{padding:5rem 1.25rem}}
+
+  .capas{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--linea)}
+  .capa{padding:2rem 2rem 0 0;border-right:1px solid var(--linea)}
+  .capa + .capa{padding-left:2rem}
+  .capa:last-child{border-right:0}
+  .capa h3{font-family:var(--display);font-weight:700;font-size:1.4rem;margin:0 0 .4rem}
+  .capa .rol{color:var(--sutil);margin:0 0 1.5rem;font-size:.97rem}
+  .capa dl{margin:0;display:grid;grid-template-columns:5.5rem 1fr;gap:.7rem 1rem;font-size:.93rem}
+  .capa dt{color:var(--sutil)}
+  .capa dd{margin:0}
+  @media (max-width:900px){.capas{grid-template-columns:1fr}.capa,.capa + .capa{padding:2rem 0;border-right:0;border-bottom:1px solid var(--linea)}}
+
+  .terreno{display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center}
+  .terreno .cita{font-family:var(--display);font-weight:700;font-size:clamp(1.8rem,3.6vw,2.8rem);line-height:1.05;letter-spacing:-.02em;margin:0}
+  .especies{display:grid;gap:1.2rem;margin:1.5rem 0}
+  .especie{display:flex;gap:1rem;align-items:baseline}
+  .especie b{font-family:var(--display);font-weight:700;font-size:1.25rem}
+  .especie em{color:var(--sutil)}
+  @media (max-width:900px){.terreno{grid-template-columns:1fr;gap:2rem}}
+
+  .equipo{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:0;border-top:1px solid var(--linea)}
+  .persona{padding:1.8rem 1.5rem 1.8rem 0;border-bottom:1px solid var(--linea)}
+  .persona b{font-family:var(--display);font-weight:700;font-size:1.3rem;display:block}
+  .persona span{color:var(--sutil);font-size:.95rem}
+
+  footer{position:relative;z-index:3;background:var(--fondo);transition:background-color .9s;padding:7rem 2.2rem 3rem;overflow:hidden}
+  footer .grande{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,7vw,6rem);line-height:.92;letter-spacing:-.03em;margin:0 0 2.5rem;max-width:12ch}
+  footer .acciones{display:flex;flex-wrap:wrap;gap:1rem}
+  .boton{display:inline-flex;align-items:center;padding:1rem 1.6rem;border-radius:999px;text-decoration:none;font-weight:500}
+  .boton.calor{background:var(--termica);color:#160814}
+  .boton.linea{border:1px solid var(--linea2);color:var(--tinta)}
+  .boton.linea:hover{border-color:var(--tinta)}
+  footer .legal{margin-top:5rem;font-size:.85rem;color:var(--sutil)}
+  footer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--termica)}
+  @media (max-width:760px){footer{padding:5rem 1.25rem 3rem}}
+
+  .sin-webgl #escena{background:radial-gradient(90% 60% at 70% 80%, #3a1424 0%, var(--fondo) 65%)}
+  @media (prefers-reduced-motion: reduce){.portada h1{animation:none;background-position:0 0}.visor .rec::before{animation:none}}
+
+  /* Selector día / noche */
+  .modo{display:flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--linea2);border-radius:999px;background:rgba(var(--velo),.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .modo button{appearance:none;border:0;background:transparent;color:var(--sutil);font:500 .85rem/1 var(--texto);padding:.45rem .85rem .45rem .65rem;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:.42rem;transition:background-color .45s,color .45s}
+  .modo button:hover{color:var(--tinta)}
+  .modo button[aria-pressed="true"]{background:var(--tinta);color:var(--fondo)}
+  .modo button:focus-visible{outline:2px solid var(--t4);outline-offset:2px}
+  .modo svg{width:15px;height:15px;flex:none}
+</style>
 </head>
 <body>
-    <!-- Header sticky -->
-    <header class="header">
-        <div class="header-content">
-            <h1 class="project-title">El Tranque</h1>
-            <div class="header-price">$45,000 USD</div>
-            <div class="cta-header">
-                <a href="https://wa.me/56912345678" class="btn btn-primary">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </a>
-                <a href="tel:+56912345678" class="btn btn-secondary">
-                    <i class="fas fa-phone"></i> Llamar
-                </a>
-            </div>
-        </div>
-    </header>
+<canvas id="escena" aria-hidden="true"></canvas>
+<div class="velo"></div>
+<div class="visor" aria-hidden="true"><div class="esquinas"></div><div class="rec">Visión térmica</div></div>
 
-    <!-- Hero con tour 360 -->
-<section class="hero">
-    <iframe 
-        class="tour-360-frame"
-        src="https://recdrone.cl/360/ElTranque/"
-        allow="accelerometer; gyroscope; magnetometer; vr; xr"
-        allowfullscreen
-        loading="lazy">
-    </iframe>
-    <div class="hero-overlay">
-        <div class="hero-overlay-content">
-            <span class="hero-tag">🏆 Oportunidad Única</span>
-            <h1>El Tranque</h1>
-            <div class="hero-location">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Región Metropolitana, Chile</span>
-            </div>
-        </div>
+<header>
+  <a class="marca" href="#inicio"><i></i>IgnisEdge</a>
+  <div class="lado">
+    <nav aria-label="Secciones">
+      <a href="#bosque">Cómo funciona</a>
+      <a href="#tecnologia">Tecnología</a>
+      <a href="#terreno">Terreno</a>
+      <a href="#equipo">Equipo</a>
+    </nav>
+    <div class="modo" role="group" aria-label="Iluminación de la escena">
+      <button type="button" data-m="noche" aria-pressed="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10.6 1.6a6.4 6.4 0 1 0 3.8 10.1A5.6 5.6 0 0 1 10.6 1.6Z" fill="currentColor"/></svg>Noche</button>
+      <button type="button" data-m="dia" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.1" fill="currentColor"/><g stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M8 .9v1.8M8 13.3v1.8M.9 8h1.8M13.3 8h1.8M3 3l1.3 1.3M11.7 11.7 13 13M3 13l1.3-1.3M11.7 4.3 13 3"/></g></svg>Día</button>
     </div>
+  </div>
+</header>
+
+<aside class="escala" aria-hidden="true">
+  <div class="barra"><span class="cursor"></span></div>
+  <ol>
+    <li data-i="5">Gemelo digital</li>
+    <li data-i="4">Visión térmica</li>
+    <li data-i="3">Alerta LoRa</li>
+    <li data-i="2">Detección</li>
+    <li data-i="1">Pirólisis latente</li>
+    <li data-i="0">Bosque</li>
+  </ol>
+</aside>
+
+<main>
+  <section class="portada" id="inicio" data-ch="0">
+    <h1>Antes de la llama.</h1>
+    <p>IgnisEdge detecta la madera que empieza a arder sin fuego, cuando todavía no hay humo que ver y aún hay tiempo para apagarla.</p>
+    <div class="bajar">Baja para ver cómo</div>
+  </section>
+
+  <section class="capitulo" id="bosque" data-ch="1">
+    <div class="texto">
+      <h2>Un incendio empieza sin que nadie lo vea.</h2>
+      <p>Antes de la llama, la madera se calienta y se descompone. Es la pirólisis latente: libera gases que no se ven ni se huelen a distancia, y puede durar horas.</p>
+      <p>Las torres y cámaras buscan humo. Para cuando aparece, el fuego ya avanzó.</p>
+    </div>
+  </section>
+
+  <section class="capitulo" data-ch="2">
+    <div class="texto">
+      <h2>El nodo huele el bosque.</h2>
+      <p>Cada nodo mide gases, temperatura, humedad y presión, día y noche. Un modelo de TinyML corre dentro del propio nodo y reconoce cuándo el aire deja de parecerse al de siempre.</p>
+      <span class="dato">ESP32 · Bosch BME688 · distancia de Mahalanobis</span>
+    </div>
+  </section>
+
+  <section class="capitulo" data-ch="3">
+    <div class="texto">
+      <h2>La alerta cruza el bosque.</h2>
+      <p>El nodo envía la alerta por LoRa, una radio de largo alcance y bajo consumo. No necesita señal celular, que es justo lo que falta en medio de una plantación.</p>
+    </div>
+  </section>
+
+  <section class="capitulo" data-ch="4">
+    <div class="texto">
+      <h2>El dron va a mirar.</h2>
+      <p>Un dron con cámara térmica llega al punto y confirma la alerta desde arriba. Su modelo distingue un foco real de una roca que solo está caliente, por cómo parpadea el calor del fuego.</p>
+    </div>
+  </section>
+
+  <section class="capitulo" data-ch="5">
+    <div class="texto">
+      <h2>Una persona decide.</h2>
+      <p>El centro de control muestra el terreno en 3D, la telemetría y la cámara del dron. Ningún vuelo despega sin que un operador lo autorice.</p>
+    </div>
+  </section>
+</main>
+
+<section class="solida" id="tecnologia">
+  <div class="ancho">
+    <h2>Lo que hay adentro</h2>
+    <p class="intro">La detección ocurre donde están los datos: en el nodo y en el dron. A la red solo viaja lo necesario.</p>
+    <div class="capas">
+      <div class="capa">
+        <h3>Nodo terrestre</h3>
+        <p class="rol">Vigila el aire con muy poca energía.</p>
+        <dl>
+          <dt>Placa</dt><dd>Heltec WiFi LoRa 32 V4 (ESP32)</dd>
+          <dt>Sensor</dt><dd>Bosch BME688</dd>
+          <dt>Modelo</dt><dd>TinyML: distancia de Mahalanobis y promedios móviles exponenciales</dd>
+          <dt>Firmware</dt><dd>C/C++</dd>
+        </dl>
+      </div>
+      <div class="capa">
+        <h3>Dron de verificación</h3>
+        <p class="rol">Confirma la alerta antes de movilizar a nadie.</p>
+        <dl>
+          <dt>Cómputo</dt><dd>NVIDIA Jetson Orin Nano</dd>
+          <dt>Visión</dt><dd>Cámara térmica radiométrica P3</dd>
+          <dt>Modelo</dt><dd>Clasificador entrenado con FLAME 3</dd>
+          <dt>Vuelo</dt><dd>Pixhawk, MAVLink y geocerca dinámica</dd>
+        </dl>
+      </div>
+      <div class="capa">
+        <h3>Centro de control</h3>
+        <p class="rol">Todo el terreno en un gemelo digital.</p>
+        <dl>
+          <dt>Panel</dt><dd>React, Mapbox y deck.gl</dd>
+          <dt>Servicios</dt><dd>FastAPI</dd>
+          <dt>Terreno</dt><dd>Topografía 3D desde Google Earth Engine</dd>
+          <dt>Control</dt><dd>Cada vuelo requiere autorización</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
 </section>
 
-
-    <!-- Quick specs -->
-    <div class="quick-specs">
-        <div class="quick-specs-grid">
-            <div class="spec-item">
-                <i class="fas fa-ruler-combined spec-icon"></i>
-                <div class="spec-value">5,000 m²</div>
-                <div class="spec-label">Superficie</div>
-            </div>
-            <div class="spec-item">
-                <i class="fas fa-mountain spec-icon"></i>
-                <div class="spec-value">Semi-plana</div>
-                <div class="spec-label">Topografía</div>
-            </div>
-            <div class="spec-item">
-                <i class="fas fa-road spec-icon"></i>
-                <div class="spec-value">Pavimentado</div>
-                <div class="spec-label">Acceso</div>
-            </div>
-            <div class="spec-item">
-                <i class="fas fa-file-contract spec-icon"></i>
-                <div class="spec-value">Al día</div>
-                <div class="spec-label">Documentación</div>
-            </div>
-        </div>
+<section class="solida" id="terreno">
+  <div class="ancho terreno">
+    <p class="cita">Entrenado con datos medidos en el bosque de Curanilahue, no en un laboratorio.</p>
+    <div>
+      <p>Los datos del nodo terrestre vienen de ensayos de pirólisis controlada en la Región del Biobío, con las dos especies que dominan las plantaciones de la zona.</p>
+      <div class="especies">
+        <div class="especie"><b>Pino radiata</b><em>Pinus radiata</em></div>
+        <div class="especie"><b>Eucalipto</b><em>Eucalyptus globulus</em></div>
+      </div>
+      <p style="color:var(--ceniza)">IgnisEdge es una prueba de concepto en desarrollo. Publicaremos las cifras de desempeño cuando terminen las validaciones.</p>
     </div>
-
-    <!-- Descripción principal -->
-    <section>
-        <h2>Una oportunidad única de inversión</h2>
-        <p>
-            <strong>El Tranque</strong> es un terreno excepcional que combina ubicación estratégica, 
-            accesibilidad y un entorno natural privilegiado. Con 5,000 m² de superficie semi-plana, 
-            este terreno ofrece el espacio perfecto para desarrollar tu proyecto residencial, 
-            comercial o de inversión.
-        </p>
-        <p>
-            La propiedad cuenta con toda la documentación al día, acceso por camino pavimentado y 
-            factibilidad de servicios básicos (agua y electricidad). Su topografía semi-plana facilita 
-            cualquier tipo de construcción, minimizando costos de movimiento de tierra.
-        </p>
-        <p>
-            La zona se caracteriza por su tranquilidad, aire puro y vistas panorámicas. Ideal para 
-            quienes buscan desarrollar un proyecto alejado del ruido urbano, pero con fácil acceso 
-            a servicios y centros poblados cercanos.
-        </p>
-
-        <div class="highlights-grid">
-            <div class="highlight-card">
-                <i class="fas fa-check-circle highlight-icon"></i>
-                <div class="highlight-content">
-                    <h3>Documentación en regla</h3>
-                    <p>Títulos de dominio vigentes y sin gravámenes</p>
-                </div>
-            </div>
-            <div class="highlight-card">
-                <i class="fas fa-bolt highlight-icon"></i>
-                <div class="highlight-content">
-                    <h3>Servicios básicos</h3>
-                    <p>Factibilidad de agua potable y electricidad</p>
-                </div>
-            </div>
-            <div class="highlight-card">
-                <i class="fas fa-chart-line highlight-icon"></i>
-                <div class="highlight-content">
-                    <h3>Gran potencial</h3>
-                    <p>Zona de crecimiento con alta proyección</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Galería de fotos -->
-    <section class="gallery-section">
-        <div class="gallery-container">
-            <h2>Imágenes capturadas con drone profesional</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 1rem;">
-                Perspectiva aérea completa del terreno
-            </p>
-            
-            <div class="gallery-grid">
-                <div class="gallery-item" onclick="openModal('img1')">
-                    <img src="https://via.placeholder.com/800x600/27ae60/ffffff?text=Vista+Frontal" alt="Vista frontal del terreno">
-                    <div class="gallery-label">
-                        <i class="fas fa-camera"></i> Vista Frontal
-                    </div>
-                </div>
-                <div class="gallery-item" onclick="openModal('img2')">
-                    <img src="https://via.placeholder.com/800x600/3498db/ffffff?text=Acceso" alt="Acceso al terreno">
-                    <div class="gallery-label">
-                        <i class="fas fa-road"></i> Acceso
-                    </div>
-                </div>
-                <div class="gallery-item" onclick="openModal('img3')">
-                    <img src="https://via.placeholder.com/800x600/f39c12/ffffff?text=Linderos" alt="Linderos del terreno">
-                    <div class="gallery-label">
-                        <i class="fas fa-border-style"></i> Linderos
-                    </div>
-                </div>
-                <div class="gallery-item" onclick="openModal('img4')">
-                    <img src="https://via.placeholder.com/800x600/2c3e50/ffffff?text=Entorno" alt="Entorno del terreno">
-                    <div class="gallery-label">
-                        <i class="fas fa-tree"></i> Entorno
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modal para imágenes -->
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <span class="modal-close">&times;</span>
-        <img class="modal-content" id="modalImage">
-    </div>
-
-    <!-- Características detalladas -->
-    <section>
-        <h2>Información detallada de la propiedad</h2>
-        
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-header">
-                    <i class="fas fa-file-alt feature-icon"></i>
-                    <h3>Aspectos Legales</h3>
-                </div>
-                <ul class="feature-list">
-                    <li>Título de dominio vigente</li>
-                    <li>Sin hipotecas ni gravámenes</li>
-                    <li>Certificado de informes previos</li>
-                    <li>Estudio de títulos disponible</li>
-                </ul>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-header">
-                    <i class="fas fa-tools feature-icon"></i>
-                    <h3>Infraestructura</h3>
-                </div>
-                <ul class="feature-list">
-                    <li>Acceso por camino pavimentado</li>
-                    <li>Factibilidad de agua potable</li>
-                    <li>Factibilidad eléctrica cercana</li>
-                    <li>Señal de telecomunicaciones</li>
-                </ul>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-header">
-                    <i class="fas fa-mountain feature-icon"></i>
-                    <h3>Características del Terreno</h3>
-                </div>
-                <ul class="feature-list">
-                    <li>Topografía semi-plana</li>
-                    <li>5,000 m² de superficie total</li>
-                    <li>Suelo apto para construcción</li>
-                    <li>Orientación favorable</li>
-                </ul>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-header">
-                    <i class="fas fa-map-marked-alt feature-icon"></i>
-                    <h3>Ubicación</h3>
-                </div>
-                <ul class="feature-list">
-                    <li>Zona de baja densidad</li>
-                    <li>Aire puro y tranquilidad</li>
-                    <li>Vistas panorámicas</li>
-                    <li>Acceso a servicios cercanos</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-<!-- Mapa -->
-<section class="map-section">
-    <div class="map-container">
-        <h2>Encuentra El Tranque en el mapa</h2>
-        <p style="text-align: center; color: #666; margin-bottom: 1.5rem;">
-            Ubicación exacta del terreno en la Región de la Araucanía
-        </p>
-        <div class="responsive-map">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3121.156608535798!2d-72.48643992408084!3d-38.53015797180481!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzjCsDMxJzQ4LjYiUyA3MsKwMjknMDEuOSJX!5e0!3m2!1ses-419!2scl!4v1763514961369!5m2!1ses-419!2scl"
-                style="border:0;" 
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-        </div>
-        <div style="margin-top: 1.5rem; text-align: center;">
-            <a href="https://maps.app.goo.gl/wKFEZN4mNPeFXEA2A" target="_blank" class="btn btn-primary">
-                <i class="fas fa-directions"></i> Abrir en Google Maps
-            </a>
-        </div>
-    </div>
+  </div>
 </section>
 
+<section class="solida" id="equipo">
+  <div class="ancho">
+    <h2>Equipo</h2>
+    <p class="intro">Estudiantes de Ingeniería Informática de la Universidad Técnica Federico Santa María, sede Concepción.</p>
+    <div class="equipo">
+      <div class="persona"><b>Bastian Sandoval</b><span>Nodos terrestres, sensores y TinyML</span></div>
+      <div class="persona"><b>[Nombre]</b><span>Visión embebida a bordo del dron</span></div>
+      <div class="persona"><b>[Nombre]</b><span>[Rol en el proyecto]</span></div>
+    </div>
+  </div>
+</section>
 
-    <!-- Contacto -->
-    <section class="contact-section">
-        <div class="contact-container">
-            <h2>Agenda una visita o solicita más información sobre este terreno</h2>
-            
-            <div class="contact-methods">
-                <div class="contact-card">
-                    <i class="fab fa-whatsapp contact-icon"></i>
-                    <div class="contact-info">
-                        <h4>WhatsApp</h4>
-                        <p>Respuesta inmediata</p>
-                    </div>
-                </div>
-                <div class="contact-card">
-                    <i class="fas fa-phone contact-icon"></i>
-                    <div class="contact-info">
-                        <h4>Teléfono</h4>
-                        <p>+56 9 1234 5678</p>
-                    </div>
-                </div>
-                <div class="contact-card">
-                    <i class="fas fa-envelope contact-icon"></i>
-                    <div class="contact-info">
-                        <h4>Email</h4>
-                        <p>Envío de información detallada</p>
-                    </div>
-                </div>
-                <div class="contact-card">
-                    <i class="fas fa-clock contact-icon"></i>
-                    <div class="contact-info">
-                        <h4>Horario</h4>
-                        <p>Lun - Vie: 9:00 - 18:00</p>
-                    </div>
-                </div>
-            </div>
+<footer>
+  <p class="grande">Cada minuto antes de la llama cuenta.</p>
+  <div class="acciones">
+    <a class="boton calor" href="mailto:[correo@ignisedge.pro]">Escribir al equipo</a>
+    <a class="boton linea" href="https://github.com/cybedith/IgnisEdge">Ver el código</a>
+  </div>
+  <p class="legal">IgnisEdge · Proyecto universitario en desarrollo · Región del Biobío, Chile</p>
+</footer>
 
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="https://wa.me/56912345678" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
-                    <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
-                </a>
-            </div>
-        </div>
-    </section>
+<script>
+(function(){
+  var botones = document.querySelectorAll('.modo button');
+  function poner(m, guardar){
+    document.documentElement.dataset.modo = m;
+    botones.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.m === m ? 'true' : 'false'); });
+    if (guardar) { try { localStorage.setItem('ignis-modo', m); } catch (e) {} }
+    dispatchEvent(new Event('cambiomodo'));
+  }
+  botones.forEach(function(b){ b.addEventListener('click', function(){ poner(b.dataset.m, true); }); });
+  // atajo para presentar: tecla D alterna día y noche
+  addEventListener('keydown', function(e){
+    if ((e.key === 'd' || e.key === 'D') && !e.ctrlKey && !e.metaKey && !e.altKey && !/INPUT|TEXTAREA/.test(e.target.tagName))
+      poner(document.documentElement.dataset.modo === 'dia' ? 'noche' : 'dia', true);
+  });
+  poner(document.documentElement.dataset.modo, false);
+})();
+</script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.170.0/build/three.module.min.js",
+  "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { Sky } from 'three/addons/objects/Sky.js';
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 El Tranque. Todos los derechos reservados.</p>
-    </footer>
+const lienzo = document.getElementById('escena');
+const reducir = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const movil = matchMedia('(max-width: 760px)').matches;
+const parametros = new URLSearchParams(location.search);
+const calidadFija = parametros.get('calidad') === 'alta';
 
-    <script>
-        function openModal(imageId) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            const clickedImg = event.target.closest('.gallery-item').querySelector('img');
-            
-            modal.classList.add('active');
-            modalImg.src = clickedImg.src;
-        }
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas: lienzo, antialias: false, powerPreference: 'high-performance' });
+} catch (e) { document.documentElement.classList.add('sin-webgl'); }
 
-        function closeModal() {
-            const modal = document.getElementById('imageModal');
-            modal.classList.remove('active');
-        }
+if (renderer) {
+let PR = parametros.get('pr') ? +parametros.get('pr') : Math.min(devicePixelRatio, movil ? 1.25 : 1.5);
+renderer.setPixelRatio(PR);
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+renderer.shadowMap.enabled = !movil;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-        // Prevenir que el click en la imagen cierre el modal
-        document.getElementById('modalImage').addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-    </script>
+const escena = new THREE.Scene();
+const NIEBLA_NOCHE = new THREE.Color('#1d3439'), NIEBLA_OCASO = new THREE.Color('#6e6266'), NIEBLA_DIA = new THREE.Color('#a8c0cd');
+escena.background = NIEBLA_NOCHE.clone();
+escena.fog = new THREE.FogExp2(NIEBLA_NOCHE.clone(), 0.011);
+const camara = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 2400);
+const uT = { value: 0 };
+
+/* ---------- utilidades ---------- */
+function hash(x, y){ const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); }
+function ruido(x, y){
+  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+  const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+  const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+function fbm(x, y, o = 5){ let t = 0, a = .5, f = 1; for (let i = 0; i < o; i++){ t += a * ruido(x * f, y * f); f *= 2; a *= .5; } return t; }
+const rnd = (a, b) => a + Math.random() * (b - a);
+const ss = THREE.MathUtils.smoothstep, clamp = THREE.MathUtils.clamp;
+const lerp = (a, b, t) => a + (b - a) * t;
+const suave = t => t * t * (3 - 2 * t);
+
+/* ---------- texturas generadas por código ---------- */
+function lienzoTex(tam, dibujar, srgb = true){ const c = document.createElement('canvas'); c.width = c.height = tam; dibujar(c.getContext('2d'), tam); const t = new THREE.CanvasTexture(c); if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; }
+const punto = lienzoTex(64, (x) => { const g = x.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.3,'rgba(255,255,255,.5)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0,0,64,64); });
+const mancha = lienzoTex(64, (x) => { const g = x.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'rgba(0,0,0,.9)'); g.addColorStop(.55,'rgba(0,0,0,.45)'); g.addColorStop(1,'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(0,0,64,64); });
+const bocanada = lienzoTex(128, (x, n) => {
+  for (let i = 0; i < 26; i++){
+    const r = rnd(10, 30), cx = 64 + rnd(-26, 26), cy = 64 + rnd(-26, 26);
+    const g = x.createRadialGradient(cx, cy, 0, cx, cy, r); g.addColorStop(0, 'rgba(255,255,255,.22)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = g; x.fillRect(0, 0, n, n);
+  }
+  const m = x.getImageData(0, 0, n, n);
+  for (let i = 0; i < n * n; i++){ const px = i % n, py = (i / n) | 0, d = Math.hypot(px - 64, py - 64) / 64; m.data[i * 4 + 3] *= Math.max(0, 1 - d * d) * (.75 + .25 * fbm(px * .08, py * .08, 3)); }
+  x.putImageData(m, 0, 0);
+});
+const grietas = lienzoTex(256, (x, n) => {
+  const m = x.createImageData(n, n);
+  for (let i = 0; i < n * n; i++){ const px = i % n, py = (i / n) | 0; const v = fbm(px * .045, py * .045, 4); const k = Math.max(0, 1 - Math.abs(v - .5) * 9); const b = Math.pow(k, 2) * 255 + fbm(px * .2, py * .2, 2) * 40;
+    m.data[i * 4] = b; m.data[i * 4 + 1] = b * .45; m.data[i * 4 + 2] = b * .15; m.data[i * 4 + 3] = 255; }
+  x.putImageData(m, 0, 0);
+});
+grietas.wrapS = grietas.wrapT = THREE.RepeatWrapping;
+// microdetalle del suelo: grano, agujas secas y terrones (se repite sin costuras)
+const suelo = lienzoTex(512, (x, n) => {
+  const m = x.createImageData(n, n);
+  for (let i = 0; i < n * n; i++){ const v = 196 + (Math.random() - .5) * 46; m.data[i*4] = v; m.data[i*4+1] = v; m.data[i*4+2] = v; m.data[i*4+3] = 255; }
+  x.putImageData(m, 0, 0);
+  const envolver = (f) => { for (const dx of [-n, 0, n]) for (const dy of [-n, 0, n]) f(dx, dy); };
+  for (let i = 0; i < 900; i++){
+    const px = rnd(0, n), py = rnd(0, n), a = rnd(0, 6.28), L = rnd(6, 22), claro = Math.random() < .5;
+    x.strokeStyle = claro ? 'rgba(255,240,215,.35)' : 'rgba(40,30,20,.35)'; x.lineWidth = rnd(1, 2);
+    envolver((dx, dy) => { x.beginPath(); x.moveTo(px + dx, py + dy); x.lineTo(px + dx + Math.cos(a) * L, py + dy + Math.sin(a) * L); x.stroke(); });
+  }
+  for (let i = 0; i < 260; i++){
+    const px = rnd(0, n), py = rnd(0, n), r = rnd(2, 7);
+    x.fillStyle = Math.random() < .5 ? 'rgba(60,45,30,.25)' : 'rgba(255,255,255,.15)';
+    envolver((dx, dy) => { x.beginPath(); x.arc(px + dx, py + dy, r, 0, 6.28); x.fill(); });
+  }
+});
+suelo.wrapS = suelo.wrapT = THREE.RepeatWrapping;
+const texRama = lienzoTex(512, (x, n) => {
+  const verdes = ['#13261b', '#1b3324', '#24402c', '#2f4f37', '#3d6044', '#4b7050', '#5a7d5a'];
+  for (let i = 0; i < 4200; i++){
+    const t = Math.pow(Math.random(), .8), bx = 12 + t * 480, by = 256 + Math.sin(t * 2.6) * 20 - t * 20;
+    const lado = Math.random() < .5 ? -1 : 1, largo = (1 - t * .55) * rnd(40, 124), ang = lado * rnd(.35, 1.25) - .15;
+    x.strokeStyle = verdes[(Math.random() * verdes.length) | 0]; x.lineWidth = rnd(1.5, 3.6); x.globalAlpha = rnd(.75, 1);
+    x.beginPath(); x.moveTo(bx, by); x.quadraticCurveTo(bx + Math.cos(ang) * largo * .5, by + Math.sin(ang) * largo * .5 + 8, bx + Math.cos(ang) * largo, by + Math.sin(ang) * largo + 18); x.stroke();
+  }
+  x.globalAlpha = 1; x.strokeStyle = '#3a2a1e'; x.lineWidth = 8; x.beginPath(); x.moveTo(0, 256); x.quadraticCurveTo(260, 268, 500, 220); x.stroke();
+});
+const texHojas = lienzoTex(512, (x) => {
+  const tonos = ['#2c4337', '#3b5747', '#4c6a59', '#5f7e6b', '#78937f', '#8aa38e'];
+  for (let i = 0; i < 30; i++){
+    const sx = rnd(60, 452), sy = rnd(40, 240);
+    x.strokeStyle = '#5a4a3a'; x.lineWidth = 3; x.beginPath(); x.moveTo(sx, sy - 40); x.lineTo(sx + rnd(-16, 16), sy + 60); x.stroke();
+    for (let j = 0; j < 11; j++){
+      const px = sx + rnd(-56, 56), py = sy + rnd(-20, 200), L = rnd(44, 92), a = Math.PI / 2 + rnd(-.6, .6);
+      x.save(); x.translate(px, py); x.rotate(a); x.fillStyle = tonos[(Math.random() * tonos.length) | 0];
+      x.beginPath(); x.moveTo(0, 0); x.quadraticCurveTo(L * .5, L * .16, L, 0); x.quadraticCurveTo(L * .5, -L * .1, 0, 0); x.fill(); x.restore();
+    }
+  }
+});
+const texPasto = lienzoTex(256, (x, n) => {
+  const tonos = ['#3d5a2f', '#4f6d36', '#617d3d', '#7a8a45', '#8f9450', '#a39a5c'];
+  for (let i = 0; i < 170; i++){
+    const x0 = rnd(4, n - 4), h = rnd(90, 250), inc = rnd(-50, 50), w = rnd(2, 4.5);
+    x.fillStyle = tonos[(Math.random() * tonos.length) | 0];
+    x.beginPath(); x.moveTo(x0 - w, n); x.quadraticCurveTo(x0 + inc * .3, n - h * .5, x0 + inc, n - h); x.quadraticCurveTo(x0 + inc * .3 + w * .4, n - h * .5, x0 + w, n); x.fill();
+  }
+});
+
+/* ---------- cielos: día físico y noche con estrellas ---------- */
+const sol = new Sky(); sol.scale.setScalar(1000); sol.renderOrder = -2;
+Object.assign(sol.material.uniforms.turbidity, { value: 4.5 });
+Object.assign(sol.material.uniforms.rayleigh, { value: 1.5 });
+Object.assign(sol.material.uniforms.mieCoefficient, { value: .004 });
+Object.assign(sol.material.uniforms.mieDirectionalG, { value: .82 });
+escena.add(sol);
+const uNoche = { value: 1 };
+const cielo = new THREE.Mesh(new THREE.SphereGeometry(900, 32, 16), new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite: false, fog: false, transparent: true,
+  uniforms: { arriba: { value: new THREE.Color('#03070b') }, horizonte: { value: NIEBLA_NOCHE }, uOp: uNoche },
+  vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.); }',
+  fragmentShader: 'uniform vec3 arriba, horizonte; uniform float uOp; varying vec3 vP; void main(){ float h = clamp(vP.y, 0., 1.); gl_FragColor = vec4(mix(horizonte, arriba, pow(h, .5)), uOp); }'
+}));
+escena.add(cielo);
+const estrellas = (() => {
+  const n = 1800, a = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++){ const th = Math.random() * 6.283, ph = Math.acos(rnd(.08, 1)); a[i*3] = Math.sin(ph) * Math.cos(th) * 850; a[i*3+1] = Math.cos(ph) * 850; a[i*3+2] = Math.sin(ph) * Math.sin(th) * 850; }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(a, 3));
+  return new THREE.Points(g, new THREE.PointsMaterial({ size: 1.6, sizeAttenuation: false, color: '#dfe9ee', transparent: true, opacity: .75, fog: false, depthWrite: false }));
+})();
+escena.add(estrellas);
+const nubes = [];
+for (let i = 0; i < 16; i++){
+  const n = new THREE.Sprite(new THREE.SpriteMaterial({ map: bocanada, color: '#ffffff', transparent: true, opacity: 0, fog: false, depthWrite: false }));
+  const a = rnd(0, 6.28), r = rnd(450, 800); n.position.set(Math.cos(a) * r, rnd(150, 260), Math.sin(a) * r); n.scale.set(rnd(160, 300), rnd(45, 80), 1);
+  n.userData.op = rnd(.35, .7); nubes.push(n); escena.add(n);
+}
+
+/* ---------- terreno, camino forestal y rodales ---------- */
+const NODO = new THREE.Vector3(0, 0, 0), FOCO = new THREE.Vector3(5, 0, -4), GATEWAY = new THREE.Vector3(48, 0, -42);
+function altura(x, z){
+  let h = (fbm(x * .018 + 3, z * .018 + 7) - .5) * 26 + (fbm(x * .07, z * .07) - .5) * 3 + (fbm(x * .3, z * .3, 2) - .5) * .35;
+  const dg = Math.hypot(x - GATEWAY.x, z - GATEWAY.z); h += Math.max(0, 16 - dg * .35);
+  const dn = Math.hypot(x - 2, z + 2); h *= Math.min(1, .35 + dn / 22);
+  return h;
+}
+const zCamino = x => 10 + Math.sin(x * .022 + 1) * 28 + x * .25;
+const dCamino = (x, z) => { const pend = .022 * 28 * Math.cos(x * .022 + 1) + .25; return Math.abs(z - zCamino(x)) / Math.sqrt(1 + pend * pend); };
+const CELDA = 52;
+function rodal(x, z){
+  const cx = Math.floor(x / CELDA), cz = Math.floor(z / CELDA);
+  const h1 = hash(cx * 3.1 + 7, cz * 1.7 + 3), h2 = hash(cx + 11.3, cz * 2.9), h3 = hash(cx * 5.3, cz + 9.1);
+  let tipo = h1 < .27 ? 'euc' : h1 < .37 ? 'rasa' : 'pino';
+  if (cx === 0 && cz === -1 || cx === 0 && cz === 0) tipo = 'pino';
+  if (cx === 1 && cz === 0) tipo = 'rasa'; // tala rasa replantada frente a la cámara del capítulo LoRa
+  return { cx, cz, tipo, ang: h2 * Math.PI, edad: .6 + h3 * .55 };
+}
+const TAM = 440, SEG = movil ? 170 : 300, RADIO = 165;
+const geoT = new THREE.PlaneGeometry(TAM, TAM, SEG, SEG); geoT.rotateX(-Math.PI / 2);
+const pos = geoT.attributes.position;
+for (let i = 0; i < pos.count; i++) pos.setY(i, altura(pos.getX(i), pos.getZ(i)));
+geoT.computeVertexNormals();
+{
+  const col = new Float32Array(pos.count * 3), nrm = geoT.attributes.normal, c = new THREE.Color();
+  const musgo = new THREE.Color('#34502f'), tierra = new THREE.Color('#5a4936'), pasto = new THREE.Color('#6b7440'), hojarasca = new THREE.Color('#5e4630');
+  const camino = new THREE.Color('#8a7457'), dosel = new THREE.Color('#1c3424'), rasa = new THREE.Color('#6f6243');
+  for (let i = 0; i < pos.count; i++){
+    const x = pos.getX(i), z = pos.getZ(i);
+    const n1 = fbm(x * .05 + 11, z * .05), n2 = fbm(x * .22, z * .22 + 5, 3), pend = 1 - nrm.getY(i), r = rodal(x, z);
+    c.copy(musgo).lerp(pasto, ss(n1, .45, .7)).lerp(hojarasca, ss(n2, .5, .75) * .7);
+    if (r.tipo === 'rasa') c.lerp(rasa, .55);
+    else c.lerp(hojarasca, .35);
+    c.lerp(tierra, Math.min(1, pend * 4));
+    const claro = Math.hypot(x - 2, z + 2); if (claro < 10) c.lerp(pasto, (1 - claro / 10) * .5);
+    const dc = dCamino(x, z); if (dc < 5) c.lerp(camino, 1 - ss(dc, 2.4, 5)).multiplyScalar(dc < 2.6 && Math.abs(dc - 1.3) < .35 ? .85 : 1);
+    const lejos = ss(Math.hypot(x, z), RADIO - 10, RADIO + 25); if (r.tipo !== 'rasa') c.lerp(dosel, lejos);
+    c.multiplyScalar(.85 + n2 * .3);
+    col[i*3] = c.r; col[i*3+1] = c.g; col[i*3+2] = c.b;
+  }
+  geoT.setAttribute('color', new THREE.BufferAttribute(col, 3));
+}
+suelo.repeat.set(TAM / 6, TAM / 6);
+const matTerreno = new THREE.MeshStandardMaterial({ vertexColors: true, map: suelo, bumpMap: suelo, bumpScale: 1.4, roughness: .97, metalness: 0 });
+const terreno = new THREE.Mesh(geoT, matTerreno); terreno.receiveShadow = true; escena.add(terreno);
+const matGrilla = new THREE.MeshBasicMaterial({ color: '#F7C548', wireframe: true, transparent: true, opacity: 0, depthWrite: false, depthTest: false, fog: false });
+const geoG = new THREE.PlaneGeometry(TAM, TAM, 72, 72); geoG.rotateX(-Math.PI / 2);
+for (let i = 0, a = geoG.attributes.position; i < a.count; i++) a.setY(i, altura(a.getX(i), a.getZ(i)));
+const grilla = new THREE.Mesh(geoG, matGrilla); grilla.renderOrder = 3; grilla.position.y = .2; escena.add(grilla);
+[NODO, FOCO, GATEWAY].forEach(p => p.y = altura(p.x, p.z));
+
+/* ---------- vegetación ---------- */
+const plano = (ancho, alto) => { const g = new THREE.PlaneGeometry(ancho, alto); g.translate(ancho / 2, 0, 0); return g; };
+function normalesSuaves(g, cy){
+  const p = g.attributes.position, nr = g.attributes.normal, v = new THREE.Vector3();
+  for (let i = 0; i < p.count; i++){ v.set(p.getX(i), (p.getY(i) - cy) * .8 + .35, p.getZ(i)).normalize(); nr.setXYZ(i, v.x, v.y, v.z); }
+  return g;
+}
+function colorear(g, c1, c2, y0, y1, rMax = 0){
+  const p = g.attributes.position, a = new Float32Array(p.count * 3), c = new THREE.Color(), A = new THREE.Color(c1), B = new THREE.Color(c2);
+  for (let i = 0; i < p.count; i++){
+    c.copy(A).lerp(B, clamp((p.getY(i) - y0) / (y1 - y0), 0, 1));
+    if (rMax) c.multiplyScalar(.5 + .5 * clamp(Math.hypot(p.getX(i), p.getZ(i)) / rMax, 0, 1)); // oclusión: más oscuro hacia el tronco
+    a.set([c.r, c.g, c.b], i * 3);
+  }
+  g.setAttribute('color', new THREE.BufferAttribute(a, 3)); return g;
+}
+function tronco(r0, r1, alto, curva, c1, c2){
+  const g = new THREE.CylinderGeometry(r1, r0, alto, 8, 6, true).translate(0, alto / 2, 0);
+  const p = g.attributes.position; for (let i = 0; i < p.count; i++){ const y = p.getY(i) / alto; p.setX(i, p.getX(i) + y * y * curva); }
+  g.computeVertexNormals(); return colorear(g, c1, c2, 0, alto);
+}
+const arbol = (follaje, tr) => mergeGeometries([tr, mergeGeometries(follaje)], true);
+function pino(){
+  const partes = [], pisos = 10;
+  for (let i = 0; i < pisos; i++){
+    const f = i / (pisos - 1), y = .42 + f * .55, largo = .3 * Math.pow(1 - f, .75) + .06, ramas = 5 + (i % 2);
+    for (let k = 0; k < ramas; k++){
+      const az = k / ramas * 6.283 + i * .9 + rnd(-.3, .3), caida = rnd(.15, .45) - f * .15;
+      for (const giro of [0, Math.PI / 2]){ const g = plano(largo, largo * .5); g.rotateX(giro + rnd(-.2, .2)); g.rotateZ(-caida); g.rotateY(az); g.translate(0, y, 0); partes.push(g); }
+    }
+  }
+  const punta = plano(.12, .1); punta.rotateZ(Math.PI / 2); punta.translate(0, .95, 0); partes.push(punta);
+  return arbol(partes.map(g => colorear(normalesSuaves(g, .7), '#7f8f84', '#ffffff', .4, 1, .3)), tronco(.022, .006, 1, .01, '#2b1e16', '#5a4232'));
+}
+function eucalipto(){
+  const partes = [];
+  for (let i = 0; i < 18; i++){
+    const y = rnd(.58, .97), rad = rnd(0, .17) * (1.1 - (y - .58)), az = Math.random() * 6.283, tam = rnd(.16, .26);
+    for (const giro of [0, Math.PI / 2]){ const g = new THREE.PlaneGeometry(tam, tam); g.rotateY(az + giro); g.rotateX(rnd(-.3, .3)); g.translate(Math.cos(az) * rad + .05, y, Math.sin(az) * rad); partes.push(g); }
+  }
+  const t = tronco(.02, .005, .9, .06, '#6f6555', '#c2b8a2');
+  const r1 = tronco(.008, .003, .25, 0, '#8a7f6c', '#b4a990'); r1.rotateZ(-.7); r1.translate(.03, .6, 0);
+  const r2 = tronco(.008, .003, .22, 0, '#8a7f6c', '#b4a990'); r2.rotateZ(.6); r2.translate(.04, .68, 0);
+  return arbol(partes.map(g => colorear(normalesSuaves(g, .78), '#8a978e', '#ffffff', .55, 1, .22)), mergeGeometries([t, r1, r2]));
+}
+function mata(tam, alto, planos, cy){
+  const partes = [];
+  for (let i = 0; i < planos; i++){ const g = new THREE.PlaneGeometry(tam, alto); g.translate(0, alto * .48, 0); g.rotateY(i * Math.PI / planos + rnd(-.2, .2)); partes.push(g); }
+  return mergeGeometries(partes.map(g => colorear(normalesSuaves(g, cy), '#5a6a5c', '#ffffff', 0, alto)));
+}
+function viento(mat, amp){
+  mat.onBeforeCompile = sh => {
+    sh.uniforms.uT = uT;
+    sh.vertexShader = 'uniform float uT;\n' + sh.vertexShader.replace('#include <begin_vertex>', `#include <begin_vertex>
+      #ifdef USE_INSTANCING
+        vec2 ip = instanceMatrix[3].xz;
+      #else
+        vec2 ip = vec2(0.);
+      #endif
+      float w = max(position.y, 0.); w *= w;
+      transformed.x += (sin(uT * 1.3 + ip.x * .15 + ip.y * .1) + .4 * sin(uT * 3.1 + ip.y)) * ${amp} * w;
+      transformed.z += cos(uT * 1.1 + ip.y * .13) * ${amp * .6} * w;`);
+  };
+  return mat;
+}
+const follaje = (map, amp = .025) => viento(new THREE.MeshStandardMaterial({ map, alphaTest: .42, side: THREE.DoubleSide, vertexColors: true, roughness: .85, metalness: 0 }), amp);
+const matTronco = viento(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .95 }), .025);
+const matPinoF = follaje(texRama), matEucF = follaje(texHojas), matMata = follaje(texHojas, .06), matPasto = follaje(texPasto, .18);
+
+// plantación: rodales en hileras, con la orientación y edad de cada rodal
+const listas = { pinoA: [], pinoB: [], euc: [], joven: [], sombra: [] };
+const ESP = movil ? 1.45 : 1;
+const vistas = [[17, 22, 5, -4], [-7, 11, -3.2, -1.5], [-40, 66, -12, -8]];
+function dSeg(x, z, [ax, az, bx, bz]){ const vx = bx - ax, vz = bz - az, t = clamp(((x - ax) * vx + (z - az) * vz) / (vx * vx + vz * vz), 0, 1); return Math.hypot(x - ax - vx * t, z - az - vz * t); }
+const libre = (x, z) => Math.hypot(x - 2, z + 2) > 8 && Math.hypot(x - GATEWAY.x, z - GATEWAY.z) > 6 && dCamino(x, z) > 4.5
+  && dSeg(x, z, vistas[0]) > 6.5 && dSeg(x, z, vistas[1]) > 5 && dSeg(x, z, vistas[2]) > 4;
+const tmpM = new THREE.Matrix4(), tmpQ = new THREE.Quaternion(), tmpS = new THREE.Vector3(), tmpP = new THREE.Vector3(), eje = new THREE.Vector3(0, 1, 0);
+const n0 = Math.ceil(RADIO / CELDA) + 1;
+for (let cx = -n0; cx <= n0; cx++) for (let cz = -n0; cz <= n0; cz++){
+  const r = rodal(cx * CELDA + 1, cz * CELDA + 1);
+  const su = (r.tipo === 'euc' ? 3.6 : 3.4) * ESP * 1.15, sv = (r.tipo === 'euc' ? 4.2 : 4) * ESP * 1.15;
+  const ca = Math.cos(r.ang), sa = Math.sin(r.ang), ox = (cx + .5) * CELDA, oz = (cz + .5) * CELDA, lim = CELDA * .75;
+  for (let u = -lim; u <= lim; u += su) for (let v = -lim; v <= lim; v += sv){
+    const x = ox + u * ca - v * sa + rnd(-.6, .6), z = oz + u * sa + v * ca + rnd(-.6, .6);
+    if (Math.floor(x / CELDA) !== cx || Math.floor(z / CELDA) !== cz) continue;
+    if (Math.hypot(x, z) > RADIO * (1 + (hash(x, z) - .5) * .08) || !libre(x, z) || Math.random() < .06) continue;
+    const y = altura(x, z) - .2;
+    let h, lista;
+    if (r.tipo === 'pino'){ h = 15 * r.edad * rnd(.9, 1.1); lista = Math.random() < .5 ? listas.pinoA : listas.pinoB; }
+    else if (r.tipo === 'euc'){ h = 21 * r.edad * rnd(.88, 1.12); lista = listas.euc; }
+    else { h = rnd(1.4, 2.8); lista = listas.joven; }
+    lista.push([x, y, z, h, Math.random() * 6.28]);
+    if (r.tipo !== 'rasa') listas.sombra.push([x, y + .25, z, h * (r.tipo === 'euc' ? .42 : .55)]);
+  }
+}
+const tinte = new THREE.Color();
+function instanciar(geo, mat, datos, ancho = [.85, 1.15], color = () => tinte.setRGB(rnd(.82, 1.05), rnd(.86, 1.05), rnd(.82, 1))){
+  const im = new THREE.InstancedMesh(geo, mat, Math.max(1, datos.length));
+  datos.forEach(([x, y, z, h, rot], i) => {
+    tmpQ.setFromAxisAngle(eje, rot); tmpP.set(x, y, z); tmpS.set(h * rnd(...ancho), h, h * rnd(...ancho));
+    im.setMatrixAt(i, tmpM.compose(tmpP, tmpQ, tmpS)); im.setColorAt(i, color());
+  });
+  im.count = datos.length; im.castShadow = !movil; im.receiveShadow = !movil; escena.add(im); return im;
+}
+const geoPinoA = pino(), geoPinoB = pino();
+instanciar(geoPinoA, [matTronco, matPinoF], listas.pinoA);
+instanciar(geoPinoB, [matTronco, matPinoF], listas.pinoB);
+instanciar(eucalipto(), [matTronco, matEucF], listas.euc, [.8, 1.2], () => tinte.setRGB(rnd(.85, 1.05), rnd(.9, 1.05), rnd(.9, 1.1)));
+instanciar(geoPinoA, [matTronco, matPinoF], listas.joven, [.9, 1.3], () => tinte.setRGB(rnd(.95, 1.1), rnd(1, 1.15), rnd(.85, 1)));
+// sombras de contacto bajo cada árbol: asientan el bosque aunque no haya sombras reales
+{
+  const geo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
+  const mat = new THREE.MeshBasicMaterial({ map: mancha, transparent: true, opacity: .55, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 });
+  const im = new THREE.InstancedMesh(geo, mat, listas.sombra.length);
+  listas.sombra.forEach(([x, y, z, s], i) => { tmpP.set(x, y, z); tmpS.set(s, 1, s); im.setMatrixAt(i, tmpM.compose(tmpP, tmpQ.identity(), tmpS)); });
+  escena.add(im);
+}
+// sotobosque y pasto
+{
+  const matas = [], pastos = [], NA = movil ? 1300 : 3400, NP = movil ? 2600 : 7000;
+  while (matas.length < NA){
+    const x = rnd(-RADIO, RADIO), z = rnd(-RADIO, RADIO);
+    if (Math.hypot(x, z) > RADIO || dCamino(x, z) < 2.6 || Math.hypot(x - 2, z + 2) < 3 || Math.hypot(x - FOCO.x, z - FOCO.z) < 2.4) continue;
+    matas.push([x, altura(x, z) - .1, z, rnd(.6, 1.7), Math.random() * 6.28]);
+  }
+  while (pastos.length < NP){
+    const a = rnd(0, 6.28), r = Math.pow(Math.random(), .7) * 24, x = 3 + Math.cos(a) * r, z = -3 + Math.sin(a) * r;
+    if (Math.hypot(x - NODO.x, z - NODO.z) < .9 || Math.hypot(x - FOCO.x, z - FOCO.z) < 1.9) continue;
+    pastos.push([x, altura(x, z) - .05, z, rnd(.35, .8), Math.random() * 6.28]);
+  }
+  // borde del camino con pasto alto
+  for (let i = 0; i < (movil ? 900 : 2200); i++){
+    const x = rnd(-RADIO, RADIO), lado = Math.random() < .5 ? -1 : 1, z = zCamino(x) + lado * rnd(2.4, 4.4);
+    pastos.push([x, altura(x, z) - .05, z, rnd(.4, .9), Math.random() * 6.28]);
+  }
+  const ma = instanciar(mata(1, .8, 4, .1), matMata, matas, [.8, 1.4], () => tinte.setRGB(rnd(.5, .8), rnd(.6, .85), rnd(.5, .7))); ma.castShadow = false;
+  const pa = instanciar(mata(.9, .7, 3, 0), matPasto, pastos, [.9, 1.4], () => { const k = rnd(.75, 1.1); return tinte.setRGB(k * rnd(.9, 1.1), k, k * .9); }); pa.castShadow = false;
+}
+
+/* ---------- luz ---------- */
+const hemi = new THREE.HemisphereLight('#7f9fb2', '#0d1512', .75); escena.add(hemi);
+const DIR_LUNA = new THREE.Vector3(-.75, .62, .2).normalize();
+const AZ_SOL = new THREE.Vector3(.85, 0, .52).normalize();
+const dirSol = (elev, out) => { const e = THREE.MathUtils.degToRad(elev); return out.copy(AZ_SOL).multiplyScalar(Math.cos(e)).setY(Math.sin(e)); };
+const luz = new THREE.DirectionalLight('#b9d3e6', 1.6);
+luz.castShadow = !movil;
+luz.shadow.mapSize.set(3072, 3072);
+Object.assign(luz.shadow.camera, { left: -95, right: 95, top: 95, bottom: -95, near: 1, far: 400 });
+luz.shadow.bias = -.0004; luz.shadow.normalBias = .45;
+escena.add(luz, luz.target);
+const luna = new THREE.Sprite(new THREE.SpriteMaterial({ map: punto, color: '#e6f0f4', fog: false, depthWrite: false, transparent: true }));
+luna.scale.setScalar(60); escena.add(luna);
+// iluminación ambiental del cielo de día (una sola vez)
+{
+  const pm = new THREE.PMREMGenerator(renderer), aux = new THREE.Scene(), s2 = new Sky(); s2.scale.setScalar(1000);
+  for (const k of ['turbidity', 'rayleigh', 'mieCoefficient', 'mieDirectionalG']) s2.material.uniforms[k].value = sol.material.uniforms[k].value;
+  dirSol(40, s2.material.uniforms.sunPosition.value); aux.add(s2);
+  escena.environment = pm.fromScene(aux, 0, .1, 2000).texture; pm.dispose();
+}
+
+/* ---------- neblina baja ---------- */
+const nieblas = [];
+for (let i = 0; i < (movil ? 18 : 34); i++){
+  const n = new THREE.Sprite(new THREE.SpriteMaterial({ map: bocanada, color: '#a9c0c2', transparent: true, opacity: 0, depthWrite: false }));
+  const x = rnd(-120, 120), z = rnd(-120, 120);
+  n.position.set(x, altura(x, z) + rnd(2, 7), z); n.scale.set(rnd(40, 80), rnd(10, 18), 1);
+  n.userData = { op: rnd(.05, .12), v: rnd(.3, .9) }; nieblas.push(n); escena.add(n);
+}
+
+/* ---------- foco de pirólisis ---------- */
+const foco = new THREE.Group(); foco.position.copy(FOCO); escena.add(foco);
+const matLena = new THREE.MeshStandardMaterial({ color: '#1c130e', roughness: 1, emissive: new THREE.Color('#ff5a1f'), emissiveMap: grietas, emissiveIntensity: 0 });
+for (let i = 0; i < 6; i++){
+  const l = new THREE.Mesh(new THREE.CylinderGeometry(rnd(.08, .14), rnd(.1, .17), rnd(1.4, 2.4), 8), matLena);
+  l.rotation.set(Math.PI / 2 + rnd(-.25, .25), rnd(0, 6.28), rnd(-.2, .2)); l.position.set(rnd(-.4, .4), .14 + i * .05, rnd(-.4, .4)); l.castShadow = true; foco.add(l);
+}
+const ceniza = new THREE.Mesh(new THREE.CircleGeometry(1.6, 32).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: '#2a2622', roughness: 1, emissive: new THREE.Color('#ff4a12'), emissiveMap: grietas, emissiveIntensity: 0, transparent: true, opacity: .9 }));
+ceniza.position.y = .04; foco.add(ceniza);
+const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: punto, color: '#ff6a2a', transparent: true, opacity: .35, blending: THREE.AdditiveBlending, depthWrite: false }));
+halo.position.y = 1; foco.add(halo);
+const luzBrasa = new THREE.PointLight('#ff6a2a', 6, 22, 1.6); luzBrasa.position.y = 1; foco.add(luzBrasa);
+
+const NG = movil ? 220 : 420;
+const geoHumo = new THREE.BufferGeometry();
+const hp = new Float32Array(NG * 3), hTam = new Float32Array(NG), hAlfa = new Float32Array(NG), hRot = new Float32Array(NG), hCal = new Float32Array(NG);
+const hVida = new Float32Array(NG), hSem = new Float32Array(NG);
+for (let i = 0; i < NG; i++){ hVida[i] = Math.random(); hSem[i] = Math.random() * 100; }
+geoHumo.setAttribute('position', new THREE.BufferAttribute(hp, 3));
+geoHumo.setAttribute('aTam', new THREE.BufferAttribute(hTam, 1));
+geoHumo.setAttribute('aAlfa', new THREE.BufferAttribute(hAlfa, 1));
+geoHumo.setAttribute('aRot', new THREE.BufferAttribute(hRot, 1));
+geoHumo.setAttribute('aCal', new THREE.BufferAttribute(hCal, 1));
+const matHumo = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false,
+  uniforms: { mapa: { value: bocanada }, cHumo: { value: new THREE.Color('#8f9c9a') }, cBrasa: { value: new THREE.Color('#ff7a30') }, cSensor: { value: new THREE.Color('#F7C548') }, uSensor: { value: 0 }, uEsc: { value: 1 } },
+  vertexShader: `attribute float aTam, aAlfa, aRot, aCal; uniform float uEsc; varying float vA, vR, vC;
+    void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.); gl_Position = projectionMatrix * mv; gl_PointSize = min(aTam * uEsc / -mv.z, 900.); vA = aAlfa; vR = aRot; vC = aCal; }`,
+  fragmentShader: `uniform sampler2D mapa; uniform vec3 cHumo, cBrasa, cSensor; uniform float uSensor; varying float vA, vR, vC;
+    void main(){ vec2 p = gl_PointCoord - .5; float c = cos(vR), s = sin(vR); p = mat2(c, -s, s, c) * p + .5; float a = texture2D(mapa, p).a;
+      vec3 col = mix(mix(cHumo, cSensor, uSensor), cBrasa * 1.3, vC);
+      gl_FragColor = vec4(col, a * vA * (1. + uSensor * .8)); }`
+});
+const humo = new THREE.Points(geoHumo, matHumo); humo.frustumCulled = false; escena.add(humo);
+const NC = 70, cp = new Float32Array(NC * 3), cv = new Float32Array(NC), cs = new Float32Array(NC);
+for (let i = 0; i < NC; i++){ cv[i] = Math.random(); cs[i] = Math.random() * 50; }
+const geoChispa = new THREE.BufferGeometry(); geoChispa.setAttribute('position', new THREE.BufferAttribute(cp, 3));
+const matChispa = new THREE.PointsMaterial({ map: punto, size: .22, color: new THREE.Color('#ffb060').multiplyScalar(4), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+const chispas = new THREE.Points(geoChispa, matChispa); chispas.frustumCulled = false; escena.add(chispas);
+
+/* ---------- nodo sensor y gateway ---------- */
+const matCarcasa = new THREE.MeshStandardMaterial({ color: '#d7ddd8', roughness: .5, metalness: .05 });
+const matMetal = new THREE.MeshStandardMaterial({ color: '#8a948f', roughness: .35, metalness: .85 });
+const matOscuro = new THREE.MeshStandardMaterial({ color: '#1f2624', roughness: .55, metalness: .2 });
+const matPanel = new THREE.MeshStandardMaterial({ color: '#16233d', roughness: .12, metalness: .6, emissive: '#0a1426', emissiveIntensity: .4 });
+function equipo(altoMastil, esGateway){
+  const g = new THREE.Group();
+  const mastil = new THREE.Mesh(new THREE.CylinderGeometry(.045 * (esGateway ? 2 : 1), .06 * (esGateway ? 2 : 1), altoMastil, 10), matMetal);
+  mastil.position.y = altoMastil / 2; g.add(mastil);
+  const k = esGateway ? 1.6 : 1, y0 = altoMastil;
+  const caja = new THREE.Mesh(new RoundedBoxGeometry(.6 * k, .78 * k, .36 * k, 3, .05 * k), matCarcasa); caja.position.set(0, y0 - .2 * k, .12 * k); g.add(caja);
+  const rejilla = new THREE.Mesh(new THREE.CylinderGeometry(.1 * k, .1 * k, .14 * k, 14), matOscuro); rejilla.position.set(0, y0 - .66 * k, .12 * k); g.add(rejilla);
+  const panel = new THREE.Mesh(new THREE.BoxGeometry(.85 * k, .03, .55 * k), matPanel); panel.position.set(0, y0 + .32 * k, -.05); panel.rotation.x = -.6; g.add(panel);
+  const marco = new THREE.Mesh(new THREE.BoxGeometry(.9 * k, .02, .6 * k), matMetal); marco.position.copy(panel.position).add(new THREE.Vector3(0, -.02, 0)); marco.rotation.x = -.6; g.add(marco);
+  const largoAnt = esGateway ? 2.8 : .9;
+  const ant = new THREE.Mesh(new THREE.CylinderGeometry(.018 * k, .026 * k, largoAnt, 8), new THREE.MeshStandardMaterial({ color: esGateway ? '#e8ece9' : '#2a3331', roughness: .5 }));
+  ant.position.set(.36 * k, y0 + largoAnt / 2, .1); g.add(ant);
+  if (esGateway) for (const [dx, dz] of [[1, 0], [-.5, .87], [-.5, -.87]]){ // vientos del mástil
+    const tens = new THREE.Mesh(new THREE.CylinderGeometry(.008, .008, 1, 4), matMetal);
+    const a = new THREE.Vector3(0, y0 * .8, 0), b = new THREE.Vector3(dx * 4, .1, dz * 4);
+    tens.position.copy(a).lerp(b, .5); tens.scale.y = a.distanceTo(b); tens.quaternion.setFromUnitVectors(eje, b.clone().sub(a).normalize()); g.add(tens);
+  }
+  const led = new THREE.Mesh(new THREE.SphereGeometry(.045 * k, 10, 8), new THREE.MeshBasicMaterial({ color: '#7dd3a8' }));
+  led.position.set(.18 * k, y0 - .02, .31 * k); g.add(led);
+  g.traverse(o => { if (o.isMesh) { o.castShadow = !movil; o.receiveShadow = !movil; } });
+  g.userData = { led, tope: new THREE.Vector3(.36 * k, y0 + largoAnt, .1) };
+  return g;
+}
+const nodo = equipo(1.7, false); nodo.position.copy(NODO); nodo.rotation.y = .5; escena.add(nodo);
+const gateway = equipo(9, true); gateway.position.copy(GATEWAY); gateway.rotation.y = -.8; escena.add(gateway);
+const tope = (eq) => eq.localToWorld(eq.userData.tope.clone());
+nodo.updateMatrixWorld(); gateway.updateMatrixWorld();
+const haloNodo = new THREE.Sprite(new THREE.SpriteMaterial({ map: punto, color: '#F7C548', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+haloNodo.position.copy(NODO).add(new THREE.Vector3(0, 1.6, 0)); haloNodo.scale.setScalar(3); escena.add(haloNodo);
+const haloGw = new THREE.Sprite(haloNodo.material.clone()); haloGw.position.copy(tope(gateway)); haloGw.scale.setScalar(7); escena.add(haloGw);
+const onda = new THREE.Mesh(new THREE.RingGeometry(.94, 1, 96), new THREE.MeshBasicMaterial({ color: new THREE.Color('#F7C548').multiplyScalar(2), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, depthTest: false }));
+onda.renderOrder = 4; onda.rotation.x = -Math.PI / 2; onda.position.copy(NODO).add(new THREE.Vector3(0, .35, 0)); escena.add(onda);
+const desde = tope(nodo), hasta = tope(gateway);
+const medio = desde.clone().lerp(hasta, .5).add(new THREE.Vector3(0, 24, 0));
+const curva = new THREE.QuadraticBezierCurve3(desde, medio, hasta);
+const arco = new THREE.Mesh(new THREE.TubeGeometry(curva, 160, .06, 6), new THREE.MeshBasicMaterial({ color: new THREE.Color('#F7C548').multiplyScalar(2.5), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+escena.add(arco);
+const paquetes = [];
+for (let i = 0; i < 5; i++){
+  const pk = new THREE.Sprite(new THREE.SpriteMaterial({ map: punto, color: new THREE.Color('#ffe08a').multiplyScalar(3), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+  pk.scale.setScalar(2.2); pk.userData.f = i / 5; paquetes.push(pk); escena.add(pk);
+}
+
+/* ---------- dron ---------- */
+const dron = new THREE.Group();
+const matDron = new THREE.MeshStandardMaterial({ color: '#e4e8e6', roughness: .3, metalness: .1 });
+dron.add(new THREE.Mesh(new RoundedBoxGeometry(.85, .26, 1.25, 3, .1), matDron));
+const tapa = new THREE.Mesh(new RoundedBoxGeometry(.6, .1, .8, 2, .04), matOscuro); tapa.position.y = .16; dron.add(tapa);
+const gimbal = new THREE.Mesh(new THREE.SphereGeometry(.17, 16, 12), matOscuro); gimbal.position.set(0, -.2, .5); dron.add(gimbal);
+const lente = new THREE.Mesh(new THREE.CircleGeometry(.08, 16), new THREE.MeshStandardMaterial({ color: '#0a1020', roughness: .05, metalness: .9 })); lente.position.set(0, -.2, .67); dron.add(lente);
+const helices = [];
+for (const [x, z] of [[1, 1], [-1, 1], [1, -1], [-1, -1]]){
+  const brazo = new THREE.Mesh(new THREE.CylinderGeometry(.04, .05, 1.1, 8), matDron);
+  brazo.rotation.z = Math.PI / 2; brazo.rotation.y = -Math.atan2(z, x); brazo.position.set(x * .42, .02, z * .55); dron.add(brazo);
+  const motor = new THREE.Mesh(new THREE.CylinderGeometry(.1, .1, .14, 14), matOscuro); motor.position.set(x * .8, .08, z * .92); dron.add(motor);
+  const disco = new THREE.Mesh(new THREE.CircleGeometry(.55, 28).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#c9d2ce', transparent: true, opacity: .14, depthWrite: false, side: THREE.DoubleSide }));
+  disco.position.set(x * .8, .17, z * .92); dron.add(disco);
+  const pala = new THREE.Mesh(new THREE.BoxGeometry(1, .015, .07), matOscuro); pala.position.copy(disco.position); helices.push(pala); dron.add(pala);
+  const nav = new THREE.Mesh(new THREE.SphereGeometry(.035, 8, 6), new THREE.MeshBasicMaterial({ color: new THREE.Color(z > 0 ? (x > 0 ? '#3dff7a' : '#ff3030') : '#ffffff').multiplyScalar(3) }));
+  nav.position.set(x * .8, 0, z * .92); dron.add(nav);
+  const pata = new THREE.Mesh(new THREE.CylinderGeometry(.015, .015, .3, 6), matOscuro); pata.position.set(x * .3, -.25, z * .4); dron.add(pata);
+}
+dron.traverse(o => { if (o.isMesh) o.castShadow = !movil; });
+dron.scale.setScalar(1.3);
+const luzDron = new THREE.SpotLight('#ffffff', 0, 30, .5, .6); luzDron.position.set(0, -.2, 0); dron.add(luzDron); dron.add(luzDron.target); luzDron.target.position.set(0, -10, 0);
+dron.visible = false; escena.add(dron);
+const inicioDron = GATEWAY.clone().add(new THREE.Vector3(-4, 22, 4)), sobreFoco = FOCO.clone().add(new THREE.Vector3(0, 11, 0));
+
+/* ---------- postproceso ---------- */
+const composer = new EffectComposer(renderer);
+composer.setPixelRatio(PR); composer.setSize(innerWidth, innerHeight);
+composer.addPass(new RenderPass(escena, camara));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), .85, .55, .82);
+if (movil) bloom.resolution.set(innerWidth / 2, innerHeight / 2);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+const acabado = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, uTerm: { value: 0 }, uTiempo: { value: 0 }, uGrano: { value: .045 }, uGan: { value: 1 } },
+  vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.); }',
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float uTerm, uTiempo, uGrano, uGan; varying vec2 vUv;
+    vec3 paleta(float t){
+      vec3 c0 = vec3(.015, 0., .05), c1 = vec3(.169, .043, .31), c2 = vec3(.557, .122, .42), c3 = vec3(.878, .318, .165), c4 = vec3(.969, .773, .282), c5 = vec3(1., .98, .88);
+      t = clamp(t, 0., 1.);
+      if (t < .2) return mix(c0, c1, t / .2);
+      if (t < .45) return mix(c1, c2, (t - .2) / .25);
+      if (t < .68) return mix(c2, c3, (t - .45) / .23);
+      if (t < .86) return mix(c3, c4, (t - .68) / .18);
+      return mix(c4, c5, (t - .86) / .14);
+    }
+    float azar(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+    void main(){
+      vec4 c = texture2D(tDiffuse, vUv);
+      float l = dot(c.rgb, vec3(.299, .587, .114)) * uGan;
+      float calor = clamp(pow(l, .8) * 1.5 + max(c.r - c.b, 0.) * 1.2 * uGan, 0., 1.);
+      vec3 col = mix(c.rgb, paleta(calor), uTerm);
+      vec2 d = vUv - .5; col *= 1. - dot(d, d) * .95;
+      col += (azar(vUv * 1000. + fract(uTiempo) * 37.) - .5) * uGrano;
+      gl_FragColor = vec4(col, 1.);
+    }`
+});
+composer.addPass(acabado);
+const ajustarHumo = () => matHumo.uniforms.uEsc.value = innerHeight * PR / (2 * Math.tan(THREE.MathUtils.degToRad(camara.fov / 2)));
+ajustarHumo();
+
+/* ---------- capítulos ---------- */
+const K = [
+  { c:[-40, 30, 66],  t:[-12, 4, -8], gas:.7, calor:.3, onda:0, lora:0, dron:0, termica:0, grilla:0 },
+  { c:[17, 9, 22],    t:[5, 2.5, -4], gas:1,   calor:.15, onda:0, lora:0, dron:0, termica:0, grilla:0 },
+  { c:[-7, 4.6, 11],  t:[-3.2, 2.2, -1.5], gas:1, calor:.45, onda:1, lora:0, dron:0, termica:0, grilla:0 },
+  { c:[86, 58, 46],   t:[22, 8, -24], gas:.8, calor:.6, onda:.4, lora:1, dron:0, termica:0, grilla:0 },
+  { c:[11, 26, 20],   t:[5, 2, -4],   gas:.8,  calor:.9, onda:0, lora:0, dron:1, termica:1, grilla:0 },
+  { c:[0, 175, 6],    t:[0, 0, -2],   gas:.4,  calor:.9, onda:0, lora:.5, dron:1, termica:0, grilla:1 },
+  { c:[-70, 48, 92],  t:[0, 0, -10],  gas:.3,  calor:.4, onda:0, lora:0, dron:0, termica:0, grilla:.25 },
+];
+// en pantallas verticales el texto va abajo: se encuadra el sujeto en la mitad superior
+if (innerWidth / innerHeight < .8){
+  Object.assign(K[1], { c:[14, 9, 20], t:[5, -2, -4] });
+  Object.assign(K[2], { c:[-5, 5, 10], t:[.5, -1.5, -.5] });
+  Object.assign(K[4], { c:[9, 26, 18], t:[5, -5, -4] });
+}
+const cap = [...document.querySelectorAll('[data-ch]')];
+const final = document.getElementById('tecnologia');
+function progreso(){
+  const centro = innerHeight * .55;
+  const tops = cap.map(e => e.getBoundingClientRect().top + e.offsetHeight * .5 - centro);
+  tops.push(final.getBoundingClientRect().top + innerHeight * .2 - centro);
+  for (let i = 0; i < tops.length - 1; i++) if (tops[i + 1] > 0) return i + Math.min(1, Math.max(0, -tops[i] / (tops[i + 1] - tops[i])));
+  return tops.length - 1;
+}
+function estado(f){
+  const i = Math.min(K.length - 2, Math.floor(f)), t = suave(Math.min(1, f - i)), A = K[i], B = K[i + 1], r = {};
+  for (const k of Object.keys(A)) r[k] = Array.isArray(A[k]) ? A[k].map((v, j) => lerp(v, B[k][j], t)) : lerp(A[k], B[k], t);
+  return r;
+}
+const cursor = document.querySelector('.escala .cursor'), etiquetas = [...document.querySelectorAll('.escala li')];
+const visor = document.querySelector('.visor'), escala = document.querySelector('.escala');
+const AMARILLO = new THREE.Color('#F7C548'), NARANJA = new THREE.Color('#E0512A'), VERDE = new THREE.Color('#7dd3a8');
+const C = {
+  luna: new THREE.Color('#b9d3e6'), ocaso: new THREE.Color('#ff9a55'), sol: new THREE.Color('#fff0d8'),
+  hemiN: new THREE.Color('#7f9fb2'), hemiD: new THREE.Color('#cfe2f0'), sueloN: new THREE.Color('#0d1512'), sueloD: new THREE.Color('#4b4733'),
+  humoN: new THREE.Color('#4d5757'), humoD: new THREE.Color('#d2d9d7'), nieblaN: new THREE.Color('#a9c0c2'), nieblaD: new THREE.Color('#ffffff'),
+};
+
+// modo día / noche: el valor avanza suave para que el cambio sea un atardecer o un amanecer
+const modoActual = () => document.documentElement.dataset.modo === 'dia' ? 1 : 0;
+let dia = modoActual(), diaObjetivo = dia;
+addEventListener('cambiomodo', () => { diaObjetivo = modoActual(); });
+
+let fActual = 0, mx = 0, my = 0;
+addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
+addEventListener('resize', () => {
+  camara.aspect = innerWidth / innerHeight; camara.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight); ajustarHumo();
+});
+
+// calidad adaptable: si el equipo no da abasto, baja resolución y apaga sombras
+let muestras = 0, acumulado = 0, degradado = false;
+function vigilar(dt){
+  if (degradado || calidadFija || reducir) return;
+  muestras++; if (muestras < 30) return; acumulado += dt;
+  if (muestras === 150){
+    if (acumulado / 120 > 1 / 36){ PR = 1; renderer.setPixelRatio(1); composer.setPixelRatio(1); composer.setSize(innerWidth, innerHeight); luz.castShadow = false; ajustarHumo(); degradado = true; }
+    else degradado = true;
+  }
+}
+
+const reloj = new THREE.Clock(), mira = new THREE.Vector3(), vSol = new THREE.Vector3(), vLuz = new THREE.Vector3(), cTmp = new THREE.Color();
+function cuadro(){
+  const dt = Math.min(reloj.getDelta(), .05), t = reloj.elapsedTime;
+  vigilar(dt);
+  if (!reducir) uT.value = t;
+  const objetivo = progreso();
+  fActual = reducir ? objetivo : lerp(fActual, objetivo, 1 - Math.pow(.0015, dt));
+  const E = estado(fActual), th = E.termica;
+
+  // transición día-noche
+  dia += clamp(diaObjetivo - dia, -dt * .45, dt * .45); if (reducir) dia = diaObjetivo;
+  const d = suave(dia), apagar = 1 - th * .8;
+
+  // cámara
+  camara.position.set(E.c[0] + (reducir ? 0 : mx * 4), E.c[1] - (reducir ? 0 : my * 2), E.c[2]);
+  if (!reducir) camara.position.x += Math.sin(t * .07) * 2.5;
+  mira.set(E.t[0], E.t[1], E.t[2]); camara.lookAt(mira);
+  sol.position.copy(camara.position); cielo.position.copy(camara.position); estrellas.position.copy(camara.position);
+  luna.position.copy(camara.position).addScaledVector(DIR_LUNA, 800);
+
+  // sol, luna y cielo
+  dirSol(lerp(-12, 38, d), vSol); sol.material.uniforms.sunPosition.value.copy(vSol);
+  uNoche.value = 1 - ss(d, .18, .55);
+  estrellas.material.opacity = .75 * (1 - ss(d, .08, .35)); luna.material.opacity = 1 - ss(d, .08, .35);
+  nubes.forEach(n => n.material.opacity = n.userData.op * ss(d, .45, .9));
+  vLuz.copy(DIR_LUNA).lerp(vSol, ss(d, .22, .55)).normalize();
+  luz.target.position.copy(mira); luz.position.copy(mira).addScaledVector(vLuz, 180);
+  if (d < .45) luz.color.copy(C.luna).lerp(C.ocaso, ss(d, .2, .45)); else luz.color.copy(C.ocaso).lerp(C.sol, ss(d, .45, .8));
+  luz.intensity = (d < .3 ? lerp(2.3, .8, d / .3) : lerp(.8, 3.4, ss(d, .3, .85))) * apagar;
+  hemi.color.copy(C.hemiN).lerp(C.hemiD, d); hemi.groundColor.copy(C.sueloN).lerp(C.sueloD, d);
+  hemi.intensity = lerp(1.05, .9, d) * apagar;
+  escena.environmentIntensity = lerp(.06, .55, d) * apagar;
+  renderer.toneMappingExposure = lerp(1.4, .62, d);
+  if (d < .45) cTmp.copy(NIEBLA_NOCHE).lerp(NIEBLA_OCASO, ss(d, .15, .45)); else cTmp.copy(NIEBLA_OCASO).lerp(NIEBLA_DIA, ss(d, .45, .85));
+  escena.fog.color.copy(cTmp); escena.background.copy(cTmp);
+  escena.fog.density = lerp(lerp(.011, .0032, d), .004, Math.max(th, E.grilla));
+  bloom.strength = lerp(.85, .3, d); bloom.threshold = lerp(.82, 1.3, d);
+  acabado.uniforms.uTerm.value = th; acabado.uniforms.uTiempo.value = t;
+  acabado.uniforms.uGrano.value = lerp(.045, .022, d); acabado.uniforms.uGan.value = lerp(1, .55, d);
+  visor.classList.toggle('on', th > .6);
+  document.documentElement.classList.toggle('termica', th > .6);
+  const aditivo = d < .5 ? THREE.AdditiveBlending : THREE.NormalBlending;
+  if (arco.material.blending !== aditivo){ [arco.material, ...paquetes.map(p => p.material)].forEach(m => { m.blending = aditivo; m.needsUpdate = true; }); }
+  matGrilla.opacity = E.grilla * .16;
+  nieblas.forEach((n, i) => { n.material.color.copy(C.nieblaN).lerp(C.nieblaD, d); n.material.opacity = n.userData.op * (1 - E.grilla) * (1 - th * .6) * lerp(1, .3, d); n.position.x += Math.sin(t * .05 + i) * dt * n.userData.v; });
+
+  // brasa
+  const parpadeo = .75 + Math.sin(t * 7.3) * .12 + Math.sin(t * 13.1) * .08 + Math.sin(t * 23.7) * .05;
+  const fuerza = (.6 + E.calor * 3.4) * parpadeo * (1 + th * 1.5);
+  matLena.emissiveIntensity = fuerza; ceniza.material.emissiveIntensity = fuerza * .6;
+  grietas.offset.set(t * .01, t * .007);
+  luzBrasa.intensity = (3 + E.calor * 14) * parpadeo * lerp(1, .5, d);
+  halo.scale.setScalar((4 + E.calor * 8) * parpadeo); halo.material.opacity = (.2 + E.calor * .3) * lerp(1, .35, d);
+
+  // gases: casi invisibles a simple vista; el nodo los "ve" (se tiñen al detectar)
+  matHumo.uniforms.cHumo.value.copy(C.humoN).lerp(C.humoD, d).multiplyScalar(lerp(.6, 1, 1 - th));
+  matHumo.uniforms.uSensor.value = E.onda * .55;
+  for (let i = 0; i < NG; i++){
+    hVida[i] += dt * (reducir ? 0 : .05 + (i % 5) * .008); if (hVida[i] > 1) hVida[i] -= 1;
+    const v = hVida[i], sm = hSem[i], giro = sm + v * 4 + t * .2, r = .2 + v * 2.2;
+    hp[i*3]   = FOCO.x + Math.cos(giro) * r + v * v * 6 + Math.sin(v * 7 + sm) * .6;
+    hp[i*3+1] = FOCO.y + .3 + v * 15 + Math.sin(sm) * .3;
+    hp[i*3+2] = FOCO.z + Math.sin(giro) * r - v * v * 2;
+    hTam[i] = (.8 + v * 5.5 + (sm % 1) * .8) * (.7 + E.gas * .4);
+    hAlfa[i] = ss(v, 0, .15) * Math.pow(1 - v, 1.5) * (.05 + E.gas * .11);
+    hRot[i] = sm + v * 1.8 * ((i & 1) ? 1 : -1);
+    hCal[i] = Math.pow(1 - v, 4) * (.25 + E.calor * .75) * lerp(1, .5, d);
+  }
+  for (const n of ['position', 'aTam', 'aAlfa', 'aRot', 'aCal']) geoHumo.attributes[n].needsUpdate = true;
+  matChispa.opacity = (.3 + E.calor * .7) * lerp(1, .6, d);
+  for (let i = 0; i < NC; i++){
+    cv[i] += dt * (reducir ? 0 : .35 + (i % 4) * .1); if (cv[i] > 1) cv[i] -= 1;
+    const v = cv[i];
+    cp[i*3] = FOCO.x + Math.sin(cs[i]) * .6 + Math.sin(v * 9 + cs[i]) * .5 + v * 1.5;
+    cp[i*3+1] = FOCO.y + .3 + v * 6 * (.6 + (i % 3) * .2);
+    cp[i*3+2] = FOCO.z + Math.cos(cs[i]) * .6;
+  }
+  geoChispa.attributes.position.needsUpdate = true;
+
+  // detección y LEDs
+  const ciclo = (t * .55) % 1;
+  onda.material.opacity = E.onda * (1 - ciclo) * .8;
+  onda.scale.setScalar(1 + ciclo * 6);
+  const alerta = E.onda > .3 || E.lora > .3;
+  nodo.userData.led.material.color.copy(alerta ? (Math.sin(t * 9) > 0 ? AMARILLO : NARANJA) : VERDE).multiplyScalar(3);
+  gateway.userData.led.material.color.copy(E.lora > .3 && Math.sin(t * 9 + 1) > 0 ? AMARILLO : VERDE).multiplyScalar(3);
+  haloNodo.material.opacity = Math.max(E.onda, E.lora, E.grilla) * (.35 + .35 * Math.sin(t * 6));
+  haloGw.material.opacity = Math.max(E.lora, E.grilla) * (.35 + .35 * Math.sin(t * 6 + 1));
+  arco.material.opacity = E.lora * lerp(.55, .9, d);
+  paquetes.forEach(pk => { const f = (pk.userData.f + t * .22) % 1; curva.getPoint(f, pk.position); pk.material.opacity = E.lora * Math.sin(f * Math.PI); });
+
+  // dron
+  dron.visible = E.dron > .02;
+  if (dron.visible){
+    const f = suave(Math.min(1, E.dron));
+    dron.position.copy(inicioDron).lerp(sobreFoco, f);
+    dron.position.y += Math.sin(t * 2.1) * .25;
+    dron.rotation.set(Math.sin(t * 1.3) * .04, t * .3, Math.cos(t * 1.1) * .04);
+    helices.forEach((h, i) => h.rotation.y = t * 45 + i);
+    luzDron.intensity = th * 30;
+  }
+
+  // escala térmica
+  escala.classList.toggle('fuera', fActual > 5.4 || fActual < .45);
+  cursor.style.bottom = (Math.min(1, fActual / 5) * 100) + '%';
+  const activo = Math.round(Math.min(5, fActual));
+  etiquetas.forEach(li => li.classList.toggle('activo', +li.dataset.i === activo));
+
+  composer.render(dt);
+  requestAnimationFrame(cuadro);
+}
+requestAnimationFrame(cuadro);
+}
+</script>
 </body>
 </html>
