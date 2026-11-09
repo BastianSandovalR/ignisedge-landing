@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0C171B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>IgnisEdge · De turno</title>
+<meta name="description" content="Recibe en tu celular las alertas del simulador de IgnisEdge, como las recibiría un brigadista.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fondo:#0C171B; --superficie:#13252A; --linea:#24383c; --tinta:#E3EAE6; --sutil:#8A9A93;
+    --t1:#2B0B4F; --t2:#8E1F6B; --t3:#E0512A; --t4:#F7C548; --verde:#7dd3a8;
+    --termica:linear-gradient(90deg,var(--t1),var(--t2) 35%,var(--t3) 70%,var(--t4));
+    --display:"Syne","Helvetica Neue",Arial,sans-serif;
+    --texto:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--fondo);color:var(--tinta);font-family:var(--texto);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+  body{min-height:100svh;display:flex;flex-direction:column;padding:max(1.2rem,env(safe-area-inset-top)) 1.3rem max(1.4rem,env(safe-area-inset-bottom))}
+  .marca{display:flex;align-items:center;gap:.55rem;font-family:var(--display);font-weight:800;font-size:1.05rem}
+  .marca i{width:12px;height:12px;border-radius:50%;background:var(--termica);box-shadow:0 0 14px rgba(224,81,42,.7)}
+  .vista{flex:1;display:none;flex-direction:column}
+  .vista.on{display:flex}
+  h1{font-family:var(--display);font-weight:800;font-size:2.6rem;line-height:.95;letter-spacing:-.03em;margin:0 0 1rem}
+  p{margin:0 0 1rem;color:var(--tinta);opacity:.86}
+  .pie{font-size:.82rem;color:var(--sutil);opacity:1}
+  button,.boton{appearance:none;border:0;font:500 1.05rem var(--texto);border-radius:16px;padding:1.05rem 1.2rem;width:100%;cursor:pointer;text-align:center;text-decoration:none;display:block}
+  .primario{background:var(--termica);color:#160814}
+  .secundario{background:var(--superficie);color:var(--tinta);border:1px solid var(--linea)}
+  button:focus-visible,.boton:focus-visible{outline:2px solid var(--t4);outline-offset:3px}
+  .abajo{margin-top:auto;display:grid;gap:.7rem}
+
+  /* inicio */
+  #inicio .centro{margin:auto 0;padding-top:2rem}
+
+  /* de turno */
+  .radar{position:relative;width:min(68vw,270px);aspect-ratio:1;margin:3rem auto 2rem}
+  .radar span{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--verde);opacity:0;animation:onda 3.6s cubic-bezier(.2,.6,.3,1) infinite}
+  .radar span:nth-child(2){animation-delay:1.2s}.radar span:nth-child(3){animation-delay:2.4s}
+  .radar b{position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px;border-radius:50%;background:var(--verde);box-shadow:0 0 0 6px rgba(125,211,168,.18),0 0 26px rgba(125,211,168,.7)}
+  @keyframes onda{0%{transform:scale(.12);opacity:.9}100%{transform:scale(1);opacity:0}}
+  .chip{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .8rem;border-radius:999px;background:var(--superficie);border:1px solid var(--linea);font-size:.88rem;color:var(--sutil);align-self:center}
+  .chip i{width:8px;height:8px;border-radius:50%;background:var(--verde)}
+  .chip.reconectando i{background:var(--t4);animation:parpadeo 1s infinite}
+  @keyframes parpadeo{50%{opacity:.25}}
+  #turno h1{text-align:center;font-size:2.2rem;margin:1.2rem 0 .5rem}
+  #turno .centro p{text-align:center}
+
+  /* alerta */
+  #alerta{animation:entra .5s cubic-bezier(.2,.8,.2,1)}
+  @keyframes entra{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+  .franja{height:6px;border-radius:3px;background:var(--termica);background-size:200% 100%;animation:fluye 1.6s linear infinite;margin:1rem 0 1.2rem}
+  @keyframes fluye{to{background-position:-200% 0}}
+  .numero{font-size:.85rem;color:var(--t4);margin:0 0 .3rem}
+  #alerta h1{font-size:2.1rem}
+  .tarjeta{background:var(--superficie);border:1px solid var(--linea);border-radius:18px;overflow:hidden;margin:0 0 .9rem}
+  .tarjeta canvas{display:block;width:100%;height:auto}
+  .tarjeta .rotulo{display:flex;justify-content:space-between;padding:.6rem .9rem;font-size:.82rem;color:var(--sutil);border-top:1px solid var(--linea)}
+  dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.55rem 1rem;padding:1rem;font-size:.95rem}
+  dt{color:var(--sutil)}
+  dd{margin:0;text-align:right}
+  @media (prefers-reduced-motion: reduce){.radar span,.franja,#alerta{animation:none}.radar span{opacity:.4}}
+</style>
+</head>
+<body>
+  <div class="marca"><i></i>IgnisEdge</div>
+
+  <section class="vista on" id="inicio" aria-labelledby="t-inicio">
+    <div class="centro">
+      <h1 id="t-inicio">Quédate de turno.</h1>
+      <p>Cuando alguien encienda un foco en la pantalla del stand, la alerta te llegará aquí, igual que a un brigadista en terreno.</p>
+      <p class="pie">Es una simulación. No pedimos ni guardamos ningún dato tuyo.</p>
+    </div>
+    <div class="abajo">
+      <button class="primario" id="entrar" type="button">Entrar de turno</button>
+    </div>
+  </section>
+
+  <section class="vista" id="turno" aria-labelledby="t-turno">
+    <div class="radar" aria-hidden="true"><span></span><span></span><span></span><b></b></div>
+    <span class="chip" id="conexion" role="status"><i></i><span>Conectando…</span></span>
+    <div class="centro">
+      <h1 id="t-turno">De turno</h1>
+      <p>Esperando alertas del bosque de Curanilahue. Deja esta pantalla abierta.</p>
+    </div>
+    <div class="abajo">
+      <a class="boton secundario" href="/#simulador">Ver la simulación en 3D</a>
+    </div>
+  </section>
+
+  <section class="vista" id="alerta" aria-labelledby="t-alerta" aria-live="assertive">
+    <div class="franja" aria-hidden="true"></div>
+    <p class="numero" id="numero"></p>
+    <h1 id="t-alerta">Foco confirmado en la plantación.</h1>
+    <p>Los nodos detectaron gases de pirólisis y el dron lo confirmó con su cámara térmica.</p>
+    <div class="tarjeta">
+      <canvas id="mapa" width="680" height="520" aria-label="Mapa del foco, los nodos y la central"></canvas>
+      <div class="rotulo"><span>Gemelo digital</span><span id="hora"></span></div>
+    </div>
+    <div class="tarjeta">
+      <dl>
+        <dt>Detectado por</dt><dd id="detectores"></dd>
+        <dt>Confirmación</dt><dd>Cámara térmica del dron</dd>
+        <dt>Ubicación</dt><dd id="coordenadas"></dd>
+        <dt>Distancia a la central</dt><dd id="distancia"></dd>
+      </dl>
+    </div>
+    <div class="tarjeta">
+      <canvas id="termica" width="680" height="400" aria-label="Imagen térmica simulada del foco"></canvas>
+      <div class="rotulo"><span>Cámara térmica del dron</span><span>Simulación</span></div>
+    </div>
+    <div class="abajo">
+      <button class="primario" id="volver" type="button">Volver al turno</button>
+    </div>
+  </section>
+
+<script>
+(function(){
+  var API = new URLSearchParams(location.search).get('api') || '/api';
+  var vistas = { inicio: document.getElementById('inicio'), turno: document.getElementById('turno'), alerta: document.getElementById('alerta') };
+  function mostrar(v){ Object.keys(vistas).forEach(function(k){ vistas[k].classList.toggle('on', k === v); }); scrollTo(0, 0); }
+  var audio = null, bloqueo = null, fuente = null, ultima = null, animando = false;
+
+  function pedirPantallaEncendida(){
+    if (!('wakeLock' in navigator)) return;
+    navigator.wakeLock.request('screen').then(function(b){ bloqueo = b; }).catch(function(){});
+  }
+  document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'visible' && !vistas.inicio.classList.contains('on')) pedirPantallaEncendida(); });
+
+  function sonar(){
+    if (!audio) return;
+    var t = audio.currentTime;
+    [0, .32, .64].forEach(function(d, i){
+      [880, 660].forEach(function(f, j){
+        var o = audio.createOscillator(), g = audio.createGain();
+        o.type = 'sine'; o.frequency.value = f;
+        var ini = t + d + j * .14;
+        g.gain.setValueAtTime(0, ini); g.gain.linearRampToValueAtTime(.25, ini + .02); g.gain.exponentialRampToValueAtTime(.001, ini + .13);
+        o.connect(g).connect(audio.destination); o.start(ini); o.stop(ini + .15);
+      });
+    });
+  }
+
+  var chip = document.getElementById('conexion');
+  function estadoConexion(texto, reconectando){ chip.lastElementChild.textContent = texto; chip.classList.toggle('reconectando', !!reconectando); }
+  function conectar(){
+    if (fuente) return;
+    fuente = new EventSource(API + '/eventos');
+    fuente.addEventListener('turno', function(e){
+      var n = JSON.parse(e.data).n;
+      estadoConexion(n === 1 ? 'Conectado · solo tú de turno' : 'Conectado · ' + n + ' personas de turno');
+    });
+    fuente.addEventListener('alerta', function(e){ recibir(JSON.parse(e.data)); });
+    fuente.onerror = function(){ estadoConexion('Reconectando…', true); };
+  }
+
+  document.getElementById('entrar').addEventListener('click', function(){
+    try { audio = new (window.AudioContext || window.webkitAudioContext)(); var o = audio.createOscillator(), g = audio.createGain(); g.gain.value = 0; o.connect(g).connect(audio.destination); o.start(); o.stop(audio.currentTime + .01); } catch (e) {}
+    pedirPantallaEncendida(); conectar(); mostrar('turno');
+  });
+  document.getElementById('volver').addEventListener('click', function(){ animando = false; mostrar('turno'); });
+
+  // coordenadas ilustrativas alrededor de Curanilahue
+  var LAT0 = -37.4745, LON0 = -73.3463;
+  function aGrados(x, z){ var lat = LAT0 - z / 111320, lon = LON0 + x / (111320 * Math.cos(LAT0 * Math.PI / 180)); return lat.toFixed(4) + ', ' + lon.toFixed(4); }
+
+  function recibir(a){
+    ultima = a;
+    document.getElementById('numero').textContent = 'Alerta n.º ' + a.n;
+    document.getElementById('hora').textContent = new Date(a.ms).toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    document.getElementById('detectores').textContent = a.detectores.join(', ');
+    document.getElementById('coordenadas').textContent = aGrados(a.foco.x, a.foco.z);
+    document.getElementById('distancia').textContent = Math.round(Math.hypot(a.foco.x - a.central.x, a.foco.z - a.central.z)) + ' m';
+    mostrar('alerta'); sonar();
+    if (navigator.vibrate) navigator.vibrate([220, 120, 220, 120, 420]);
+    termica(); if (!animando){ animando = true; requestAnimationFrame(mapa); }
+  }
+
+  // mapa del gemelo digital
+  var cMapa = document.getElementById('mapa'), m = cMapa.getContext('2d');
+  var zCamino = function(x){ return 10 + Math.sin(x * .022 + 1) * 28 + x * .25; };
+  function mapa(ms){
+    if (!animando || !ultima) return;
+    var a = ultima, W = cMapa.width, H = cMapa.height, k = W / 230, cx = W / 2 - a.foco.x * k * .35, cz = H / 2 - a.foco.z * k * .35;
+    var P = function(x, z){ return [cx + x * k, cz + z * k]; }, t = ms / 1000;
+    m.fillStyle = '#0f2421'; m.fillRect(0, 0, W, H);
+    m.strokeStyle = 'rgba(125,211,168,.07)'; m.lineWidth = 1;
+    for (var g = -200; g <= 200; g += 20){ var p1 = P(g, -200), p2 = P(g, 200); m.beginPath(); m.moveTo(p1[0], p1[1]); m.lineTo(p2[0], p2[1]); m.stroke(); p1 = P(-200, g); p2 = P(200, g); m.beginPath(); m.moveTo(p1[0], p1[1]); m.lineTo(p2[0], p2[1]); m.stroke(); }
+    m.strokeStyle = 'rgba(190,160,120,.55)'; m.lineWidth = 5 * k * .6; m.beginPath();
+    for (var x = -200; x <= 200; x += 4){ var q = P(x, zCamino(x)); x === -200 ? m.moveTo(q[0], q[1]) : m.lineTo(q[0], q[1]); } m.stroke();
+    var det = {}; a.detectores.forEach(function(id){ det[id] = true; });
+    var f = P(a.foco.x, a.foco.z), gw = P(a.gateway.x, a.gateway.z), ce = P(a.central.x, a.central.z);
+    m.setLineDash([6, 6]); m.lineDashOffset = -t * 30; m.strokeStyle = 'rgba(247,197,72,.75)'; m.lineWidth = 2;
+    a.nodos.forEach(function(n){ if (!det[n.id]) return; var p = P(n.x, n.z); m.beginPath(); m.moveTo(p[0], p[1]); m.lineTo(gw[0], gw[1]); m.stroke(); });
+    m.beginPath(); m.moveTo(gw[0], gw[1]); m.lineTo(ce[0], ce[1]); m.stroke(); m.setLineDash([]);
+    a.nodos.forEach(function(n){
+      var p = P(n.x, n.z);
+      if (det[n.id]){
+        m.strokeStyle = 'rgba(247,197,72,.5)'; m.lineWidth = 1.5; m.beginPath(); m.arc(p[0], p[1], Math.hypot(n.x - a.foco.x, n.z - a.foco.z) * k, 0, 6.283); m.stroke();
+        m.fillStyle = '#F7C548'; m.beginPath(); m.arc(p[0], p[1], 6, 0, 6.283); m.fill();
+        m.fillStyle = '#E3EAE6'; m.font = '500 20px "IBM Plex Sans", sans-serif'; m.fillText(n.id, p[0] + 9, p[1] - 9);
+      } else { m.fillStyle = 'rgba(125,211,168,.8)'; m.beginPath(); m.arc(p[0], p[1], 4, 0, 6.283); m.fill(); }
+    });
+    m.fillStyle = '#e8ece9'; m.beginPath(); m.moveTo(gw[0], gw[1] - 9); m.lineTo(gw[0] + 8, gw[1] + 6); m.lineTo(gw[0] - 8, gw[1] + 6); m.closePath(); m.fill();
+    m.fillStyle = '#bfe3ff'; m.fillRect(ce[0] - 10, ce[1] - 7, 20, 14);
+    m.fillStyle = '#E3EAE6'; m.font = '500 20px "IBM Plex Sans", sans-serif'; m.fillText('Central', ce[0] + 14, ce[1] + 6); m.fillText('Gateway', gw[0] + 12, gw[1] + 6);
+    var pulso = (t % 1.4) / 1.4;
+    m.strokeStyle = 'rgba(224,81,42,' + (1 - pulso) + ')'; m.lineWidth = 3; m.beginPath(); m.arc(f[0], f[1], 8 + pulso * 34, 0, 6.283); m.stroke();
+    m.fillStyle = '#E0512A'; m.beginPath(); m.arc(f[0], f[1], 9, 0, 6.283); m.fill();
+    m.strokeStyle = '#F7C548'; m.lineWidth = 2; m.beginPath(); m.moveTo(f[0] - 22, f[1]); m.lineTo(f[0] + 22, f[1]); m.moveTo(f[0], f[1] - 22); m.lineTo(f[0], f[1] + 22); m.stroke();
+    requestAnimationFrame(mapa);
+  }
+
+  // imagen térmica simulada: árboles fríos y un foco caliente que parpadea
+  function termica(){
+    var c = document.getElementById('termica'), x = c.getContext('2d'), W = c.width, H = c.height, img = x.createImageData(W, H);
+    var paleta = [[4, 0, 13], [43, 11, 79], [142, 31, 107], [224, 81, 42], [247, 197, 72], [255, 250, 225]];
+    function color(v){ v = Math.max(0, Math.min(.999, v)) * (paleta.length - 1); var i = Math.floor(v), f = v - i, a = paleta[i], b = paleta[i + 1]; return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f]; }
+    function h(px, py){ var s = Math.sin(px * 127.1 + py * 311.7) * 43758.5453; return s - Math.floor(s); }
+    function r(px, py){ var xi = Math.floor(px), yi = Math.floor(py), xf = px - xi, yf = py - yi, u = xf * xf * (3 - 2 * xf), w = yf * yf * (3 - 2 * yf), A = h(xi, yi), B = h(xi + 1, yi), C = h(xi, yi + 1), D = h(xi + 1, yi + 1); return A + (B - A) * u + (C - A) * w + (A - B - C + D) * u * w; }
+    var fx = W * (.45 + Math.random() * .1), fy = H * (.45 + Math.random() * .1);
+    for (var py = 0; py < H; py++) for (var px = 0; px < W; px++){
+      var copas = r(px * .045, py * .045) * .55 + r(px * .12, py * .12) * .25, d = Math.hypot(px - fx, py - fy);
+      var calor = Math.exp(-d * d / 900) + .35 * Math.exp(-d * d / 9000) * (.6 + .4 * r(px * .08 + 9, py * .08));
+      var c3 = color(.12 + copas * .28 + calor * .78), o = (py * W + px) * 4;
+      img.data[o] = c3[0]; img.data[o + 1] = c3[1]; img.data[o + 2] = c3[2]; img.data[o + 3] = 255;
+    }
+    x.putImageData(img, 0, 0);
+    x.strokeStyle = 'rgba(247,197,72,.9)'; x.lineWidth = 2;
+    x.beginPath(); x.moveTo(fx - 40, fy); x.lineTo(fx - 14, fy); x.moveTo(fx + 14, fy); x.lineTo(fx + 40, fy); x.moveTo(fx, fy - 40); x.lineTo(fx, fy - 14); x.moveTo(fx, fy + 14); x.lineTo(fx, fy + 40); x.stroke();
+    x.strokeRect(fx - 60, fy - 60, 120, 120);
+    x.fillStyle = 'rgba(247,197,72,.95)'; x.font = '500 20px "IBM Plex Sans", sans-serif'; x.fillText('Foco confirmado', fx - 58, fy - 70);
+  }
+})();
+</script>
+</body>
+</html>

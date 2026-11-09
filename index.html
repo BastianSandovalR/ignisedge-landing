@@ -72,8 +72,9 @@
   .escala.fuera{opacity:0}
   .escala .barra{width:6px;border-radius:3px;background:linear-gradient(0deg,var(--t1),var(--t2) 35%,var(--t3) 70%,var(--t4));position:relative;opacity:.9}
   .escala .cursor{position:absolute;left:50%;width:18px;height:18px;border-radius:50%;border:2px solid var(--tinta);background:var(--fondo);transform:translate(-50%,50%);bottom:0;transition:bottom .15s linear}
-  .escala ol{list-style:none;margin:0;padding:.6rem .8rem;border-radius:10px;background:rgba(var(--velo),.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;flex-direction:column;justify-content:space-between;font-size:.78rem;color:var(--sutil);text-align:left}
-  .escala li{line-height:1.2;transition:color .3s;text-shadow:0 0 8px rgba(var(--velo),.95),0 0 2px rgba(var(--velo),.9)}
+  .escala ol{list-style:none;margin:0;padding:.7rem .9rem;border-radius:10px;background:rgba(var(--velo),.82);border:1px solid var(--linea);display:flex;flex-direction:column;justify-content:space-between;font-size:.78rem;color:var(--sutil);text-align:left}
+  .escala li{line-height:1.2;transition:color .3s}
+  .escala li.activo{font-weight:500}
   .escala li.activo{color:var(--tinta)}
   @media (max-width:900px){.escala{display:none}}
 
@@ -153,6 +154,42 @@
   .sin-webgl #escena{background:radial-gradient(90% 60% at 70% 80%, #3a1424 0%, var(--fondo) 65%)}
   @media (prefers-reduced-motion: reduce){.portada h1{animation:none;background-position:0 0}.visor .rec::before{animation:none}}
 
+
+  /* Simulador */
+  .simulador{position:relative;min-height:125vh;display:flex;align-items:center;padding:0 2.2rem;pointer-events:none}
+  .simulador .panel{pointer-events:auto;max-width:25.5rem;max-height:calc(100vh - 6rem);overflow:auto;padding:1.6rem 1.8rem;border-radius:14px;background:rgba(var(--velo),.86);border:1px solid var(--linea)}
+  .simulador h2{font-family:var(--display);font-weight:700;font-size:clamp(2.2rem,5vw,3.4rem);line-height:1;letter-spacing:-.02em;margin:0 0 .8rem}
+  .simulador .panel > p{margin:0;color:var(--tinta);opacity:.88}
+  .fases{list-style:none;margin:1.4rem 0 1.1rem;padding:0;display:grid;gap:.1rem}
+  .fases li{display:grid;grid-template-columns:1.3rem 1fr;align-items:center;gap:.55rem;font-size:.93rem;color:var(--sutil);padding:.22rem 0;transition:color .35s}
+  .fases li::before{content:"";width:9px;height:9px;border-radius:50%;border:1.5px solid currentColor;justify-self:center;transition:background-color .35s,border-color .35s,box-shadow .35s}
+  .fases li.activa{color:var(--tinta)}
+  .fases li.activa::before{background:var(--t4);border-color:var(--t4);box-shadow:0 0 0 5px rgba(247,197,72,.22)}
+  .fases li.lista{color:var(--tinta)}
+  .fases li.lista::before{background:var(--t3);border-color:var(--t3)}
+  .estado-sim{font-size:.92rem;min-height:2.6em;color:var(--dato)!important;opacity:1!important}
+  .turno{display:flex;align-items:center;gap:1rem;margin-top:1.1rem;padding-top:1.1rem;border-top:1px solid var(--linea)}
+  .turno .qr,.qr-vitrina .qr{width:84px;height:84px;flex:none;border-radius:8px;background:#fff;padding:4px}
+  .turno b,.qr-vitrina b{display:block;font-weight:500;font-size:.95rem}
+  .turno span,.qr-vitrina span{font-size:.85rem;color:var(--sutil)}
+  .nota-sim{font-size:.8rem!important;color:var(--sutil)!important;margin-top:1rem!important}
+  @media (max-width:760px){.simulador{align-items:flex-end;padding:0 1rem 6vh}.simulador .panel{padding:1.3rem}.turno{display:none}}
+
+  /* Etiquetas sobre la escena */
+  .etiquetas{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+  .etiquetas span{position:absolute;left:0;top:0;font-size:.74rem;font-weight:500;padding:.2rem .5rem;border-radius:5px;background:rgba(var(--velo),.88);color:var(--tinta);border:1px solid var(--linea);white-space:nowrap;opacity:0;transition:opacity .35s}
+  .etiquetas span.alerta{background:#E0512A;border-color:#E0512A;color:#fff}
+  .etiquetas span.ve{opacity:1}
+
+  /* Modo vitrina: pantalla del stand */
+  .qr-vitrina{position:fixed;right:1.6rem;bottom:1.6rem;z-index:6;display:none;align-items:center;gap:1rem;padding:1rem 1.2rem 1rem 1rem;border-radius:14px;background:rgba(var(--velo),.9);border:1px solid var(--linea);max-width:22rem}
+  .qr-vitrina .qr{width:112px;height:112px}
+  html.vitrina .qr-vitrina{display:flex}
+  html.vitrina.en-sim .qr-vitrina,html.vitrina.termica .qr-vitrina{display:none}
+  html.en-sim main,html.en-sim #escena{cursor:crosshair}
+  html.en-sim .panel{cursor:auto}
+  html.ocio,html.ocio *{cursor:none!important}
+
   /* Selector día / noche */
   .modo{display:flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--linea2);border-radius:999px;background:rgba(var(--velo),.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
   .modo button{appearance:none;border:0;background:transparent;color:var(--sutil);font:500 .85rem/1 var(--texto);padding:.45rem .85rem .45rem .65rem;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:.42rem;transition:background-color .45s,color .45s}
@@ -165,6 +202,8 @@
 <body>
 <canvas id="escena" aria-hidden="true"></canvas>
 <div class="velo"></div>
+<div class="etiquetas" aria-hidden="true"></div>
+<div class="qr-vitrina" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" class="qr" role="img" aria-label="Código QR hacia ignisedge.pro/alerta"><path fill="#fff" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#0f1e21" d="M2 2.5h7m1 0h1m1 0h2m2 0h2m2 0h1m3 0h7m-29 1h1m5 0h1m1 0h1m2 0h3m1 0h3m4 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m3 0h2m4 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m5 0h1m1 0h2m1 0h1m2 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m5 0h1m2 0h2m1 0h3m1 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h2m1 0h1m3 0h1m1 0h1m1 0h1m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-19 1h4m1 0h1m3 0h2m-20 1h1m4 0h9m2 0h2m1 0h2m5 0h2m-27 1h4m1 0h4m2 0h1m3 0h3m3 0h3m1 0h1m-28 1h1m1 0h1m1 0h1m1 0h1m2 0h3m1 0h1m4 0h1m2 0h3m2 0h1m-26 1h1m1 0h3m3 0h1m1 0h2m1 0h2m3 0h1m2 0h2m1 0h1m-24 1h1m1 0h3m4 0h1m2 0h2m3 0h4m4 0h1m-28 1h1m4 0h1m2 0h1m3 0h2m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m2 0h1m-29 1h1m1 0h1m1 0h11m1 0h2m2 0h2m1 0h1m3 0h1m-28 1h4m1 0h1m1 0h3m3 0h1m1 0h2m3 0h3m1 0h5m-28 1h1m4 0h1m1 0h1m1 0h5m1 0h1m1 0h3m4 0h2m-27 1h1m1 0h1m1 0h2m6 0h2m4 0h3m1 0h1m1 0h1m3 0h1m-29 1h4m2 0h1m1 0h2m1 0h1m2 0h2m2 0h2m5 0h2m1 0h1m-29 1h1m2 0h2m2 0h2m1 0h2m8 0h4m1 0h1m1 0h1m-28 1h1m1 0h2m2 0h2m4 0h1m2 0h1m1 0h1m2 0h7m1 0h1m-21 1h1m2 0h2m1 0h2m2 0h1m1 0h1m3 0h3m-27 1h7m1 0h3m4 0h1m2 0h3m1 0h1m1 0h1m-25 1h1m5 0h1m2 0h1m2 0h1m1 0h1m1 0h1m1 0h3m3 0h2m1 0h2m-29 1h1m1 0h3m1 0h1m3 0h1m1 0h1m2 0h10m3 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m1 0h3m2 0h1m1 0h3m2 0h1m3 0h1m-28 1h1m1 0h3m1 0h1m6 0h2m4 0h6m1 0h2m-28 1h1m5 0h1m1 0h4m3 0h1m5 0h1m2 0h3m1 0h1m-29 1h7m2 0h2m1 0h1m1 0h1m2 0h1m1 0h1m1 0h1m2 0h1m1 0h1"/></svg><div><b>Recibe la alerta en tu celular</b><span data-de-turno>Escanea para quedar de turno</span></div></div>
 <div class="visor" aria-hidden="true"><div class="esquinas"></div><div class="rec">Visión térmica</div></div>
 
 <header>
@@ -186,9 +225,10 @@
 <aside class="escala" aria-hidden="true">
   <div class="barra"><span class="cursor"></span></div>
   <ol>
-    <li data-i="5">Gemelo digital</li>
-    <li data-i="4">Visión térmica</li>
-    <li data-i="3">Alerta LoRa</li>
+    <li data-i="6">Gemelo digital</li>
+    <li data-i="5">Visión térmica</li>
+    <li data-i="4">Alerta LoRa</li>
+    <li data-i="3">Triangulación</li>
     <li data-i="2">Detección</li>
     <li data-i="1">Pirólisis latente</li>
     <li data-i="0">Bosque</li>
@@ -220,22 +260,53 @@
 
   <section class="capitulo" data-ch="3">
     <div class="texto">
-      <h2>La alerta cruza el bosque.</h2>
-      <p>El nodo envía la alerta por LoRa, una radio de largo alcance y bajo consumo. No necesita señal celular, que es justo lo que falta en medio de una plantación.</p>
+      <h2>Los nodos se ponen de acuerdo.</h2>
+      <p>Cada nodo trabaja por su cuenta, con su propio modelo. Cuando uno detecta algo, los vecinos suman sus lecturas: cada uno estima a qué distancia está el foco, y donde se cruzan esas distancias está el punto a revisar.</p>
+      <p>Varias lecturas que coinciden también ayudan a descartar falsas alarmas.</p>
     </div>
   </section>
 
   <section class="capitulo" data-ch="4">
     <div class="texto">
-      <h2>El dron va a mirar.</h2>
-      <p>Un dron con cámara térmica llega al punto y confirma la alerta desde arriba. Su modelo distingue un foco real de una roca que solo está caliente, por cómo parpadea el calor del fuego.</p>
+      <h2>La alerta cruza el bosque.</h2>
+      <p>Los nodos envían la alerta por LoRa, una radio de largo alcance y bajo consumo, hasta la central portátil estacionada en el camino forestal. No necesita señal celular, que es justo lo que falta en medio de una plantación.</p>
     </div>
   </section>
 
   <section class="capitulo" data-ch="5">
     <div class="texto">
+      <h2>El dron va a mirar.</h2>
+      <p>Con la autorización del operador, despega un dron desde la central, que también es su estación de carga. Llega al punto y confirma la alerta con su cámara térmica: su modelo distingue un foco real de una roca que solo está caliente, por cómo parpadea el calor del fuego.</p>
+    </div>
+  </section>
+
+  <section class="capitulo" data-ch="6">
+    <div class="texto">
       <h2>Una persona decide.</h2>
-      <p>El centro de control muestra el terreno en 3D, la telemetría y la cámara del dron. Ningún vuelo despega sin que un operador lo autorice.</p>
+      <p>La central muestra el terreno en un gemelo digital 3D, con los nodos, la telemetría y la cámara del dron. IgnisEdge entrega la información; la decisión de a quién enviar es de una persona.</p>
+    </div>
+  </section>
+
+  <section class="simulador" id="simulador" data-ch="7" aria-labelledby="titulo-sim">
+    <div class="panel">
+      <h2 id="titulo-sim">Pruébalo.</h2>
+      <p>Haz clic en cualquier punto del bosque para encender un foco y mira cómo responde la red.</p>
+      <ol class="fases" aria-live="polite">
+        <li>Comienza la pirólisis</li>
+        <li>Un nodo detecta la anomalía</li>
+        <li>Los nodos vecinos triangulan el foco</li>
+        <li>La alerta viaja por LoRa a la central</li>
+        <li>El operador autoriza el vuelo</li>
+        <li>Despegan los drones</li>
+        <li>La cámara térmica confirma el foco</li>
+        <li>Se avisa a la brigada</li>
+      </ol>
+      <p class="estado-sim" role="status">Haz clic en cualquier punto del bosque para encender un foco.</p>
+      <div class="turno">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" class="qr" role="img" aria-label="Código QR hacia ignisedge.pro/alerta"><path fill="#fff" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#0f1e21" d="M2 2.5h7m1 0h1m1 0h2m2 0h2m2 0h1m3 0h7m-29 1h1m5 0h1m1 0h1m2 0h3m1 0h3m4 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m3 0h2m4 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m5 0h1m1 0h2m1 0h1m2 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m5 0h1m2 0h2m1 0h3m1 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h2m1 0h1m3 0h1m1 0h1m1 0h1m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-19 1h4m1 0h1m3 0h2m-20 1h1m4 0h9m2 0h2m1 0h2m5 0h2m-27 1h4m1 0h4m2 0h1m3 0h3m3 0h3m1 0h1m-28 1h1m1 0h1m1 0h1m1 0h1m2 0h3m1 0h1m4 0h1m2 0h3m2 0h1m-26 1h1m1 0h3m3 0h1m1 0h2m1 0h2m3 0h1m2 0h2m1 0h1m-24 1h1m1 0h3m4 0h1m2 0h2m3 0h4m4 0h1m-28 1h1m4 0h1m2 0h1m3 0h2m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m2 0h1m-29 1h1m1 0h1m1 0h11m1 0h2m2 0h2m1 0h1m3 0h1m-28 1h4m1 0h1m1 0h3m3 0h1m1 0h2m3 0h3m1 0h5m-28 1h1m4 0h1m1 0h1m1 0h5m1 0h1m1 0h3m4 0h2m-27 1h1m1 0h1m1 0h2m6 0h2m4 0h3m1 0h1m1 0h1m3 0h1m-29 1h4m2 0h1m1 0h2m1 0h1m2 0h2m2 0h2m5 0h2m1 0h1m-29 1h1m2 0h2m2 0h2m1 0h2m8 0h4m1 0h1m1 0h1m-28 1h1m1 0h2m2 0h2m4 0h1m2 0h1m1 0h1m2 0h7m1 0h1m-21 1h1m2 0h2m1 0h2m2 0h1m1 0h1m3 0h3m-27 1h7m1 0h3m4 0h1m2 0h3m1 0h1m1 0h1m-25 1h1m5 0h1m2 0h1m2 0h1m1 0h1m1 0h1m1 0h3m3 0h2m1 0h2m-29 1h1m1 0h3m1 0h1m3 0h1m1 0h1m2 0h10m3 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m1 0h3m2 0h1m1 0h3m2 0h1m3 0h1m-28 1h1m1 0h3m1 0h1m6 0h2m4 0h6m1 0h2m-28 1h1m5 0h1m1 0h4m3 0h1m5 0h1m2 0h3m1 0h1m-29 1h7m2 0h2m1 0h1m1 0h1m2 0h1m1 0h1m1 0h1m2 0h1m1 0h1"/></svg>
+        <div><b>Recibe la alerta en tu celular</b><span data-de-turno>Escanea para quedar de turno</span></div>
+      </div>
+      <p class="nota-sim">Simulación ilustrativa: muestra las etapas del sistema, no tiempos reales.</p>
     </div>
   </section>
 </main>
@@ -252,6 +323,7 @@
           <dt>Placa</dt><dd>Heltec WiFi LoRa 32 V4 (ESP32)</dd>
           <dt>Sensor</dt><dd>Bosch BME688</dd>
           <dt>Modelo</dt><dd>TinyML: distancia de Mahalanobis y promedios móviles exponenciales</dd>
+          <dt>Red</dt><dd>Nodos independientes que triangulan el foco</dd>
           <dt>Firmware</dt><dd>C/C++</dd>
         </dl>
       </div>
@@ -266,10 +338,11 @@
         </dl>
       </div>
       <div class="capa">
-        <h3>Centro de control</h3>
-        <p class="rol">Todo el terreno en un gemelo digital.</p>
+        <h3>Central portátil</h3>
+        <p class="rol">Recibe las alertas, carga y despacha los drones.</p>
         <dl>
-          <dt>Panel</dt><dd>React, Mapbox y deck.gl</dd>
+          <dt>Base</dt><dd>Container o van en el camino forestal</dd>
+          <dt>Panel</dt><dd>Gemelo digital con React, Mapbox y deck.gl</dd>
           <dt>Servicios</dt><dd>FastAPI</dd>
           <dt>Terreno</dt><dd>Topografía 3D desde Google Earth Engine</dd>
           <dt>Control</dt><dd>Cada vuelo requiere autorización</dd>
@@ -296,11 +369,11 @@
 <section class="solida" id="equipo">
   <div class="ancho">
     <h2>Equipo</h2>
-    <p class="intro">Estudiantes de Ingeniería Informática de la Universidad Técnica Federico Santa María, sede Concepción.</p>
+    <p class="intro">Estudiantes de la Universidad Técnica Federico Santa María, sede Concepción.</p>
     <div class="equipo">
       <div class="persona"><b>Bastian Sandoval</b><span>Nodos terrestres, sensores y TinyML</span></div>
-      <div class="persona"><b>[Nombre]</b><span>Visión embebida a bordo del dron</span></div>
-      <div class="persona"><b>[Nombre]</b><span>[Rol en el proyecto]</span></div>
+      <div class="persona"><b>Camilo Muñoz</b><span>Comunicaciones por radiofrecuencia y LoRa. Desarrollo del dron: diseño de piezas 3D y vuelo</span></div>
+      <div class="persona"><b>Pablo Silva</b><span>Visión computacional y la comunicación entre los servicios del sistema</span></div>
     </div>
   </div>
 </section>
@@ -308,10 +381,10 @@
 <footer>
   <p class="grande">Cada minuto antes de la llama cuenta.</p>
   <div class="acciones">
-    <a class="boton calor" href="mailto:[correo@ignisedge.pro]">Escribir al equipo</a>
+    <a class="boton calor" href="mailto:ignisedgecontact@gmail.com">Escribir al equipo</a>
     <a class="boton linea" href="https://github.com/cybedith/IgnisEdge">Ver el código</a>
   </div>
-  <p class="legal">IgnisEdge · Proyecto universitario en desarrollo · Región del Biobío, Chile</p>
+  <p class="legal">ignisedgecontact@gmail.com<br>IgnisEdge es un proyecto universitario en desarrollo en la Región del Biobío, Chile.</p>
 </footer>
 
 <script>
@@ -351,8 +424,8 @@ import { Sky } from 'three/addons/objects/Sky.js';
 
 const lienzo = document.getElementById('escena');
 const reducir = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const movil = matchMedia('(max-width: 760px)').matches;
 const parametros = new URLSearchParams(location.search);
+const movil = matchMedia('(max-width: 760px)').matches || parametros.has('ligero');
 const calidadFija = parametros.get('calidad') === 'alta';
 
 let renderer;
@@ -491,7 +564,7 @@ for (let i = 0; i < 16; i++){
 
 /* ---------- terreno, camino forestal y rodales ---------- */
 const NODO = new THREE.Vector3(0, 0, 0), FOCO = new THREE.Vector3(5, 0, -4), GATEWAY = new THREE.Vector3(48, 0, -42);
-function altura(x, z){
+function alturaBase(x, z){
   let h = (fbm(x * .018 + 3, z * .018 + 7) - .5) * 26 + (fbm(x * .07, z * .07) - .5) * 3 + (fbm(x * .3, z * .3, 2) - .5) * .35;
   const dg = Math.hypot(x - GATEWAY.x, z - GATEWAY.z); h += Math.max(0, 16 - dg * .35);
   const dn = Math.hypot(x - 2, z + 2); h *= Math.min(1, .35 + dn / 22);
@@ -499,6 +572,12 @@ function altura(x, z){
 }
 const zCamino = x => 10 + Math.sin(x * .022 + 1) * 28 + x * .25;
 const dCamino = (x, z) => { const pend = .022 * 28 * Math.cos(x * .022 + 1) + .25; return Math.abs(z - zCamino(x)) / Math.sqrt(1 + pend * pend); };
+// central portátil: estacionada a un costado del camino forestal, sobre una explanada
+const PEND_C = .022 * 28 * Math.cos(-30 * .022 + 1) + .25, LC = Math.hypot(1, PEND_C);
+const CENTRAL = new THREE.Vector3(-30 + PEND_C / LC * 6.5, 0, zCamino(-30) - 1 / LC * 6.5);
+const ANG_CENTRAL = -Math.atan2(PEND_C, 1);
+const H_CENTRAL = alturaBase(CENTRAL.x, CENTRAL.z); CENTRAL.y = H_CENTRAL;
+function altura(x, z){ const h = alturaBase(x, z), dd = Math.hypot(x - CENTRAL.x, z - CENTRAL.z); return dd > 11 ? h : lerp(H_CENTRAL, h, ss(dd, 6, 11)); }
 const CELDA = 52;
 function rodal(x, z){
   const cx = Math.floor(x / CELDA), cz = Math.floor(z / CELDA);
@@ -525,6 +604,7 @@ geoT.computeVertexNormals();
     else c.lerp(hojarasca, .35);
     c.lerp(tierra, Math.min(1, pend * 4));
     const claro = Math.hypot(x - 2, z + 2); if (claro < 10) c.lerp(pasto, (1 - claro / 10) * .5);
+    const dcen = Math.hypot(x - CENTRAL.x, z - CENTRAL.z); if (dcen < 10) c.lerp(camino, (1 - ss(dcen, 6.5, 10)) * .85);
     const dc = dCamino(x, z); if (dc < 5) c.lerp(camino, 1 - ss(dc, 2.4, 5)).multiplyScalar(dc < 2.6 && Math.abs(dc - 1.3) < .35 ? .85 : 1);
     const lejos = ss(Math.hypot(x, z), RADIO - 10, RADIO + 25); if (r.tipo !== 'rasa') c.lerp(dosel, lejos);
     c.multiplyScalar(.85 + n2 * .3);
@@ -615,7 +695,7 @@ const listas = { pinoA: [], pinoB: [], euc: [], joven: [], sombra: [] };
 const ESP = movil ? 1.45 : 1;
 const vistas = [[17, 22, 5, -4], [-7, 11, -3.2, -1.5], [-40, 66, -12, -8]];
 function dSeg(x, z, [ax, az, bx, bz]){ const vx = bx - ax, vz = bz - az, t = clamp(((x - ax) * vx + (z - az) * vz) / (vx * vx + vz * vz), 0, 1); return Math.hypot(x - ax - vx * t, z - az - vz * t); }
-const libre = (x, z) => Math.hypot(x - 2, z + 2) > 8 && Math.hypot(x - GATEWAY.x, z - GATEWAY.z) > 6 && dCamino(x, z) > 4.5
+const libre = (x, z) => Math.hypot(x - 2, z + 2) > 8 && Math.hypot(x - CENTRAL.x, z - CENTRAL.z) > 12 && Math.hypot(x - GATEWAY.x, z - GATEWAY.z) > 6 && dCamino(x, z) > 4.5
   && dSeg(x, z, vistas[0]) > 6.5 && dSeg(x, z, vistas[1]) > 5 && dSeg(x, z, vistas[2]) > 4;
 const tmpM = new THREE.Matrix4(), tmpQ = new THREE.Quaternion(), tmpS = new THREE.Vector3(), tmpP = new THREE.Vector3(), eje = new THREE.Vector3(0, 1, 0);
 const n0 = Math.ceil(RADIO / CELDA) + 1;
@@ -663,7 +743,7 @@ instanciar(geoPinoA, [matTronco, matPinoF], listas.joven, [.9, 1.3], () => tinte
   const matas = [], pastos = [], NA = movil ? 1300 : 3400, NP = movil ? 2600 : 7000;
   while (matas.length < NA){
     const x = rnd(-RADIO, RADIO), z = rnd(-RADIO, RADIO);
-    if (Math.hypot(x, z) > RADIO || dCamino(x, z) < 2.6 || Math.hypot(x - 2, z + 2) < 3 || Math.hypot(x - FOCO.x, z - FOCO.z) < 2.4) continue;
+    if (Math.hypot(x, z) > RADIO || dCamino(x, z) < 2.6 || Math.hypot(x - CENTRAL.x, z - CENTRAL.z) < 9 || Math.hypot(x - 2, z + 2) < 3 || Math.hypot(x - FOCO.x, z - FOCO.z) < 2.4) continue;
     matas.push([x, altura(x, z) - .1, z, rnd(.6, 1.7), Math.random() * 6.28]);
   }
   while (pastos.length < NP){
@@ -750,7 +830,7 @@ const geoChispa = new THREE.BufferGeometry(); geoChispa.setAttribute('position',
 const matChispa = new THREE.PointsMaterial({ map: punto, size: .22, color: new THREE.Color('#ffb060').multiplyScalar(4), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
 const chispas = new THREE.Points(geoChispa, matChispa); chispas.frustumCulled = false; escena.add(chispas);
 
-/* ---------- nodo sensor y gateway ---------- */
+/* ---------- equipos: nodo, gateway ---------- */
 const matCarcasa = new THREE.MeshStandardMaterial({ color: '#d7ddd8', roughness: .5, metalness: .05 });
 const matMetal = new THREE.MeshStandardMaterial({ color: '#8a948f', roughness: .35, metalness: .85 });
 const matOscuro = new THREE.MeshStandardMaterial({ color: '#1f2624', roughness: .55, metalness: .2 });
@@ -767,7 +847,7 @@ function equipo(altoMastil, esGateway){
   const largoAnt = esGateway ? 2.8 : .9;
   const ant = new THREE.Mesh(new THREE.CylinderGeometry(.018 * k, .026 * k, largoAnt, 8), new THREE.MeshStandardMaterial({ color: esGateway ? '#e8ece9' : '#2a3331', roughness: .5 }));
   ant.position.set(.36 * k, y0 + largoAnt / 2, .1); g.add(ant);
-  if (esGateway) for (const [dx, dz] of [[1, 0], [-.5, .87], [-.5, -.87]]){ // vientos del mástil
+  if (esGateway) for (const [dx, dz] of [[1, 0], [-.5, .87], [-.5, -.87]]){
     const tens = new THREE.Mesh(new THREE.CylinderGeometry(.008, .008, 1, 4), matMetal);
     const a = new THREE.Vector3(0, y0 * .8, 0), b = new THREE.Vector3(dx * 4, .1, dz * 4);
     tens.position.copy(a).lerp(b, .5); tens.scale.y = a.distanceTo(b); tens.quaternion.setFromUnitVectors(eje, b.clone().sub(a).normalize()); g.add(tens);
@@ -778,50 +858,219 @@ function equipo(altoMastil, esGateway){
   g.userData = { led, tope: new THREE.Vector3(.36 * k, y0 + largoAnt, .1) };
   return g;
 }
+const tope = (eq) => { eq.updateMatrixWorld(); return eq.localToWorld(eq.userData.tope.clone()); };
 const nodo = equipo(1.7, false); nodo.position.copy(NODO); nodo.rotation.y = .5; escena.add(nodo);
 const gateway = equipo(9, true); gateway.position.copy(GATEWAY); gateway.rotation.y = -.8; escena.add(gateway);
-const tope = (eq) => eq.localToWorld(eq.userData.tope.clone());
-nodo.updateMatrixWorld(); gateway.updateMatrixWorld();
-const haloNodo = new THREE.Sprite(new THREE.SpriteMaterial({ map: punto, color: '#F7C548', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
-haloNodo.position.copy(NODO).add(new THREE.Vector3(0, 1.6, 0)); haloNodo.scale.setScalar(3); escena.add(haloNodo);
-const haloGw = new THREE.Sprite(haloNodo.material.clone()); haloGw.position.copy(tope(gateway)); haloGw.scale.setScalar(7); escena.add(haloGw);
-const onda = new THREE.Mesh(new THREE.RingGeometry(.94, 1, 96), new THREE.MeshBasicMaterial({ color: new THREE.Color('#F7C548').multiplyScalar(2), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, depthTest: false }));
-onda.renderOrder = 4; onda.rotation.x = -Math.PI / 2; onda.position.copy(NODO).add(new THREE.Vector3(0, .35, 0)); escena.add(onda);
-const desde = tope(nodo), hasta = tope(gateway);
-const medio = desde.clone().lerp(hasta, .5).add(new THREE.Vector3(0, 24, 0));
-const curva = new THREE.QuadraticBezierCurve3(desde, medio, hasta);
-const arco = new THREE.Mesh(new THREE.TubeGeometry(curva, 160, .06, 6), new THREE.MeshBasicMaterial({ color: new THREE.Color('#F7C548').multiplyScalar(2.5), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
-escena.add(arco);
-const paquetes = [];
-for (let i = 0; i < 5; i++){
-  const pk = new THREE.Sprite(new THREE.SpriteMaterial({ map: punto, color: new THREE.Color('#ffe08a').multiplyScalar(3), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
-  pk.scale.setScalar(2.2); pk.userData.f = i / 5; paquetes.push(pk); escena.add(pk);
-}
+const TOPE_GW = tope(gateway);
 
-/* ---------- dron ---------- */
-const dron = new THREE.Group();
-const matDron = new THREE.MeshStandardMaterial({ color: '#e4e8e6', roughness: .3, metalness: .1 });
-dron.add(new THREE.Mesh(new RoundedBoxGeometry(.85, .26, 1.25, 3, .1), matDron));
-const tapa = new THREE.Mesh(new RoundedBoxGeometry(.6, .1, .8, 2, .04), matOscuro); tapa.position.y = .16; dron.add(tapa);
-const gimbal = new THREE.Mesh(new THREE.SphereGeometry(.17, 16, 12), matOscuro); gimbal.position.set(0, -.2, .5); dron.add(gimbal);
-const lente = new THREE.Mesh(new THREE.CircleGeometry(.08, 16), new THREE.MeshStandardMaterial({ color: '#0a1020', roughness: .05, metalness: .9 })); lente.position.set(0, -.2, .67); dron.add(lente);
-const helices = [];
-for (const [x, z] of [[1, 1], [-1, 1], [1, -1], [-1, -1]]){
-  const brazo = new THREE.Mesh(new THREE.CylinderGeometry(.04, .05, 1.1, 8), matDron);
-  brazo.rotation.z = Math.PI / 2; brazo.rotation.y = -Math.atan2(z, x); brazo.position.set(x * .42, .02, z * .55); dron.add(brazo);
-  const motor = new THREE.Mesh(new THREE.CylinderGeometry(.1, .1, .14, 14), matOscuro); motor.position.set(x * .8, .08, z * .92); dron.add(motor);
-  const disco = new THREE.Mesh(new THREE.CircleGeometry(.55, 28).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#c9d2ce', transparent: true, opacity: .14, depthWrite: false, side: THREE.DoubleSide }));
-  disco.position.set(x * .8, .17, z * .92); dron.add(disco);
-  const pala = new THREE.Mesh(new THREE.BoxGeometry(1, .015, .07), matOscuro); pala.position.copy(disco.position); helices.push(pala); dron.add(pala);
-  const nav = new THREE.Mesh(new THREE.SphereGeometry(.035, 8, 6), new THREE.MeshBasicMaterial({ color: new THREE.Color(z > 0 ? (x > 0 ? '#3dff7a' : '#ff3030') : '#ffffff').multiplyScalar(3) }));
-  nav.position.set(x * .8, 0, z * .92); dron.add(nav);
-  const pata = new THREE.Mesh(new THREE.CylinderGeometry(.015, .015, .3, 6), matOscuro); pata.position.set(x * .3, -.25, z * .4); dron.add(pata);
+/* ---------- malla de nodos: cada uno corre su modelo y comparte lo que detecta ---------- */
+const NODOS = [];
+{
+  const esp = 30, crudos = [];
+  for (let q = -5; q <= 5; q++) for (let r = -5; r <= 5; r++){
+    if (q === 0 && r === 0) continue;
+    const x = esp * (q + r * .5) + (hash(q, r) - .5) * 8, z = esp * r * .866 + (hash(r + 3, q) - .5) * 8;
+    if (Math.hypot(x, z) > 92 || dCamino(x, z) < 7 || Math.hypot(x - CENTRAL.x, z - CENTRAL.z) < 15 || Math.hypot(x - GATEWAY.x, z - GATEWAY.z) < 10) continue;
+    crudos.push([x, z]);
+  }
+  crudos.sort((a, b) => Math.hypot(...a) - Math.hypot(...b));
+  NODOS.push({ id: 'N-01', p: NODO.clone(), principal: true });
+  crudos.forEach(([x, z], i) => NODOS.push({ id: 'N-' + String(i + 2).padStart(2, '0'), p: new THREE.Vector3(x, altura(x, z), z) }));
 }
-dron.traverse(o => { if (o.isMesh) o.castShadow = !movil; });
-dron.scale.setScalar(1.3);
-const luzDron = new THREE.SpotLight('#ffffff', 0, 30, .5, .6); luzDron.position.set(0, -.2, 0); dron.add(luzDron); dron.add(luzDron.target); luzDron.target.position.set(0, -10, 0);
-dron.visible = false; escena.add(dron);
-const inicioDron = GATEWAY.clone().add(new THREE.Vector3(-4, 22, 4)), sobreFoco = FOCO.clone().add(new THREE.Vector3(0, 11, 0));
+// el resto de los nodos se dibuja instanciado: mástil, carcasa y panel
+{
+  const partes = [
+    [new THREE.CylinderGeometry(.045, .06, 1.7, 8).translate(0, .85, 0), matMetal],
+    [new RoundedBoxGeometry(.6, .78, .36, 2, .05).translate(0, 1.5, .12), matCarcasa],
+    [new THREE.BoxGeometry(.85, .03, .55).rotateX(-.6).translate(0, 2.02, -.05), matPanel],
+  ];
+  const otros = NODOS.filter(n => !n.principal);
+  for (const [geo, mat] of partes){
+    const im = new THREE.InstancedMesh(geo, mat, otros.length);
+    otros.forEach((n, i) => { tmpQ.setFromAxisAngle(eje, hash(n.p.x, n.p.z) * 6.28); im.setMatrixAt(i, tmpM.compose(n.p, tmpQ, tmpS.set(1, 1, 1))); });
+    im.castShadow = !movil; escena.add(im);
+  }
+}
+// balizas sobre el dosel: así se ve la red desde arriba
+const ALTO_BALIZA = 15;
+const balizas = NODOS.map((n, i) => {
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: punto, color: new THREE.Color('#7dd3a8'), transparent: true, opacity: 0, depthTest: false, depthWrite: false, fog: false }));
+  s.position.copy(n.p).add(new THREE.Vector3(0, ALTO_BALIZA, 0)); s.renderOrder = 6; s.userData.fase = i * 1.37; escena.add(s); return s;
+});
+const haces = (() => {
+  const a = new Float32Array(NODOS.length * 6);
+  NODOS.forEach((n, i) => a.set([n.p.x, n.p.y + 2.3, n.p.z, n.p.x, n.p.y + ALTO_BALIZA, n.p.z], i * 6));
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(a, 3));
+  const l = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: '#7dd3a8', transparent: true, opacity: 0, depthTest: false, depthWrite: false, fog: false }));
+  l.renderOrder = 5; escena.add(l); return l;
+})();
+
+/* ---------- central portátil: container con plataformas de carga para los drones ---------- */
+const central = new THREE.Group();
+central.position.set(CENTRAL.x, H_CENTRAL, CENTRAL.z); central.rotation.y = ANG_CENTRAL; escena.add(central);
+const LARGO = 6.06, ALTO_C = 2.6, ANCHO = 2.44, GATAS = .4;
+const texLateral = lienzoTex(1024, () => {}), texPuerta = lienzoTex(512, () => {}), texPantalla = lienzoTex(512, () => {});
+function pintarCentral(){
+  const L = texLateral.image, x = L.getContext('2d'); L.width = 1024; L.height = 440;
+  x.fillStyle = '#2e3838'; x.fillRect(0, 0, 1024, 440);
+  for (let i = 0; i < 1024; i += 22){ x.fillStyle = 'rgba(255,255,255,.05)'; x.fillRect(i, 0, 9, 440); x.fillStyle = 'rgba(0,0,0,.18)'; x.fillRect(i + 13, 0, 4, 440); }
+  const g = x.createLinearGradient(0, 0, 1024, 0); g.addColorStop(0, '#2B0B4F'); g.addColorStop(.35, '#8E1F6B'); g.addColorStop(.7, '#E0512A'); g.addColorStop(1, '#F7C548');
+  x.fillStyle = g; x.fillRect(0, 392, 1024, 22);
+  x.fillStyle = '#e9eeeb'; x.font = '800 92px Syne, "Helvetica Neue", Arial, sans-serif'; x.fillText('IgnisEdge', 70, 210);
+  x.font = '500 30px "IBM Plex Sans", Arial, sans-serif'; x.fillStyle = 'rgba(233,238,235,.75)'; x.fillText('Central portátil 01 · carga y despacho de drones', 74, 262);
+  texLateral.needsUpdate = true;
+  const P = texPuerta.image, y = P.getContext('2d'); P.width = P.height = 512;
+  y.fillStyle = '#2e3838'; y.fillRect(0, 0, 512, 512);
+  for (let i = 0; i < 512; i += 20){ y.fillStyle = 'rgba(0,0,0,.16)'; y.fillRect(0, i + 12, 512, 4); }
+  y.fillStyle = 'rgba(0,0,0,.35)'; y.fillRect(254, 0, 4, 512);
+  y.fillStyle = '#9aa5a1'; for (const bx of [110, 190, 322, 402]) y.fillRect(bx, 20, 9, 472);
+  texPuerta.needsUpdate = true;
+  const S = texPantalla.image, z = S.getContext('2d'); S.width = 512; S.height = 320;
+  z.fillStyle = '#071216'; z.fillRect(0, 0, 512, 320); z.strokeStyle = 'rgba(247,197,72,.35)'; z.lineWidth = 1;
+  for (let i = 0; i < 512; i += 32){ z.beginPath(); z.moveTo(i, 0); z.lineTo(i, 320); z.stroke(); }
+  for (let j = 0; j < 320; j += 32){ z.beginPath(); z.moveTo(0, j); z.lineTo(512, j); z.stroke(); }
+  for (let i = 0; i < 28; i++){ z.fillStyle = '#7dd3a8'; z.beginPath(); z.arc(rnd(30, 480), rnd(30, 290), 4, 0, 6.28); z.fill(); }
+  z.fillStyle = '#E0512A'; z.beginPath(); z.arc(300, 150, 9, 0, 6.28); z.fill();
+  z.font = '600 22px "IBM Plex Sans", Arial'; z.fillStyle = '#e9eeeb'; z.fillText('Gemelo digital · Curanilahue', 18, 30);
+  texPantalla.needsUpdate = true;
+}
+pintarCentral();
+document.fonts && document.fonts.ready.then(pintarCentral);
+const relieve = lienzoTex(256, (x, n) => { x.fillStyle = '#808080'; x.fillRect(0, 0, n, n); for (let i = 0; i < n; i += 11){ x.fillStyle = '#c0c0c0'; x.fillRect(i, 0, 4, n); x.fillStyle = '#404040'; x.fillRect(i + 6, 0, 3, n); } }, false);
+relieve.wrapS = THREE.RepeatWrapping; relieve.repeat.set(1, 1);
+{
+  const lado = new THREE.MeshStandardMaterial({ map: texLateral, bumpMap: relieve, bumpScale: 2, roughness: .55, metalness: .35 });
+  const extremo = new THREE.MeshStandardMaterial({ map: texPuerta, roughness: .55, metalness: .35 });
+  const techo = new THREE.MeshStandardMaterial({ color: '#384444', roughness: .6, metalness: .3 });
+  const cuerpo = new THREE.Mesh(new THREE.BoxGeometry(LARGO, ALTO_C, ANCHO), [extremo, extremo, techo, techo, lado, lado]);
+  cuerpo.position.y = GATAS + ALTO_C / 2; cuerpo.castShadow = cuerpo.receiveShadow = !movil; central.add(cuerpo);
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]){
+    const gata = new THREE.Mesh(new THREE.CylinderGeometry(.08, .12, GATAS + .3, 8), matMetal); gata.position.set(sx * (LARGO / 2 - .3), (GATAS - .3) / 2, sz * (ANCHO / 2 - .25)); central.add(gata);
+  }
+  // puerta lateral abierta con luz interior y la pantalla del operador
+  const vano = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 2.05), new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffd9a0').multiplyScalar(1.4) }));
+  vano.position.set(-1.6, GATAS + 1.05, -ANCHO / 2 - .01); vano.rotation.y = Math.PI; central.add(vano);
+  const pantalla = new THREE.Mesh(new THREE.PlaneGeometry(1.5, .94), new THREE.MeshBasicMaterial({ map: texPantalla, color: new THREE.Color(1.5, 1.5, 1.5) }));
+  pantalla.position.set(.6, GATAS + 1.55, -ANCHO / 2 - .02); pantalla.rotation.y = Math.PI; central.add(pantalla);
+  const escalon = new THREE.Mesh(new THREE.BoxGeometry(1.2, .22, .6), matMetal); escalon.position.set(-1.6, .2, -ANCHO / 2 - .4); central.add(escalon);
+  central.userData.vano = vano;
+}
+// plataformas de aterrizaje y carga en el techo
+const texPlataforma = lienzoTex(256, (x, n) => {
+  x.fillStyle = '#1b2121'; x.fillRect(0, 0, n, n); x.strokeStyle = '#F7C548'; x.lineWidth = 9; x.beginPath(); x.arc(128, 128, 92, 0, 6.28); x.stroke();
+  x.fillStyle = '#e9eeeb'; x.fillRect(92, 78, 16, 100); x.fillRect(148, 78, 16, 100); x.fillRect(92, 120, 72, 16);
+});
+const PLATAFORMAS = [-1.95, 0, 1.95].map(px => {
+  const base = new THREE.Mesh(new THREE.BoxGeometry(1.75, .07, 1.75), [matOscuro, matOscuro, new THREE.MeshStandardMaterial({ map: texPlataforma, roughness: .7 }), matOscuro, matOscuro, matOscuro]);
+  base.position.set(px, GATAS + ALTO_C + .04, 0); central.add(base);
+  const anillo = new THREE.Mesh(new THREE.RingGeometry(.86, .9, 48).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#7dd3a8', transparent: true, opacity: .8 }));
+  anillo.position.set(px, GATAS + ALTO_C + .085, 0); central.add(anillo);
+  return { anillo, local: new THREE.Vector3(px, GATAS + ALTO_C + .3, 0) };
+});
+// mástil con antena LoRa y foco de iluminación
+const ALTO_MASTIL = 7.5;
+{
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(.07, .1, ALTO_MASTIL, 10), matMetal); m.position.set(LARGO / 2 + .25, ALTO_MASTIL / 2, .6); central.add(m);
+  const ant = new THREE.Mesh(new THREE.CylinderGeometry(.03, .04, 2.2, 8), new THREE.MeshStandardMaterial({ color: '#e8ece9', roughness: .5 })); ant.position.set(LARGO / 2 + .25, ALTO_MASTIL + 1.1, .6); central.add(ant);
+  const reflector = new THREE.Mesh(new THREE.BoxGeometry(.4, .25, .3), matOscuro); reflector.position.set(LARGO / 2 + .25, ALTO_MASTIL - .6, .3); central.add(reflector);
+  const luzCentral = new THREE.SpotLight('#ffe2b8', 0, 40, .75, .7, 1.4); luzCentral.position.set(LARGO / 2 + .25, ALTO_MASTIL - .7, .3);
+  luzCentral.target.position.set(-1, 0, -5); central.add(luzCentral, luzCentral.target); central.userData.luz = luzCentral;
+  // paneles solares en el suelo, al costado
+  for (let i = 0; i < 3; i++){
+    const p = new THREE.Mesh(new THREE.BoxGeometry(1.7, .05, 1), matPanel); p.position.set(-2 + i * 1.85, .9, ANCHO / 2 + 2.2); p.rotation.x = .55; p.castShadow = !movil; central.add(p);
+    const pata = new THREE.Mesh(new THREE.CylinderGeometry(.04, .04, .9, 6), matMetal); pata.position.set(-2 + i * 1.85, .45, ANCHO / 2 + 2.5); central.add(pata);
+  }
+}
+central.traverse(o => { if (o.isMesh) o.castShadow = !movil; });
+central.updateMatrixWorld();
+const TOPE_CENTRAL = central.localToWorld(new THREE.Vector3(LARGO / 2 + .25, ALTO_MASTIL + 2.2, .6));
+const BALIZA_CENTRAL = central.localToWorld(new THREE.Vector3(0, ALTO_C + 6, 0));
+
+/* ---------- drones: tres en la central, cargándose ---------- */
+function crearDron(){
+  const d = new THREE.Group();
+  const matDron = new THREE.MeshStandardMaterial({ color: '#e4e8e6', roughness: .3, metalness: .1 });
+  d.add(new THREE.Mesh(new RoundedBoxGeometry(.85, .26, 1.25, 3, .1), matDron));
+  const tapa = new THREE.Mesh(new RoundedBoxGeometry(.6, .1, .8, 2, .04), matOscuro); tapa.position.y = .16; d.add(tapa);
+  const gimbal = new THREE.Mesh(new THREE.SphereGeometry(.17, 16, 12), matOscuro); gimbal.position.set(0, -.2, .5); d.add(gimbal);
+  const lente = new THREE.Mesh(new THREE.CircleGeometry(.08, 16), new THREE.MeshStandardMaterial({ color: '#0a1020', roughness: .05, metalness: .9 })); lente.position.set(0, -.2, .67); d.add(lente);
+  const helices = [], discos = [];
+  for (const [x, z] of [[1, 1], [-1, 1], [1, -1], [-1, -1]]){
+    const brazo = new THREE.Mesh(new THREE.CylinderGeometry(.04, .05, 1.1, 8), matDron);
+    brazo.rotation.z = Math.PI / 2; brazo.rotation.y = -Math.atan2(z, x); brazo.position.set(x * .42, .02, z * .55); d.add(brazo);
+    const motor = new THREE.Mesh(new THREE.CylinderGeometry(.1, .1, .14, 14), matOscuro); motor.position.set(x * .8, .08, z * .92); d.add(motor);
+    const disco = new THREE.Mesh(new THREE.CircleGeometry(.55, 28).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#c9d2ce', transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide }));
+    disco.position.set(x * .8, .17, z * .92); d.add(disco); discos.push(disco);
+    const pala = new THREE.Mesh(new THREE.BoxGeometry(1, .015, .07), matOscuro); pala.position.copy(disco.position); helices.push(pala); d.add(pala);
+    const nav = new THREE.Mesh(new THREE.SphereGeometry(.035, 8, 6), new THREE.MeshBasicMaterial({ color: new THREE.Color(z > 0 ? (x > 0 ? '#3dff7a' : '#ff3030') : '#ffffff').multiplyScalar(3) }));
+    nav.position.set(x * .8, 0, z * .92); d.add(nav);
+    const pata = new THREE.Mesh(new THREE.CylinderGeometry(.015, .015, .3, 6), matOscuro); pata.position.set(x * .3, -.25, z * .4); d.add(pata);
+  }
+  d.traverse(o => { if (o.isMesh) o.castShadow = !movil; });
+  d.scale.setScalar(1.25);
+  d.userData = { helices, discos };
+  return d;
+}
+const drones = PLATAFORMAS.map(pl => { const d = crearDron(); d.userData.base = central.localToWorld(pl.local.clone()); d.position.copy(d.userData.base); d.rotation.y = ANG_CENTRAL; escena.add(d); return d; });
+const luzDron = new THREE.SpotLight('#ffffff', 0, 30, .5, .6); luzDron.position.set(0, -.2, 0); drones[0].add(luzDron, luzDron.target); luzDron.target.position.set(0, -10, 0);
+
+/* ---------- visualización del incidente: detección, triangulación y enlaces ---------- */
+const AMARILLO = new THREE.Color('#F7C548'), NARANJA = new THREE.Color('#E0512A'), VERDE = new THREE.Color('#7dd3a8');
+const MAX_DET = 4;
+const ondas = [], circulos = [], enlaces = [];
+for (let i = 0; i < MAX_DET; i++){
+  const o = new THREE.Mesh(new THREE.RingGeometry(.94, 1, 96).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: AMARILLO.clone().multiplyScalar(2), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, depthTest: false, fog: false }));
+  o.renderOrder = 4; escena.add(o); ondas.push(o);
+  const c = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: AMARILLO.clone().multiplyScalar(1.6), transparent: true, opacity: 0, depthWrite: false, depthTest: false, fog: false }));
+  c.renderOrder = 4; escena.add(c); circulos.push(c);
+}
+function crearEnlace(color){
+  const tubo = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: color.clone().multiplyScalar(2.5), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+  escena.add(tubo);
+  const paquetes = [0, 1, 2].map(k => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: punto, color: new THREE.Color('#ffe08a').multiplyScalar(3), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false })); s.scale.setScalar(2); s.userData.f = k / 3; escena.add(s); return s; });
+  return { tubo, paquetes, curva: null };
+}
+for (let i = 0; i < MAX_DET; i++) enlaces.push(crearEnlace(AMARILLO));
+const enlaceCentral = crearEnlace(AMARILLO);
+const estimado = new THREE.Mesh(new THREE.RingGeometry(.9, 1, 64).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: NARANJA.clone().multiplyScalar(2), transparent: true, opacity: 0, depthWrite: false, depthTest: false, fog: false }));
+estimado.renderOrder = 5; escena.add(estimado);
+const mira3d = new THREE.Mesh(new THREE.RingGeometry(1.1, 1.3, 48).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: AMARILLO.clone().multiplyScalar(2), transparent: true, opacity: 0, depthWrite: false, depthTest: false, fog: false }));
+mira3d.renderOrder = 6; escena.add(mira3d);
+const haloGw = new THREE.Sprite(new THREE.SpriteMaterial({ map: punto, color: '#F7C548', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+haloGw.position.copy(TOPE_GW); haloGw.scale.setScalar(7); escena.add(haloGw);
+const balizaCentral = new THREE.Sprite(new THREE.SpriteMaterial({ map: punto, color: new THREE.Color('#bfe3ff'), transparent: true, opacity: 0, depthTest: false, depthWrite: false, fog: false }));
+balizaCentral.position.copy(BALIZA_CENTRAL); balizaCentral.scale.setScalar(4); balizaCentral.renderOrder = 6; escena.add(balizaCentral);
+
+function circuloSobreTerreno(c, r){
+  const pts = [];
+  for (let i = 0; i <= 96; i++){ const a = i / 96 * 6.2832, x = c.x + Math.cos(a) * r, z = c.z + Math.sin(a) * r; pts.push(new THREE.Vector3(x, altura(x, z) + .7, z)); }
+  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), 192, .12, 5, true);
+}
+function arcoEntre(a, b, alto){ const m = a.clone().lerp(b, .5); m.y = Math.max(a.y, b.y) + alto; return new THREE.QuadraticBezierCurve3(a.clone(), m, b.clone()); }
+const incidente = { foco: FOCO.clone(), detectores: [], clave: '' };
+function detectoresPara(f){
+  const orden = NODOS.map(n => ({ n, d: Math.hypot(n.p.x - f.x, n.p.z - f.z) })).sort((a, b) => a.d - b.d);
+  const cerca = orden.filter(o => o.d < 46).slice(0, MAX_DET);
+  return (cerca.length >= 3 ? cerca : orden.slice(0, 3)).map(o => o.n);
+}
+function configurarIncidente(f, clave){
+  if (incidente.clave === clave) return;
+  incidente.clave = clave; incidente.foco.copy(f); incidente.foco.y = altura(f.x, f.z);
+  incidente.detectores = detectoresPara(incidente.foco);
+  foco.position.copy(incidente.foco);
+  incidente.detectores.forEach((n, i) => {
+    ondas[i].position.copy(n.p).add(new THREE.Vector3(0, .35, 0));
+    circulos[i].geometry.dispose(); circulos[i].geometry = circuloSobreTerreno(n.p, Math.hypot(n.p.x - incidente.foco.x, n.p.z - incidente.foco.z));
+    const desde = n.principal ? tope(nodo) : n.p.clone().add(new THREE.Vector3(.36, 2.6, 0));
+    enlaces[i].curva = arcoEntre(desde, TOPE_GW, 14 + i * 3);
+    enlaces[i].tubo.geometry.dispose(); enlaces[i].tubo.geometry = new THREE.TubeGeometry(enlaces[i].curva, 120, .06, 6);
+  });
+  for (let i = incidente.detectores.length; i < MAX_DET; i++){ ondas[i].material.opacity = 0; circulos[i].material.opacity = 0; enlaces[i].curva = null; enlaces[i].tubo.material.opacity = 0; enlaces[i].paquetes.forEach(p => p.material.opacity = 0); }
+  if (!enlaceCentral.curva){ enlaceCentral.curva = arcoEntre(TOPE_GW, TOPE_CENTRAL, 26); enlaceCentral.tubo.geometry = new THREE.TubeGeometry(enlaceCentral.curva, 160, .07, 6); }
+  estimado.position.copy(incidente.foco).add(new THREE.Vector3(0, .8, 0));
+  mira3d.position.copy(estimado.position);
+}
+configurarIncidente(FOCO, 'historia');
 
 /* ---------- postproceso ---------- */
 const composer = new EffectComposer(renderer);
@@ -859,21 +1108,25 @@ composer.addPass(acabado);
 const ajustarHumo = () => matHumo.uniforms.uEsc.value = innerHeight * PR / (2 * Math.tan(THREE.MathUtils.degToRad(camara.fov / 2)));
 ajustarHumo();
 
-/* ---------- capítulos ---------- */
+/* ---------- capítulos de la historia ---------- */
+// det: el primer nodo detecta · tri: los vecinos triangulan · lora: alerta a la central · malla: la red visible
 const K = [
-  { c:[-40, 30, 66],  t:[-12, 4, -8], gas:.7, calor:.3, onda:0, lora:0, dron:0, termica:0, grilla:0 },
-  { c:[17, 9, 22],    t:[5, 2.5, -4], gas:1,   calor:.15, onda:0, lora:0, dron:0, termica:0, grilla:0 },
-  { c:[-7, 4.6, 11],  t:[-3.2, 2.2, -1.5], gas:1, calor:.45, onda:1, lora:0, dron:0, termica:0, grilla:0 },
-  { c:[86, 58, 46],   t:[22, 8, -24], gas:.8, calor:.6, onda:.4, lora:1, dron:0, termica:0, grilla:0 },
-  { c:[11, 26, 20],   t:[5, 2, -4],   gas:.8,  calor:.9, onda:0, lora:0, dron:1, termica:1, grilla:0 },
-  { c:[0, 175, 6],    t:[0, 0, -2],   gas:.4,  calor:.9, onda:0, lora:.5, dron:1, termica:0, grilla:1 },
-  { c:[-70, 48, 92],  t:[0, 0, -10],  gas:.3,  calor:.4, onda:0, lora:0, dron:0, termica:0, grilla:.25 },
+  { c:[-40, 30, 66],  t:[-12, 4, -8],     gas:.7, calor:.3,  det:0,  tri:0,  lora:0,  dron:0, termica:0, grilla:0,  malla:.35 },
+  { c:[17, 9, 22],    t:[5, 2.5, -4],     gas:1,  calor:.15, det:0,  tri:0,  lora:0,  dron:0, termica:0, grilla:0,  malla:0 },
+  { c:[-7, 4.6, 11],  t:[-3.2, 2.2, -1.5],gas:1,  calor:.45, det:1,  tri:0,  lora:0,  dron:0, termica:0, grilla:0,  malla:.15 },
+  { c:[22, 52, 58],   t:[-17, 0, -3],     gas:.9, calor:.5,  det:1,  tri:1,  lora:0,  dron:0, termica:0, grilla:0,  malla:1 },
+  { c:[14, 86, 104],  t:[-16, 0, -18],    gas:.8, calor:.6,  det:.6, tri:.7, lora:1,  dron:0, termica:0, grilla:0,  malla:1 },
+  { c:[11, 26, 20],   t:[5, 2, -4],       gas:.8, calor:.9,  det:0,  tri:0,  lora:0,  dron:1, termica:1, grilla:0,  malla:0 },
+  { c:[0, 175, 6],    t:[0, 0, -2],       gas:.4, calor:.9,  det:0,  tri:.6, lora:.5, dron:1, termica:0, grilla:1,  malla:1 },
+  { c:[-62, 74, 96],  t:[-16, 0, -8],     gas:0,  calor:0,   det:0,  tri:0,  lora:0,  dron:0, termica:0, grilla:0,  malla:1 },
+  { c:[-70, 48, 92],  t:[0, 0, -10],      gas:0,  calor:0,   det:0,  tri:0,  lora:0,  dron:0, termica:0, grilla:.25,malla:.4 },
 ];
-// en pantallas verticales el texto va abajo: se encuadra el sujeto en la mitad superior
+const CAP_SIM = 7;
 if (innerWidth / innerHeight < .8){
   Object.assign(K[1], { c:[14, 9, 20], t:[5, -2, -4] });
   Object.assign(K[2], { c:[-5, 5, 10], t:[.5, -1.5, -.5] });
-  Object.assign(K[4], { c:[9, 26, 18], t:[5, -5, -4] });
+  Object.assign(K[5], { c:[9, 26, 18], t:[5, -5, -4] });
+  Object.assign(K[7], { c:[-30, 120, 110], t:[0, 0, -2] });
 }
 const cap = [...document.querySelectorAll('[data-ch]')];
 const final = document.getElementById('tecnologia');
@@ -891,14 +1144,146 @@ function estado(f){
 }
 const cursor = document.querySelector('.escala .cursor'), etiquetas = [...document.querySelectorAll('.escala li')];
 const visor = document.querySelector('.visor'), escala = document.querySelector('.escala');
-const AMARILLO = new THREE.Color('#F7C548'), NARANJA = new THREE.Color('#E0512A'), VERDE = new THREE.Color('#7dd3a8');
 const C = {
   luna: new THREE.Color('#b9d3e6'), ocaso: new THREE.Color('#ff9a55'), sol: new THREE.Color('#fff0d8'),
   hemiN: new THREE.Color('#7f9fb2'), hemiD: new THREE.Color('#cfe2f0'), sueloN: new THREE.Color('#0d1512'), sueloD: new THREE.Color('#4b4733'),
   humoN: new THREE.Color('#4d5757'), humoD: new THREE.Color('#d2d9d7'), nieblaN: new THREE.Color('#a9c0c2'), nieblaD: new THREE.Color('#ffffff'),
 };
 
-// modo día / noche: el valor avanza suave para que el cambio sea un atardecer o un amanecer
+/* ---------- conexión con los celulares de turno ---------- */
+const API = parametros.get('api') || (location.hostname.endsWith('ignisedge.pro') ? '/api' : 'https://ignisedge.pro/api');
+const marcadoresTurno = [...document.querySelectorAll('[data-de-turno]')];
+let fuenteEventos = null, deTurno = null;
+function conectarTurno(){
+  if (fuenteEventos || !('EventSource' in window)) return;
+  try {
+    fuenteEventos = new EventSource(API + '/eventos?rol=pantalla');
+    fuenteEventos.addEventListener('turno', e => { try { deTurno = JSON.parse(e.data).n; pintarTurno(); } catch (_) {} });
+    fuenteEventos.onerror = () => { deTurno = null; pintarTurno(); };
+  } catch (_) {}
+}
+function pintarTurno(){
+  const txt = deTurno == null ? 'Escanea para quedar de turno' : deTurno === 1 ? '1 persona de turno' : deTurno + ' personas de turno';
+  marcadoresTurno.forEach(m => m.textContent = txt);
+}
+function avisarCelulares(){
+  const r = v => Math.round(v * 10) / 10;
+  const datos = {
+    foco: { x: r(incidente.foco.x), z: r(incidente.foco.z) },
+    central: { x: r(CENTRAL.x), z: r(CENTRAL.z) }, gateway: { x: r(GATEWAY.x), z: r(GATEWAY.z) },
+    nodos: NODOS.map(n => ({ id: n.id, x: r(n.p.x), z: r(n.p.z) })),
+    detectores: incidente.detectores.map(n => n.id),
+  };
+  try { fetch(API + '/foco', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(datos), keepalive: true }).catch(() => {}); } catch (_) {}
+}
+
+/* ---------- simulador "Enciende un foco" ---------- */
+const sim = { activo: false, t0: 0, avisado: false, auto: false };
+const panelSim = document.getElementById('simulador');
+const fasesSim = [...document.querySelectorAll('.fases li')];
+const estadoSim = document.querySelector('.estado-sim');
+const MOMENTOS = [0, 1.5, 3, 6, 8.2, 8.8, 13.3, 16.6];
+const DURACION = 27;
+function valoresSim(te){
+  const vuelta = 1 - ss(te, 21, 26.5);
+  return {
+    gas: ss(te, 0, 1.5) * (1 - ss(te, 22, 26)),
+    calor: (ss(te, 0, 1.5) * .7 + ss(te, 12, 13) * .25) * (1 - ss(te, 22, 26.5)),
+    det: ss(te, 1.5, 2.2) * (1 - ss(te, 17, 19)),
+    tri: ss(te, 3, 5.6) * (1 - ss(te, 21, 24)),
+    lora: ss(te, 6, 8.4) * (1 - ss(te, 17, 19)),
+    dron: ss(te, 8.8, 13) * vuelta,
+    termica: ss(te, 13.1, 13.5) * (1 - ss(te, 16.2, 16.6)),
+    grilla: ss(te, 16.8, 17.8) * .45 * (1 - ss(te, 23, 26)),
+    camDron: ss(te, 12.2, 13.4) * (1 - ss(te, 16.2, 17.4)),
+  };
+}
+function iniciarSim(punto, auto = false){
+  configurarIncidente(punto, 'sim-' + punto.x.toFixed(1) + ',' + punto.z.toFixed(1));
+  sim.activo = true; sim.t0 = performance.now() / 1000; sim.avisado = false; sim.auto = auto;
+  estadoSim.textContent = auto ? 'Demostración automática. Haz clic en el bosque para probar tú.' : 'Simulación en curso.';
+}
+function terminarSim(){ sim.activo = false; fasesSim.forEach(li => li.className = ''); estadoSim.textContent = 'Haz clic en cualquier punto del bosque para encender un foco.'; }
+const rayo = new THREE.Raycaster(), vRayo = new THREE.Vector2();
+function puntoEnTerreno(cx, cy){
+  vRayo.set(cx / innerWidth * 2 - 1, -(cy / innerHeight) * 2 + 1); rayo.setFromCamera(vRayo, camara);
+  const o = rayo.ray.origin, d = rayo.ray.direction, p = new THREE.Vector3();
+  for (let s = 0; s < 600; s += .5){ p.copy(o).addScaledVector(d, s); if (p.y <= altura(p.x, p.z)){ p.y = altura(p.x, p.z); return p; } }
+  return null;
+}
+const valido = p => p && Math.hypot(p.x, p.z) < 88 && dCamino(p.x, p.z) > 4 && Math.hypot(p.x - CENTRAL.x, p.z - CENTRAL.z) > 9;
+let enSim = false, punteroSim = null, ultimoPuntero = 0;
+addEventListener('click', e => {
+  if (!enSim || e.target.closest('.panel, header, .qr-vitrina, a, button, .solida, footer')) return;
+  const te = performance.now() / 1000 - sim.t0;
+  if (sim.activo && !sim.auto && te < 17){ estadoSim.textContent = 'Espera a que termine esta simulación.'; return; }
+  const p = puntoEnTerreno(e.clientX, e.clientY);
+  if (!valido(p)){ estadoSim.textContent = 'Elige un punto dentro de la plantación, lejos del camino.'; return; }
+  iniciarSim(p);
+});
+addEventListener('pointermove', e => {
+  if (!enSim || e.target.closest('.panel, header')) { punteroSim = null; return; } const ahora = performance.now(); if (ahora - ultimoPuntero < 60) return; ultimoPuntero = ahora;
+  const p = puntoEnTerreno(e.clientX, e.clientY); punteroSim = valido(p) ? p : null;
+});
+function focoAlAzar(){
+  for (let i = 0; i < 50; i++){ const a = rnd(0, 6.28), r = rnd(10, 70), p = new THREE.Vector3(Math.cos(a) * r, 0, Math.sin(a) * r); p.y = altura(p.x, p.z); if (valido(p)) return p; }
+  return FOCO.clone();
+}
+
+/* ---------- modo vitrina: recorrido automático cuando nadie usa la pantalla ---------- */
+const vitrina = parametros.has('vitrina');
+if (vitrina) document.documentElement.classList.add('vitrina');
+const OCIO = (+parametros.get('ocio') || 30) * 1000;
+let ultimoUso = performance.now(), recorrido = null;
+function actividad(){ ultimoUso = performance.now(); recorrido = null; document.documentElement.classList.remove('ocio'); }
+['pointerdown', 'wheel', 'keydown', 'touchstart'].forEach(ev => addEventListener(ev, e => { if (e.isTrusted) actividad(); }, { passive: true }));
+addEventListener('pointermove', e => { if (Math.abs(e.movementX) + Math.abs(e.movementY) > 3) actividad(); });
+addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey || e.altKey || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.key === 'f' || e.key === 'F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+const centroSeccion = el => Math.max(0, el.offsetTop + el.offsetHeight / 2 - innerHeight * .55);
+function armarRecorrido(){
+  const pasos = cap.map((el, i) => ({ y: centroSeccion(el), espera: i === 0 ? 7 : i === CAP_SIM ? 31 : 6.5, sim: i === CAP_SIM }));
+  pasos.push({ y: 0, espera: 1.5, arriba: true });
+  return { pasos, i: 0, fase: 'mover', t: 0, desde: scrollY };
+}
+const curva3 = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+let ultimoPaso = performance.now();
+function avanzarRecorrido(){
+  const ahoraMs = performance.now(), dt = Math.min((ahoraMs - ultimoPaso) / 1000, .5); ultimoPaso = ahoraMs;
+  if (!vitrina) return;
+  const ocioso = performance.now() - ultimoUso;
+  document.documentElement.classList.toggle('ocio', ocioso > 4000);
+  if (!recorrido){ if (ocioso > OCIO) recorrido = armarRecorrido(); else return; }
+  const R = recorrido, paso = R.pasos[R.i];
+  R.t += dt;
+  if (R.fase === 'mover'){
+    const dur = paso.arriba ? 3.5 : 2.6, k = Math.min(1, R.t / dur);
+    scrollTo(0, lerp(R.desde, paso.y, curva3(k)));
+    if (k >= 1){ R.fase = 'esperar'; R.t = 0; if (paso.sim) setTimeout(() => { if (recorrido === R) iniciarSim(focoAlAzar(), true); }, 1500); }
+  } else if (R.t >= paso.espera){
+    R.i = (R.i + 1) % R.pasos.length; R.fase = 'mover'; R.t = 0; R.desde = scrollY;
+  }
+}
+if (vitrina) conectarTurno();
+
+/* ---------- etiquetas sobre la escena ---------- */
+const capaEtiquetas = document.querySelector('.etiquetas');
+function etiqueta(texto, clase = ''){ const s = document.createElement('span'); s.textContent = texto; if (clase) s.className = clase; capaEtiquetas.appendChild(s); return s; }
+const etCentral = etiqueta('Central portátil'), etGateway = etiqueta('Gateway LoRa'), etFoco = etiqueta('Foco estimado', 'alerta');
+const etDetectores = [0, 1, 2, 3].map(() => etiqueta(''));
+const vProy = new THREE.Vector3();
+function ubicar(el, p, visible){
+  if (!visible){ el.classList.remove('ve'); return; }
+  vProy.copy(p).project(camara);
+  const sx = (vProy.x * .5 + .5) * innerWidth, sy = (-vProy.y * .5 + .5) * innerHeight;
+  if (vProy.z > 1 || sx < 0 || sx > innerWidth || sy < 90 || sy > innerHeight){ el.classList.remove('ve'); return; }
+  el.style.transform = `translate(${sx}px, ${sy}px) translate(-50%, -150%)`;
+  el.classList.add('ve');
+}
+
+/* ---------- modo día / noche ---------- */
 const modoActual = () => document.documentElement.dataset.modo === 'dia' ? 1 : 0;
 let dia = modoActual(), diaObjetivo = dia;
 addEventListener('cambiomodo', () => { diaObjetivo = modoActual(); });
@@ -910,34 +1295,64 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight); ajustarHumo();
 });
 
-// calidad adaptable: si el equipo no da abasto, baja resolución y apaga sombras
 let muestras = 0, acumulado = 0, degradado = false;
 function vigilar(dt){
   if (degradado || calidadFija || reducir) return;
   muestras++; if (muestras < 30) return; acumulado += dt;
   if (muestras === 150){
-    if (acumulado / 120 > 1 / 36){ PR = 1; renderer.setPixelRatio(1); composer.setPixelRatio(1); composer.setSize(innerWidth, innerHeight); luz.castShadow = false; ajustarHumo(); degradado = true; }
-    else degradado = true;
+    if (acumulado / 120 > 1 / 36){ PR = 1; renderer.setPixelRatio(1); composer.setPixelRatio(1); composer.setSize(innerWidth, innerHeight); luz.castShadow = false; ajustarHumo(); }
+    degradado = true;
   }
 }
 
 const reloj = new THREE.Clock(), mira = new THREE.Vector3(), vSol = new THREE.Vector3(), vLuz = new THREE.Vector3(), cTmp = new THREE.Color();
+const posCam = new THREE.Vector3(), camDron = new THREE.Vector3(), miraDron = new THREE.Vector3(), tmpV = new THREE.Vector3(), tmpV2 = new THREE.Vector3();
+function rutaDron(d, u, destino, out){
+  const base = d.userData.base, arriba = tmpV2.copy(base).add(new THREE.Vector3(0, 9, 0));
+  if (u <= .22) return out.copy(base).lerp(arriba, suave(u / .22));
+  const v = suave((u - .22) / .78), m = tmpV.copy(arriba).lerp(destino, .5); m.y = Math.max(arriba.y, destino.y) + 8;
+  const a = 1 - v; return out.set(a * a * arriba.x + 2 * a * v * m.x + v * v * destino.x, a * a * arriba.y + 2 * a * v * m.y + v * v * destino.y, a * a * arriba.z + 2 * a * v * m.z + v * v * destino.z);
+}
+const destinoA = new THREE.Vector3(), destinoB = new THREE.Vector3(), prevDron = drones.map(d => d.position.clone());
+
 function cuadro(){
   const dt = Math.min(reloj.getDelta(), .05), t = reloj.elapsedTime;
-  vigilar(dt);
+  vigilar(dt); avanzarRecorrido();
   if (!reducir) uT.value = t;
   const objetivo = progreso();
   fActual = reducir ? objetivo : lerp(fActual, objetivo, 1 - Math.pow(.0015, dt));
-  const E = estado(fActual), th = E.termica;
+  const E = estado(fActual);
+
+  // ¿estamos en la sección del simulador?
+  const ahoraEnSim = Math.abs(fActual - CAP_SIM) < .45;
+  if (ahoraEnSim !== enSim){ enSim = ahoraEnSim; document.documentElement.classList.toggle('en-sim', enSim);  if (enSim) conectarTurno(); if (!enSim && sim.activo) terminarSim(); }
+  let camSim = 0;
+  if (sim.activo){
+    const te = performance.now() / 1000 - sim.t0, S = valoresSim(te);
+    for (const k of ['gas', 'calor', 'det', 'tri', 'lora', 'dron', 'termica']) E[k] = S[k];
+    E.grilla = Math.max(E.grilla, S.grilla); camSim = S.camDron;
+    fasesSim.forEach((li, i) => li.className = te >= (MOMENTOS[i + 1] ?? MOMENTOS[i] + .6) ? 'lista' : te >= MOMENTOS[i] ? 'activa' : '');
+    if (te >= MOMENTOS[7] && !sim.avisado){
+      sim.avisado = true; avisarCelulares();
+      estadoSim.textContent = deTurno ? `Foco confirmado. Alerta enviada a ${deTurno === 1 ? '1 celular' : deTurno + ' celulares'} de turno.` : 'Foco confirmado. La alerta llegó a la central.';
+    }
+    if (te > DURACION){ terminarSim(); configurarIncidente(FOCO, 'historia'); }
+  } else if (incidente.clave !== 'historia' && !enSim) configurarIncidente(FOCO, 'historia');
+  const PF = incidente.foco, th = E.termica;
 
   // transición día-noche
   dia += clamp(diaObjetivo - dia, -dt * .45, dt * .45); if (reducir) dia = diaObjetivo;
   const d = suave(dia), apagar = 1 - th * .8;
 
-  // cámara
-  camara.position.set(E.c[0] + (reducir ? 0 : mx * 4), E.c[1] - (reducir ? 0 : my * 2), E.c[2]);
-  if (!reducir) camara.position.x += Math.sin(t * .07) * 2.5;
-  mira.set(E.t[0], E.t[1], E.t[2]); camara.lookAt(mira);
+  // cámara: historia, o la del dron durante la confirmación térmica del simulador
+  posCam.set(E.c[0] + (reducir ? 0 : mx * 4), E.c[1] - (reducir ? 0 : my * 2), E.c[2]);
+  if (!reducir) posCam.x += Math.sin(t * .07) * 2.5;
+  mira.set(E.t[0], E.t[1], E.t[2]);
+  if (camSim > 0){
+    camDron.copy(PF).add(tmpV.set(0, 15, 7)); miraDron.copy(PF);
+    posCam.lerp(camDron, suave(camSim)); mira.lerp(miraDron, suave(camSim));
+  }
+  camara.position.copy(posCam); camara.lookAt(mira);
   sol.position.copy(camara.position); cielo.position.copy(camara.position); estrellas.position.copy(camara.position);
   luna.position.copy(camara.position).addScaledVector(DIR_LUNA, 800);
 
@@ -956,83 +1371,143 @@ function cuadro(){
   renderer.toneMappingExposure = lerp(1.4, .62, d);
   if (d < .45) cTmp.copy(NIEBLA_NOCHE).lerp(NIEBLA_OCASO, ss(d, .15, .45)); else cTmp.copy(NIEBLA_OCASO).lerp(NIEBLA_DIA, ss(d, .45, .85));
   escena.fog.color.copy(cTmp); escena.background.copy(cTmp);
-  escena.fog.density = lerp(lerp(.011, .0032, d), .004, Math.max(th, E.grilla));
+  escena.fog.density = lerp(lerp(.011, .0032, d), .004, Math.max(th, E.grilla, E.malla * .6));
   bloom.strength = lerp(.85, .3, d); bloom.threshold = lerp(.82, 1.3, d);
   acabado.uniforms.uTerm.value = th; acabado.uniforms.uTiempo.value = t;
   acabado.uniforms.uGrano.value = lerp(.045, .022, d); acabado.uniforms.uGan.value = lerp(1, .55, d);
   visor.classList.toggle('on', th > .6);
   document.documentElement.classList.toggle('termica', th > .6);
-  const aditivo = d < .5 ? THREE.AdditiveBlending : THREE.NormalBlending;
-  if (arco.material.blending !== aditivo){ [arco.material, ...paquetes.map(p => p.material)].forEach(m => { m.blending = aditivo; m.needsUpdate = true; }); }
   matGrilla.opacity = E.grilla * .16;
-  nieblas.forEach((n, i) => { n.material.color.copy(C.nieblaN).lerp(C.nieblaD, d); n.material.opacity = n.userData.op * (1 - E.grilla) * (1 - th * .6) * lerp(1, .3, d); n.position.x += Math.sin(t * .05 + i) * dt * n.userData.v; });
+  nieblas.forEach((n, i) => { n.material.color.copy(C.nieblaN).lerp(C.nieblaD, d); n.material.opacity = n.userData.op * (1 - E.grilla) * (1 - th * .6) * (1 - E.malla * .6) * lerp(1, .3, d); n.position.x += Math.sin(t * .05 + i) * dt * n.userData.v; });
+  central.userData.luz.intensity = (1 - d) * 40;
+  central.userData.vano.material.color.setRGB(1.4, 1.2, .9).multiplyScalar(lerp(1, .55, d));
 
-  // brasa
+  // brasa y gases en el foco actual
   const parpadeo = .75 + Math.sin(t * 7.3) * .12 + Math.sin(t * 13.1) * .08 + Math.sin(t * 23.7) * .05;
-  const fuerza = (.6 + E.calor * 3.4) * parpadeo * (1 + th * 1.5);
+  foco.visible = E.calor > .01 || E.gas > .01;
+  const fuerza = (.6 + E.calor * 3.4) * parpadeo * (1 + th * 1.5) * ss(E.calor + E.gas, 0, .3);
   matLena.emissiveIntensity = fuerza; ceniza.material.emissiveIntensity = fuerza * .6;
   grietas.offset.set(t * .01, t * .007);
-  luzBrasa.intensity = (3 + E.calor * 14) * parpadeo * lerp(1, .5, d);
-  halo.scale.setScalar((4 + E.calor * 8) * parpadeo); halo.material.opacity = (.2 + E.calor * .3) * lerp(1, .35, d);
-
-  // gases: casi invisibles a simple vista; el nodo los "ve" (se tiñen al detectar)
+  luzBrasa.intensity = (3 + E.calor * 14) * parpadeo * lerp(1, .5, d) * ss(E.calor, 0, .1);
+  halo.scale.setScalar((4 + E.calor * 8) * parpadeo); halo.material.opacity = (.2 + E.calor * .3) * lerp(1, .35, d) * ss(E.calor, 0, .1);
   matHumo.uniforms.cHumo.value.copy(C.humoN).lerp(C.humoD, d).multiplyScalar(lerp(.6, 1, 1 - th));
-  matHumo.uniforms.uSensor.value = E.onda * .55;
+  matHumo.uniforms.uSensor.value = Math.max(E.det, E.tri) * .55;
   for (let i = 0; i < NG; i++){
     hVida[i] += dt * (reducir ? 0 : .05 + (i % 5) * .008); if (hVida[i] > 1) hVida[i] -= 1;
     const v = hVida[i], sm = hSem[i], giro = sm + v * 4 + t * .2, r = .2 + v * 2.2;
-    hp[i*3]   = FOCO.x + Math.cos(giro) * r + v * v * 6 + Math.sin(v * 7 + sm) * .6;
-    hp[i*3+1] = FOCO.y + .3 + v * 15 + Math.sin(sm) * .3;
-    hp[i*3+2] = FOCO.z + Math.sin(giro) * r - v * v * 2;
+    hp[i*3]   = PF.x + Math.cos(giro) * r + v * v * 6 + Math.sin(v * 7 + sm) * .6;
+    hp[i*3+1] = PF.y + .3 + v * 15 + Math.sin(sm) * .3;
+    hp[i*3+2] = PF.z + Math.sin(giro) * r - v * v * 2;
     hTam[i] = (.8 + v * 5.5 + (sm % 1) * .8) * (.7 + E.gas * .4);
-    hAlfa[i] = ss(v, 0, .15) * Math.pow(1 - v, 1.5) * (.05 + E.gas * .11);
+    hAlfa[i] = ss(v, 0, .15) * Math.pow(1 - v, 1.5) * (.05 + E.gas * .11) * ss(E.gas, 0, .15);
     hRot[i] = sm + v * 1.8 * ((i & 1) ? 1 : -1);
     hCal[i] = Math.pow(1 - v, 4) * (.25 + E.calor * .75) * lerp(1, .5, d);
   }
   for (const n of ['position', 'aTam', 'aAlfa', 'aRot', 'aCal']) geoHumo.attributes[n].needsUpdate = true;
-  matChispa.opacity = (.3 + E.calor * .7) * lerp(1, .6, d);
+  matChispa.opacity = (.3 + E.calor * .7) * lerp(1, .6, d) * ss(E.calor, 0, .1);
   for (let i = 0; i < NC; i++){
     cv[i] += dt * (reducir ? 0 : .35 + (i % 4) * .1); if (cv[i] > 1) cv[i] -= 1;
     const v = cv[i];
-    cp[i*3] = FOCO.x + Math.sin(cs[i]) * .6 + Math.sin(v * 9 + cs[i]) * .5 + v * 1.5;
-    cp[i*3+1] = FOCO.y + .3 + v * 6 * (.6 + (i % 3) * .2);
-    cp[i*3+2] = FOCO.z + Math.cos(cs[i]) * .6;
+    cp[i*3] = PF.x + Math.sin(cs[i]) * .6 + Math.sin(v * 9 + cs[i]) * .5 + v * 1.5;
+    cp[i*3+1] = PF.y + .3 + v * 6 * (.6 + (i % 3) * .2);
+    cp[i*3+2] = PF.z + Math.cos(cs[i]) * .6;
   }
   geoChispa.attributes.position.needsUpdate = true;
 
-  // detección y LEDs
+  // red de nodos: balizas que pulsan; los que detectan cambian a ámbar
+  const detIds = new Set(incidente.detectores.map(n => n.id));
+  const nivelDet = (n, i) => i === 0 ? E.det : E.tri;
+  haces.material.opacity = E.malla * .16;
+  NODOS.forEach((n, i) => {
+    const b = balizas[i], k = incidente.detectores.indexOf(n), activo = k >= 0 && nivelDet(n, k) > .25;
+    const pulso = .5 + .5 * Math.sin(t * (activo ? 7 : 1.6) + b.userData.fase);
+    b.material.color.copy(activo ? (pulso > .5 ? AMARILLO : NARANJA) : VERDE).multiplyScalar(activo ? 2.4 : 1.4);
+    b.material.opacity = E.malla * (activo ? .95 : .45 + .35 * pulso);
+    b.scale.setScalar((activo ? 3.4 : 1.9 + .5 * pulso) * (1 + E.grilla * .6));
+  });
   const ciclo = (t * .55) % 1;
-  onda.material.opacity = E.onda * (1 - ciclo) * .8;
-  onda.scale.setScalar(1 + ciclo * 6);
-  const alerta = E.onda > .3 || E.lora > .3;
+  incidente.detectores.forEach((n, i) => {
+    const nivel = nivelDet(n, i);
+    ondas[i].material.opacity = nivel * (1 - ciclo) * .8; ondas[i].scale.setScalar(1 + ciclo * 6);
+    const g = circulos[i].geometry, total = g.index ? g.index.count : 0;
+    const rev = clamp(E.tri * 1.5 - i * .18, 0, 1);
+    g.setDrawRange(0, Math.floor(total * rev / 3) * 3); circulos[i].material.opacity = rev > 0 ? .85 * Math.min(1, E.tri * 1.4) * (1 - camSim) * (1 - th) : 0;
+  });
+  const alerta = E.det > .3 || E.lora > .3;
   nodo.userData.led.material.color.copy(alerta ? (Math.sin(t * 9) > 0 ? AMARILLO : NARANJA) : VERDE).multiplyScalar(3);
   gateway.userData.led.material.color.copy(E.lora > .3 && Math.sin(t * 9 + 1) > 0 ? AMARILLO : VERDE).multiplyScalar(3);
-  haloNodo.material.opacity = Math.max(E.onda, E.lora, E.grilla) * (.35 + .35 * Math.sin(t * 6));
-  haloGw.material.opacity = Math.max(E.lora, E.grilla) * (.35 + .35 * Math.sin(t * 6 + 1));
-  arco.material.opacity = E.lora * lerp(.55, .9, d);
-  paquetes.forEach(pk => { const f = (pk.userData.f + t * .22) % 1; curva.getPoint(f, pk.position); pk.material.opacity = E.lora * Math.sin(f * Math.PI); });
+  const conv = ss(E.tri, .55, 1);
+  estimado.material.opacity = conv * .9 * (1 - camSim) * (1 - th); estimado.scale.setScalar(lerp(13, 1.6, conv) + Math.sin(t * 5) * .15 * conv);
+  mira3d.material.opacity = ss(E.tri, .85, 1) * (.6 + .4 * Math.sin(t * 6)) * (1 - camSim); mira3d.scale.setScalar(1 + .25 * Math.sin(t * 6));
+  // LoRa: de los nodos al gateway y del gateway a la central
+  const l1 = ss(E.lora, 0, .55), l2 = ss(E.lora, .45, 1);
+  const pintarEnlace = (en, nivel, vel) => {
+    if (!en.curva){ en.tubo.material.opacity = 0; en.paquetes.forEach(p => p.material.opacity = 0); return; }
+    en.tubo.material.opacity = nivel * lerp(.5, .9, d);
+    en.paquetes.forEach(p => { const f = (p.userData.f + t * vel) % 1; en.curva.getPoint(f, p.position); p.material.opacity = nivel * Math.sin(f * Math.PI); });
+  };
+  enlaces.forEach(en => pintarEnlace(en, l1, .32)); pintarEnlace(enlaceCentral, l2, .26);
+  const aditivo = d < .5 ? THREE.AdditiveBlending : THREE.NormalBlending;
+  if (enlaceCentral.tubo.material.blending !== aditivo) [...enlaces, enlaceCentral].forEach(en => [en.tubo.material, ...en.paquetes.map(p => p.material)].forEach(m => { m.blending = aditivo; m.needsUpdate = true; }));
+  haloGw.material.opacity = Math.max(l1, E.grilla * .5) * (.35 + .35 * Math.sin(t * 6 + 1)) * lerp(1, .4, d);
+  balizaCentral.material.color.setRGB(.75, .9, 1).multiplyScalar(l2 > .3 ? 2.6 : 1.3);
+  balizaCentral.material.opacity = Math.max(E.malla * .7, l2) * (.6 + .4 * Math.sin(t * (l2 > .3 ? 7 : 1.4)));
+  balizaCentral.scale.setScalar(3.5 + l2 * 2);
 
-  // dron
-  dron.visible = E.dron > .02;
-  if (dron.visible){
-    const f = suave(Math.min(1, E.dron));
-    dron.position.copy(inicioDron).lerp(sobreFoco, f);
-    dron.position.y += Math.sin(t * 2.1) * .25;
-    dron.rotation.set(Math.sin(t * 1.3) * .04, t * .3, Math.cos(t * 1.1) * .04);
-    helices.forEach((h, i) => h.rotation.y = t * 45 + i);
-    luzDron.intensity = th * 30;
-  }
+  // drones: A va al foco, B orbita el perímetro, C queda cargándose
+  destinoA.copy(PF).add(tmpV.set(0, 11, 0));
+  destinoB.set(PF.x + Math.cos(t * .35) * 15, PF.y + 17, PF.z + Math.sin(t * .35) * 15);
+  drones.forEach((dr, i) => {
+    const u = i === 2 ? 0 : E.dron;
+    if (u <= .001){ dr.position.copy(dr.userData.base); dr.rotation.set(0, ANG_CENTRAL, 0); }
+    else {
+      rutaDron(dr, u, i === 0 ? destinoA : destinoB, dr.position);
+      dr.position.y += Math.sin(t * 2.1 + i) * .2 * ss(u, .2, .3);
+      const vx = dr.position.x - prevDron[i].x, vz = dr.position.z - prevDron[i].z;
+      if (Math.hypot(vx, vz) > .02) dr.rotation.y = lerp(dr.rotation.y, Math.atan2(vx, vz), .1);
+      dr.rotation.x = Math.sin(t * 1.3 + i) * .04; dr.rotation.z = Math.cos(t * 1.1 + i) * .04;
+    }
+    prevDron[i].copy(dr.position);
+    const gira = u > .001;
+    dr.userData.helices.forEach((h, k) => h.rotation.y = gira ? t * 45 + k : k * .8);
+    dr.userData.discos.forEach(dk => dk.material.opacity = gira ? .14 : 0);
+    const pl = PLATAFORMAS[i].anillo.material;
+    pl.color.copy(u > .001 ? AMARILLO : VERDE).multiplyScalar(1.5 + .8 * Math.sin(t * 2 + i));
+  });
+  luzDron.intensity = th * 30;
+
+  // etiquetas
+  const vistaAlta = camara.position.y > 34 && th < .3 && camSim < .2;
+  ubicar(etCentral, BALIZA_CENTRAL, vistaAlta && E.malla > .6 && (l2 > .1 || enSim || E.grilla > .5));
+  ubicar(etGateway, TOPE_GW, vistaAlta && (E.malla > .6 && (E.lora > .2 || enSim || E.grilla > .5)));
+  ubicar(etFoco, estimado.position, vistaAlta && E.tri > .75);
+  etDetectores.forEach((et, i) => {
+    const n = incidente.detectores[i];
+    if (n){ et.textContent = n.id; et.classList.toggle('alerta', true); }
+    ubicar(et, n ? balizas[NODOS.indexOf(n)].position : mira, vistaAlta && !!n && E.tri > .3);
+  });
+  mira3dCursor(t);
 
   // escala térmica
-  escala.classList.toggle('fuera', fActual > 5.4 || fActual < .45);
-  cursor.style.bottom = (Math.min(1, fActual / 5) * 100) + '%';
-  const activo = Math.round(Math.min(5, fActual));
-  etiquetas.forEach(li => li.classList.toggle('activo', +li.dataset.i === activo));
+  escala.classList.toggle('fuera', fActual > 6.45 || fActual < .45);
+  cursor.style.bottom = (Math.min(1, fActual / 6) * 100) + '%';
+  const activoEsc = Math.round(Math.min(6, fActual));
+  etiquetas.forEach(li => li.classList.toggle('activo', +li.dataset.i === activoEsc));
 
   composer.render(dt);
   requestAnimationFrame(cuadro);
 }
+// retícula que sigue al puntero sobre el bosque en el simulador
+const reticula = new THREE.Mesh(new THREE.RingGeometry(1.6, 2, 48).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: AMARILLO.clone().multiplyScalar(2), transparent: true, opacity: 0, depthTest: false, depthWrite: false, fog: false }));
+reticula.renderOrder = 7; escena.add(reticula);
+function mira3dCursor(t){
+  const ver = enSim && punteroSim && !(sim.activo && !sim.auto);
+  reticula.material.opacity = ver ? .85 : 0;
+  if (ver){ reticula.position.copy(punteroSim).add(tmpV.set(0, .6, 0)); reticula.scale.setScalar(1 + .15 * Math.sin(t * 6)); }
+}
+pintarTurno();
 requestAnimationFrame(cuadro);
+
 }
 </script>
 </body>
